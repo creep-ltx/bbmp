@@ -1,0 +1,12 @@
+diff --git a/gme/Hes_Cpu.cpp b/gme/Hes_Cpu.cpp
+index 985f033..359058b 100644
+--- a/gme/Hes_Cpu.cpp
++++ b/gme/Hes_Cpu.cpp
+@@ -154,6 +154,7 @@ loop:
+ 	check( (unsigned) a < 0x100 );
+ 	check( (unsigned) x < 0x100 );
+ 
++	pc &= 0xFFFF; // the CPU's address space wraps (uint_fast16_t may be wider)
+ 	uint8_t const* instr = s.code_map [pc >> page_shift];
+ 	uint_fast8_t opcode;
+ 

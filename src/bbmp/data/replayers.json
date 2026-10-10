@@ -1,0 +1,1170 @@
+{
+ "adplug": {
+  "name": "AdPlug",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   },
+   {
+    "name": "libbinio",
+    "version": "3baed73",
+    "url": "https://github.com/adplug/libbinio.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "aks": {
+  "name": "Arkos Tracker 3's player",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "arkostracker3",
+    "version": "14d975b",
+    "url": "https://bitbucket.org/JulienNevo/arkostracker3.git",
+    "licence": "MIT (LICENSE.txt)"
+   },
+   {
+    "name": "JUCE",
+    "version": "2d14a1f",
+    "url": "https://github.com/JulienNevo/JUCE_7_0_1_2_Xcode16.git",
+    "licence": "see (LICENSE.md)"
+   }
+  ]
+ },
+ "amad": {
+  "name": "AY Amadeus, ported",
+  "own": "a port of Ay_Emul's interpreter",
+  "terms": "Ay_Emul: free to use with reference to its author",
+  "made_of": [
+   {
+    "name": "ayumi",
+    "version": "07c08b4",
+    "url": "https://github.com/true-grue/ayumi.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "axs": {
+  "name": "AXS replayer",
+  "own": "written for this player from a description of how AXS's Winamp plug-in sounds (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "beepola": {
+  "name": "Beepola's eight beeper engines",
+  "own": "written for this player in a clean room, from a description of the engines' behaviour only; the same sound as before, sample for sample, in every song; three pieces of data (the 48K ROM, Shiru's drum samples, 136 bytes of Savage) are downloaded from Beepola's repository on request, not shipped",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "berotracker": {
+  "name": "BeRoTracker replayer",
+  "own": "written for this player from a description of the tracker's behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "boyscout": {
+  "name": "BoyScout player",
+  "own": "written after BoyScout's GBA playback library, with a GBA sound unit",
+  "terms": "the library: free to use in any project",
+  "made_of": []
+ },
+ "buz": {
+  "name": "Buzzic player",
+  "own": "written for this player from a description of the formats' behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "buzz": {
+  "name": "BmxPlay",
+  "own": "",
+  "terms": "public domain",
+  "made_of": [
+   {
+    "name": "bmxplay",
+    "version": "e77f921",
+    "url": "https://github.com/joric/bmxplay.git",
+    "licence": "public domain (README: the player is public domain)"
+   }
+  ]
+ },
+ "chipnsfx": {
+  "name": "CHIPNSFX's player",
+  "own": "the tracker's own code (CHIPNSFX.C, César Nicolás-González, 2024-12-31 build, kept unchanged in csrc/chipnsfx) without its user interface",
+  "terms": "GPL-3.0-or-later (CHIPNSFX's own licence)",
+  "made_of": []
+ },
+ "cybertracker": {
+  "name": "CyberTracker itself, emulated",
+  "own": "a 6502 emulation that runs it",
+  "terms": "the tracker: no terms stated",
+  "made_of": [
+   {
+    "name": "cybertracker",
+    "version": "1.01",
+    "url": "https://csdb.dk/getinternalfile.php/63969/cybertracker1_01-d64.zip (the player downloads it when the user says so)",
+    "licence": "none found"
+   },
+   {
+    "name": "libresidfp",
+    "version": "1.2.2",
+    "url": "https://github.com/libsidplayfp/libresidfp/releases/tag/v1.2.2",
+    "licence": "GPL-2.0"
+   }
+  ]
+ },
+ "cym": {
+  "name": "bbmp-vgm, the log made into VGM",
+  "own": "the CYM log written as a VGM file, played by bbmp-vgm (the player's own VGM player, libvgm's sound chip cores)",
+  "terms": "GPL-2.0 only (libvgm's OPL4 core; a program of its own, bbmp-vgm)",
+  "made_of": [
+   {
+    "name": "zxtune",
+    "version": "e36902f",
+    "url": "https://github.com/vitamin-caig/zxtune.git",
+    "licence": "LGPL-3.0 (LICENSE.md)"
+   }
+  ]
+ },
+ "d01": {
+  "name": "EdLib D01 player",
+  "own": "written for this player in a clean room, from a description of the format only; checked against JCH's player 1.03 with samples (SBL-0103.P01) in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "darkwave": {
+  "name": "DarkWave Studio 4.1.6, ported",
+  "own": "its studio (project loader, cables, patterns, sequence) ported to C++ without its windows; its machines (ES-CoreMachines) built from its source with the windows taken out; no VST plug-ins",
+  "terms": "GPL 3 or later (DarkWave Studio's source, Daniel Werner 2004-2012)",
+  "made_of": []
+ },
+ "digitrekker": {
+  "name": "DigiTrekker replayer",
+  "own": "written for this player from DigiTrekker's format document",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "dsm": {
+  "name": "libopenmpt, the song rewritten",
+  "own": "a converter to DSIK",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libopenmpt",
+    "version": "0.8.9",
+    "url": "https://lib.openmpt.org/files/libopenmpt/src/",
+    "licence": "BSD-3-Clause"
+   }
+  ]
+ },
+ "edlib": {
+  "name": "AdPlug, with EdLib unpacked",
+  "own": "a converter to D00, written for this player in a clean room, from a description of the format only; the same D00 files as before in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   },
+   {
+    "name": "libbinio",
+    "version": "3baed73",
+    "url": "https://github.com/adplug/libbinio.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   },
+   {
+    "name": "zlib-blast",
+    "version": "1.3.1",
+    "url": "https://raw.githubusercontent.com/madler/zlib/v1.3.1/contrib/blast/",
+    "licence": "zlib (in blast.h)"
+   }
+  ]
+ },
+ "eup": {
+  "name": "EUP player",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "eupplayer",
+    "version": "8587733",
+    "url": "https://github.com/tjhayasaka/eupplayer.git",
+    "licence": "GPL-2.0 (COPYING)"
+   }
+  ]
+ },
+ "fac": {
+  "name": "FAC SoundTracker replayer",
+  "own": "written for this player in a clean room, from a description of the format only; the same chip writes as before in all 644 songs",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "emu8950",
+    "version": "fb129b1",
+    "url": "https://github.com/digital-sound-antiques/emu8950.git",
+    "licence": "MIT (LICENSE)"
+   },
+   {
+    "name": "emu2413",
+    "version": "2e4f6f9",
+    "url": "https://github.com/digital-sound-antiques/emu2413.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "fls": {
+  "name": "Flash Tracker player, ported",
+  "own": "a port of Ay_Emul's player",
+  "terms": "Ay_Emul: free to use with reference to its author",
+  "made_of": [
+   {
+    "name": "ayumi",
+    "version": "07c08b4",
+    "url": "https://github.com/true-grue/ayumi.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "fmp": {
+  "name": "fmplayer",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "fmplayer",
+    "version": "4fa914e",
+    "url": "https://github.com/takamichih/fmplayer.git",
+    "licence": "BSD-2-Clause (LICENSE)"
+   }
+  ]
+ },
+ "fmtracker": {
+  "name": "FM Tracker player",
+  "own": "written for this player in a clean room, from a description of the format only; checked against FM Tracker Player 1.26 (FMTP.EXE, Sagitta Software) in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "furnace": {
+  "name": "Furnace",
+  "own": "a helper that streams Furnace's rendering",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "furnace",
+    "version": "fa9541d",
+    "url": "https://github.com/tildearrow/furnace.git",
+    "licence": "see (LICENSE); LGPL (LICENSE.GPLv2); LGPL-3.0 (LICENSE.GPLv3)"
+   }
+  ]
+ },
+ "fxm": {
+  "name": "Fuxoft AY Language, ported",
+  "own": "a port of Ay_Emul's interpreter",
+  "terms": "Ay_Emul: free to use with reference to its author",
+  "made_of": [
+   {
+    "name": "ayumi",
+    "version": "07c08b4",
+    "url": "https://github.com/true-grue/ayumi.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "gbr": {
+  "name": "libnezplug",
+  "own": "a patch to find a song's end",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libnezplug",
+    "version": "161d6e2",
+    "url": "https://github.com/gcielniak/libnezplug.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "gme": {
+  "name": "Game Music Emu",
+  "own": "one fault mended (PC Engine)",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libgme",
+    "version": "0.6.5",
+    "url": "https://github.com/libgme/game-music-emu/releases/tag/0.6.5",
+    "licence": "LGPL-2.1-or-later"
+   }
+  ]
+ },
+ "goattracker": {
+  "name": "GoatTracker's play routines",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "GoatTracker_2.77",
+    "version": "2.77",
+    "url": "https://downloads.sourceforge.net/project/goattracker2/GoatTracker%202/2.77/GoatTracker_2.77.zip",
+    "licence": "GPL-2.0 (copying)"
+   },
+   {
+    "name": "GoatTracker_1.53",
+    "version": "1.53",
+    "url": "https://cadaver.github.io/tools/goattrk.zip",
+    "licence": "GPL-2.0 (copying)"
+   },
+   {
+    "name": "GoatTracker_1.53_Stereo",
+    "version": "1.53 stereo",
+    "url": "https://cadaver.github.io/tools/gstereo.zip",
+    "licence": "GPL-2.0 (copying)"
+   }
+  ]
+ },
+ "ixalance": {
+  "name": "iXalance replayer",
+  "own": "written for this player from a description of the format and of how the earlier player sounds (clean room); the three drum samples a few songs use are fetched separately",
+  "terms": "MIT (in bbmp-rv, with no GPL code in it)",
+  "made_of": []
+ },
+ "jesperolsen": {
+  "name": "Jesper Olsen driver on ScummVM's Paula",
+  "own": "written for this player from a description of the games' drivers (clean room); songs with their own routine play through UADE",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "scummvm-maxtrax",
+    "version": "e6c3b10",
+    "url": "https://github.com/scummvm/scummvm (audio/mods/maxtrax.* and paula.* at commit e6c3b103c96822eb9212f743be63c998383f7c4f)",
+    "licence": "GPL-3.0-or-later (ScummVM)"
+   },
+   {
+    "name": "uade",
+    "version": "8d77cd7",
+    "url": "https://gitlab.com/uade-music-player/uade.git",
+    "licence": "see (COPYING); GPL-2.0 (COPYING.GPL); LGPL-2.1 (COPYING.LGPL)"
+   }
+  ]
+ },
+ "jxs": {
+  "name": "JayTrax player",
+  "own": "written for this player from a description of the format's behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "kdm": {
+  "name": "Ken's Digital Music player",
+  "own": "written for this player from a description of the format's behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "klystrack": {
+  "name": "klystrack (Retrovert)",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "retrovert-playback-klystrack",
+    "version": "aad080d",
+    "url": "https://github.com/RetrovertApp/playback-klystrack.git",
+    "licence": "MIT (LICENSE); MIT (LICENSES)"
+   }
+  ]
+ },
+ "kss": {
+  "name": "libkss",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libkss",
+    "version": "15fb77f",
+    "url": "https://github.com/digital-sound-antiques/libkss.git",
+    "licence": "ISC (LICENSE.md)"
+   }
+  ]
+ },
+ "lem": {
+  "name": "Lemmings' Ad Lib player",
+  "own": "written for this player in a clean room, from a description of the format only; checked against the Sound Images driver of 1991 in Lemmings' ADLIB.DAT in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "maxtrax": {
+  "name": "ScummVM's MaxTrax player",
+  "own": "one fault mended",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "scummvm-maxtrax",
+    "version": "e6c3b10",
+    "url": "https://github.com/scummvm/scummvm (audio/mods/maxtrax.* and paula.* at commit e6c3b103c96822eb9212f743be63c998383f7c4f)",
+    "licence": "GPL-3.0-or-later (ScummVM)"
+   }
+  ]
+ },
+ "mdx": {
+  "name": "mdxmini",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "mdxmini",
+    "version": "003531a",
+    "url": "https://github.com/mistydemeo/mdxmini.git",
+    "licence": "GPL-2.0 (COPYING)"
+   }
+  ]
+ },
+ "mgb": {
+  "name": "GBSoundSystem, on Game Music Emu",
+  "own": "the song compiler, written for this player in a clean room, from a description of the format only; the same GBS image as before for every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "GBSoundSystem",
+    "version": "c0c6a6f",
+    "url": "https://github.com/gbdev/GBSoundSystem.git",
+    "licence": "MIT (LICENSE)"
+   },
+   {
+    "name": "rgbds",
+    "version": "0.6.1",
+    "url": "https://github.com/gbdev/rgbds/releases/download/v0.6.1/rgbds-0.6.1.tar.gz",
+    "licence": "MIT (LICENSE)"
+   },
+   {
+    "name": "libgme",
+    "version": "0.6.5",
+    "url": "https://github.com/libgme/game-music-emu/releases/tag/0.6.5",
+    "licence": "LGPL-2.1-or-later"
+   }
+  ]
+ },
+ "monotone": {
+  "name": "MONOTONE's player, ported",
+  "own": "a C++ port of MONOTONE's player and PC speaker output",
+  "terms": "public domain (MONOTONE is under The Unlicense)",
+  "made_of": []
+ },
+ "musicline": {
+  "name": "Musicline Player, ported",
+  "own": "a C++ port of the original Amiga routine (LGPL, as in UADE's sources)",
+  "terms": "LGPL (a derived work of the original routine)",
+  "made_of": [
+   {
+    "name": "nostalgicplayer-musicline",
+    "version": "2485bec",
+    "url": "https://github.com/neumatho/NostalgicPlayer (Tables.cs and LICENSE at commit 2485bec27b1f02c13d0fe70c7c796acd61e36223)",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "mxm": {
+  "name": "libopenmpt, the song rewritten",
+  "own": "a converter to XM",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libopenmpt",
+    "version": "0.8.9",
+    "url": "https://lib.openmpt.org/files/libopenmpt/src/",
+    "licence": "BSD-3-Clause"
+   }
+  ]
+ },
+ "ned": {
+  "name": "NerdTracker 2's routine, on Game Music Emu",
+  "own": "",
+  "terms": "the routine: giftware, free for any non-commercial use (NerdTracker 2's home page)",
+  "made_of": [
+   {
+    "name": "nedplay",
+    "version": "22",
+    "url": "https://www.nesdev.org/nt2/download/nedplay.zip",
+    "licence": "giftware, non-commercial use: \"You're entitled to use NT2 & its replay code freely for any non-commercial usage\" (https://www.nesdev.org/nt2/)"
+   },
+   {
+    "name": "cc65",
+    "version": "5552824",
+    "url": "https://github.com/cc65/cc65.git",
+    "licence": "zlib (LICENSE)"
+   },
+   {
+    "name": "libgme",
+    "version": "0.6.5",
+    "url": "https://github.com/libgme/game-music-emu/releases/tag/0.6.5",
+    "licence": "LGPL-2.1-or-later"
+   }
+  ]
+ },
+ "noisetracker": {
+  "name": "Noise Tracker GS replayer",
+  "own": "written for this player in a clean room, from a description of the format only; the same chip writes as before in every song",
+  "terms": "GPL 3 or later",
+  "made_of": []
+ },
+ "onyx": {
+  "name": "libopenmpt, the song rewritten",
+  "own": "a converter to a module, written for this player in a clean room, from a description of the format only; the same module and sound as before in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libopenmpt",
+    "version": "0.8.9",
+    "url": "https://lib.openmpt.org/files/libopenmpt/src/",
+    "licence": "BSD-3-Clause"
+   }
+  ]
+ },
+ "openmpt": {
+  "name": "libopenmpt",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libopenmpt",
+    "version": "0.8.9",
+    "url": "https://lib.openmpt.org/files/libopenmpt/src/",
+    "licence": "BSD-3-Clause"
+   }
+  ]
+ },
+ "organya": {
+  "name": "organya.h",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "organya.h",
+    "version": "f7a086f",
+    "url": "https://github.com/Strultz/organya.h.git",
+    "licence": "zlib (LICENSE.md)"
+   }
+  ]
+ },
+ "picatune": {
+  "name": "Picatune player",
+  "own": "written for this player in a clean room, from a description of the format only; the same sound as before, bit for bit, in every song; checked against the programs Picatune exports",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "piece": {
+  "name": "P/ECE music driver replayer",
+  "own": "written for this player from the P/ECE SDK's format documents and measurements of the driver's sound; the drums are made anew",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "pixelpainters": {
+  "name": "Pixel Painters player",
+  "own": "written for this player in a clean room, from a description of the formats only; checked against the music routines of Electranoid and Xatax in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "playerpro": {
+  "name": "PlayerPRO's driver",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "PlayerPRO",
+    "version": "0a07010",
+    "url": "https://github.com/MaddTheSane/PlayerPRO.git",
+    "licence": "public domain (LICENSE.txt)"
+   }
+  ]
+ },
+ "pmdc": {
+  "name": "PMD driver on ymfm",
+  "own": "written for this player from a description of PMD's behaviour (clean room); the YM2608 by ymfm",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "ymfm",
+    "version": "81aec25ccbb9 2026-07-27",
+    "url": "https://codeload.github.com/aaronsgiles/ymfm/tar.gz/81aec25ccbb98f4873a255f7551ac4dadac59b4a",
+    "licence": "BSD-3-Clause (LICENSE)"
+   }
+  ]
+ },
+ "polly": {
+  "name": "Polly Tracker's player on libsidplayfp",
+  "own": "the module put behind Polly Tracker's C64 player, which is taken from HVSC's Polly_Rock.sid when it is played (it is not part of the player)",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libsidplayfp",
+    "version": "3.1.1",
+    "url": "https://github.com/libsidplayfp/libsidplayfp/releases/tag/v3.1.1",
+    "licence": "GPL-2.0"
+   },
+   {
+    "name": "libresidfp",
+    "version": "1.2.2",
+    "url": "https://github.com/libsidplayfp/libresidfp/releases/tag/v1.2.2",
+    "licence": "GPL-2.0"
+   }
+  ]
+ },
+ "protrekkr": {
+  "name": "ProTrekkr (via rePlayer)",
+  "own": "",
+  "terms": "BSD 2-clause",
+  "made_of": [
+   {
+    "name": "rePlayer",
+    "version": "e3bf02c",
+    "url": "https://github.com/arnaud-neny/rePlayer.git",
+    "licence": "none for rePlayer's own code; the replays in it carry their own: ProTrekkr BSD 2-clause, libpac ISC, Mednafen GPL 2; Ken Silverman's, CrossX (JayTrax) and Buzzic 2 state none"
+   }
+  ]
+ },
+ "psycle": {
+  "name": "Psycle",
+  "own": "",
+  "terms": "GPL 2 or later; some plugins have terms of their own",
+  "made_of": [
+   {
+    "name": "psycle",
+    "version": "r12005",
+    "url": "https://svn.code.sf.net/p/psycle/code/trunk (svn export -r 12005)",
+    "licence": "LGPL (COPYING)"
+   }
+  ]
+ },
+ "pxtone": {
+  "name": "pxtone",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libpxtone",
+    "version": "dec7b60",
+    "url": "https://github.com/Wohlstand/libpxtone.git",
+    "licence": "see (LICENSE)"
+   }
+  ]
+ },
+ "qsf": {
+  "name": "Highly Quixotic",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "deadbeef_hq",
+    "version": "b92e40f",
+    "url": "https://github.com/kode54/deadbeef_hq.git",
+    "licence": "GPL 2 or later (hqplug.c); psflib MIT (psflib/LICENSE, added May 2015), the QSound core GPL 3 (QSoundCore/LICENSE.TXT, added July 2015): the pinned commits are the ones that added them"
+   }
+  ]
+ },
+ "samurai": {
+  "name": "First Samurai's Ad Lib player",
+  "own": "written for this player in a clean room, from a description of the format only; the same OPL writes as the original in all songs",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "sbstudio": {
+  "name": "libpac (via rePlayer)",
+  "own": "",
+  "terms": "ISC",
+  "made_of": [
+   {
+    "name": "rePlayer",
+    "version": "e3bf02c",
+    "url": "https://github.com/arnaud-neny/rePlayer.git",
+    "licence": "none for rePlayer's own code; the replays in it carry their own: ProTrekkr BSD 2-clause, libpac ISC, Mednafen GPL 2; Ken Silverman's, CrossX (JayTrax) and Buzzic 2 state none"
+   }
+  ]
+ },
+ "sc68": {
+  "name": "sc68",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "sc68",
+    "version": "2.2.1",
+    "url": "https://downloads.sourceforge.net/project/sc68/sc68/2.2.1/sc68-2.2.1.tar.gz",
+    "licence": "GPL-2.0 (COPYING)"
+   }
+  ]
+ },
+ "sccmusixx": {
+  "name": "SCC-Musixx replayer on emu2212",
+  "own": "written for this player from a description of the tracker's replay behaviour (clean room)",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "emu2212",
+    "version": "ee35dbe",
+    "url": "https://github.com/digital-sound-antiques/emu2212.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "sgc": {
+  "name": "libnezplug",
+  "own": "a patch to find a song's end",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libnezplug",
+    "version": "161d6e2",
+    "url": "https://github.com/gcielniak/libnezplug.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "shadowlands": {
+  "name": "Shadowlands' Ad Lib player",
+  "own": "written for this player in a clean room, from a description of the format only; the same OPL writes as the original in all songs",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "shroom": {
+  "name": "Mario Paint player",
+  "own": "made from Mariopants 1.1 by Brad Smith, changed",
+  "terms": "Mariopants: reuse allowed, credit and changes marked",
+  "made_of": []
+ },
+ "sidplayfp": {
+  "name": "libsidplayfp",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libsidplayfp",
+    "version": "3.1.1",
+    "url": "https://github.com/libsidplayfp/libsidplayfp/releases/tag/v3.1.1",
+    "licence": "GPL-2.0"
+   },
+   {
+    "name": "libresidfp",
+    "version": "1.2.2",
+    "url": "https://github.com/libsidplayfp/libresidfp/releases/tag/v1.2.2",
+    "licence": "GPL-2.0"
+   }
+  ]
+ },
+ "sig": {
+  "name": "Sound Images Generation 2 player",
+  "own": "written for this player in a clean room, from a description of the format only; checked against Tony Williams' driver (in Kwik Snax for DOS) in every song",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "skale": {
+  "name": "OpenMPT with a Skale loader",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "openmpt-skm",
+    "version": "0eafb12",
+    "url": "https://github.com/OpenMPT/openmpt.git",
+    "licence": "BSD-3-Clause (LICENSE)"
+   },
+   {
+    "name": "skale-skm-loader-openmpt",
+    "version": "27dde22",
+    "url": "https://github.com/lpreiner/skale-skm-loader-openmpt.git",
+    "licence": "BSD-2-Clause (LICENSE)"
+   }
+  ]
+ },
+ "sks": {
+  "name": "Arkos Tracker 3's player",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "arkostracker3",
+    "version": "14d975b",
+    "url": "https://bitbucket.org/JulienNevo/arkostracker3.git",
+    "licence": "MIT (LICENSE.txt)"
+   },
+   {
+    "name": "JUCE",
+    "version": "2d14a1f",
+    "url": "https://github.com/JulienNevo/JUCE_7_0_1_2_Xcode16.git",
+    "licence": "see (LICENSE.md)"
+   }
+  ]
+ },
+ "sndfile": {
+  "name": "libsndfile, with libsamplerate",
+  "own": "",
+  "terms": "the system's libraries: libsndfile LGPL 2.1, libsamplerate BSD 2-clause",
+  "made_of": []
+ },
+ "sndh": {
+  "name": "psgplay",
+  "own": "",
+  "terms": "GPL-2.0 only (psgplay's licence; a program of its own, bbmp-psgplay)",
+  "made_of": [
+   {
+    "name": "psgplay",
+    "version": "6f1c39f",
+    "url": "https://github.com/frno7/psgplay.git",
+    "licence": "GPL 2 (SPDX lines in its sources); some of its libraries LGPL 2.1 or MIT"
+   }
+  ]
+ },
+ "snsf": {
+  "name": "snsf9x",
+  "own": "",
+  "terms": "non-commercial use only (Snes9x's licence; a program of its own, bbmp-snsf, with no GPL code in it)",
+  "made_of": [
+   {
+    "name": "snsf9x",
+    "version": "128cb0d",
+    "url": "https://github.com/loveemu/snsf9x.git",
+    "licence": "Snes9x's licence: non-commercial use only, its notice kept with every copy (snes9x/docs/snes9x-license.txt)"
+   }
+  ]
+ },
+ "soundclub": {
+  "name": "Sound Club replayer",
+  "own": "written for this player in a clean room, from a description of the formats only; the same sound as before in every song; the instrument bank and FM waveforms are Sound Club's",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "SoundClub",
+    "version": "2.03",
+    "url": "http://www.bluemoon.ee/history/scwin/scw203.zip (the player downloads it when the user says so)",
+    "licence": "freeware: free to pass on whole and unchanged"
+   }
+  ]
+ },
+ "soundsmith": {
+  "name": "SoundSmith replayer",
+  "own": "written for this player in a clean room, from a description of the formats only, with MTPng's effect rules for MegaTracker; the same chip writes as before in every song",
+  "terms": "GPL 3 or later (MTPng's rules: GPL 2 or later)",
+  "made_of": []
+ },
+ "spu": {
+  "name": "P.E.Op.S. SPU (Audio Overload SDK)",
+  "own": "a player for the log",
+  "terms": "GPL 2 or later; in bbmp-console, a program of its own under the GPL-2.0 only (Mednafen's WonderSwan files are GPL 2 only)",
+  "made_of": [
+   {
+    "name": "aosdk",
+    "version": "e359a6e",
+    "url": "https://github.com/nmlgc/aosdk.git",
+    "licence": "BSD-3-Clause (license.txt)"
+   }
+  ]
+ },
+ "stonetracker": {
+  "name": "StoneTracker's replay routine, on UADE",
+  "own": "",
+  "terms": "the routine: free to pass on with its whole archive and readme, which the package carries (share/stonetracker); not open source",
+  "made_of": [
+   {
+    "name": "uade",
+    "version": "8d77cd7",
+    "url": "https://gitlab.com/uade-music-player/uade.git",
+    "licence": "see (COPYING); GPL-2.0 (COPYING.GPL); LGPL-2.1 (COPYING.LGPL)"
+   },
+   {
+    "name": "stonefree2",
+    "version": "1.26 free",
+    "url": "https://aminet.net/mus/edit/stonefree2.lha",
+    "licence": "freely distributable (Aminet)"
+   }
+  ]
+ },
+ "strc": {
+  "name": "Sound Tracker (Raxoft compiler) player",
+  "own": "written for this player in a clean room, from a description of the format only; the same registers and sound as before",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "ayumi",
+    "version": "07c08b4",
+    "url": "https://github.com/true-grue/ayumi.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "sunvox": {
+  "name": "SunVox library",
+  "own": "",
+  "terms": "free to use, with its credit: Powered by SunVox (modular synth & tracker), Copyright (c) 2008 - 2026, Alexander Zolotov, WarmPlace.ru; its SunDog engine MIT, its libFLAC and Tremor BSD (licences/sunvox)",
+  "made_of": [
+   {
+    "name": "sunvox_lib",
+    "version": "2.1.4d",
+    "url": "https://warmplace.ru/soft/sunvox/sunvox_lib-2.1.4d.zip",
+    "licence": "MIT (sunvox_lib/docs/license/LICENSE.txt)"
+   }
+  ]
+ },
+ "synder": {
+  "name": "Synder SNG replayer",
+  "own": "written for this player from a description of PlaySNG's behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "t0ast": {
+  "name": "T0AST replayer",
+  "own": "written for this player from a description of the tracker's behaviour (clean room)",
+  "terms": "GPL-3.0-or-later (the player's own code)",
+  "made_of": []
+ },
+ "tiatracker": {
+  "name": "TIATracker's player",
+  "own": "the tracker's own song and replay code (Andre Wichmann's TIATracker, the copy in github.com/dionoid/tiatracker, commit f523802) with Stella's TIA sound, kept in csrc/tiatracker, three accessors added to player.h (marked); Qt replaced by small stand-ins written for this player",
+  "terms": "GPL-2.0 (TIATracker's own licence; a separate program)",
+  "made_of": []
+ },
+ "tss": {
+  "name": "TSS, ported",
+  "own": "a port of toyoshim's TSS",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "tss",
+    "version": "f377899",
+    "url": "https://github.com/toyoshim/tss.git",
+    "licence": "BSD-3-Clause (LICENSE)"
+   }
+  ]
+ },
+ "uade": {
+  "name": "UADE",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "uade",
+    "version": "8d77cd7",
+    "url": "https://gitlab.com/uade-music-player/uade.git",
+    "licence": "see (COPYING); GPL-2.0 (COPYING.GPL); LGPL-2.1 (COPYING.LGPL)"
+   },
+   {
+    "name": "bencodetools",
+    "version": "5fa73d3",
+    "url": "https://gitlab.com/heikkiorsila/bencodetools.git",
+    "licence": "BSD-2-Clause (LICENSE); BSD-3-Clause (LICENSE.bencode)"
+   },
+   {
+    "name": "libzakalwe",
+    "version": "f40771d",
+    "url": "https://gitlab.com/hors/libzakalwe.git",
+    "licence": "BSD-2-Clause (COPYING)"
+   }
+  ]
+ },
+ "unitrk": {
+  "name": "libmikmod",
+  "own": "",
+  "terms": "LGPL 2.1",
+  "made_of": [
+   {
+    "name": "mikmod",
+    "version": "8de19ee",
+    "url": "https://github.com/sezero/mikmod.git",
+    "licence": "LGPL 2 and 2.1 (libmikmod/COPYING.LIB, COPYING.LESSER)"
+   }
+  ]
+ },
+ "vgemm": {
+  "name": "VGM Music Maker player, on Game Music Emu",
+  "own": "written after the editor's VGM export, observed write for write",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libgme",
+    "version": "0.6.5",
+    "url": "https://github.com/libgme/game-music-emu/releases/tag/0.6.5",
+    "licence": "LGPL-2.1-or-later"
+   }
+  ]
+ },
+ "vgm": {
+  "name": "bbmp-vgm",
+  "own": "the player's own VGM and S98 player (written from the formats' published documents), with libvgm's licensed sound chip cores (Valley Bell; ZXTune's sources carry them, 3rdparty/vgm)",
+  "terms": "GPL-2.0 only (libvgm's OPL4 core, after openMSX; a program of its own, bbmp-vgm, whose own files are GPL 2 or later; none of libvgm's player or glue is in it)",
+  "made_of": [
+   {
+    "name": "zxtune",
+    "version": "e36902f",
+    "url": "https://github.com/vitamin-caig/zxtune.git",
+    "licence": "LGPL-3.0 (LICENSE.md)"
+   }
+  ]
+ },
+ "vibrants": {
+  "name": "JO's Ad Lib player (Vibrants)",
+  "own": "written for this player in a clean room, from a description of the format only; the same OPL writes as the original in all songs",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "adplug",
+    "version": "1e6133f",
+    "url": "https://github.com/adplug/adplug.git",
+    "licence": "LGPL-2.1 (COPYING)"
+   }
+  ]
+ },
+ "victracker": {
+  "name": "VIC-TRACKER's player, emulated",
+  "own": "a 6502 and VIC sound emulation that run it",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "victracker",
+    "version": "2.0",
+    "url": "http://www.kahlin.net/daniel/victracker/vt-2.0/victracker-2.0.tar.gz",
+    "licence": "BSD-3-Clause (LICENSE.txt)"
+   },
+   {
+    "name": "dasm",
+    "version": "0927086",
+    "url": "https://github.com/dasm-assembler/dasm.git",
+    "licence": "GPL-2.0 (LICENSE)"
+   }
+  ]
+ },
+ "vt2": {
+  "name": "ZXTune, the song rewritten",
+  "own": "the text rewritten as ZXTune reads it",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "zxtune",
+    "version": "e36902f",
+    "url": "https://github.com/vitamin-caig/zxtune.git",
+    "licence": "LGPL-3.0 (LICENSE.md)"
+   }
+  ]
+ },
+ "wsr": {
+  "name": "Mednafen's WonderSwan (via rePlayer)",
+  "own": "",
+  "terms": "GPL-2.0 only (four of Mednafen's WonderSwan files; a program of its own, bbmp-console, whose own files are GPL 2 or later)",
+  "made_of": [
+   {
+    "name": "rePlayer",
+    "version": "e3bf02c",
+    "url": "https://github.com/arnaud-neny/rePlayer.git",
+    "licence": "none for rePlayer's own code; the replays in it carry their own: ProTrekkr BSD 2-clause, libpac ISC, Mednafen GPL 2; Ken Silverman's, CrossX (JayTrax) and Buzzic 2 state none"
+   }
+  ]
+ },
+ "wwsnd": {
+  "name": "Westwood SND player",
+  "own": "written after ScummVM's PC speaker driver",
+  "terms": "GPL 3 or later",
+  "made_of": []
+ },
+ "xmp": {
+  "name": "libxmp",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "libxmp",
+    "version": "1e08121",
+    "url": "https://github.com/libxmp/libxmp.git",
+    "licence": "MIT (docs/COPYING)"
+   }
+  ]
+ },
+ "ym": {
+  "name": "StSound",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "StSound",
+    "version": "a27c293",
+    "url": "https://github.com/arnaud-carre/StSound.git",
+    "licence": "MIT (LICENSE)"
+   }
+  ]
+ },
+ "zoundmonitor": {
+  "name": "UADE",
+  "own": "puts the samples where the player looks",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "uade",
+    "version": "8d77cd7",
+    "url": "https://gitlab.com/uade-music-player/uade.git",
+    "licence": "see (COPYING); GPL-2.0 (COPYING.GPL); LGPL-2.1 (COPYING.LGPL)"
+   }
+  ]
+ },
+ "zxtune": {
+  "name": "ZXTune",
+  "own": "",
+  "terms": "",
+  "made_of": [
+   {
+    "name": "zxtune",
+    "version": "e36902f",
+    "url": "https://github.com/vitamin-caig/zxtune.git",
+    "licence": "LGPL-3.0 (LICENSE.md)"
+   }
+  ]
+ }
+}

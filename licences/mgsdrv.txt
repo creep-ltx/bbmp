@@ -1,0 +1,63 @@
+MGSDRV
+======
+
+MGSDRV.COM (v3.18)
+Copyright (c) 1991-1994 Ain
+Copyright (c) 1997-2001 GIGAMIX
+
+MGSDRV (C) Ain./Gigamix
+
+bbmp-chip plays MGSDRV songs (.mgs) with libkss (Mitsutaka Okazaki,
+https://github.com/digital-sound-antiques/libkss), which builds the driver's program,
+MGSDRV.COM version 3.18, in unchanged as data (modules/drivers/mgsdrv.h) and runs it in
+an emulated MSX. The credit above is the one MGSDRV's licence asks for.
+
+The terms, from Gigamix's MGSDRV page (https://gigamix.hatenablog.com/entry/mgsdrv/,
+the page of 27 September 2026; MGSDRV's own address is https://www.gigamix.jp/mgsdrv/),
+in Japanese as written there, then in English (the translation is the player's, not
+Gigamix's):
+
+  MGSDRVの組み込みライセンス
+  MGSDRVを組み込んでMSX向けデジタルコンテンツを開発・配布することができます。
+  販売価格の有料・無料を問わず、ライセンス料は無料です。
+
+  (MGSDRV's embedding licence: you may embed MGSDRV to develop and distribute digital
+  content for MSX. Whether it is sold or free, there is no licence fee.)
+
+  1. プログラムは改変しないこと
+  ... 当サイトで配布するアーカイブに含まれるプログラムファイル（MGSDRV.COM）をそのまま
+  改変せずに利用してください。プログラムを改造した形で組み込むことは禁じます。
+  ROMカートリッジ化のような「DOS用のファイルから何からの固定化されたバイナリデータへの
+  変換作業」についてはプログラムの改造行為に含みません。
+  libkss https://github.com/digital-sound-antiques/libkss の実装についても「固定化された
+  バイナリデータへの変換作業」とみなしますので、libkssを改変なしにそのままご利用の場合に
+  ついてはプログラムの改造行為に含みません。
+
+  (1. Do not change the program: use the program file MGSDRV.COM from the archive as
+  it is; embedding a modified program is forbidden. Turning the DOS file into fixed
+  binary data, as for a ROM cartridge, is not a modification. libkss's implementation is
+  also regarded as such a conversion into fixed binary data, so using libkss unmodified,
+  as it is, is not a modification of the program.)
+
+  2. ライセンスの表記をすること
+  ... 容量不足や技術的な理由でデジタルコンテンツ内にファイルを含められない場合は、
+  デジタルコンテンツ内のクレジット表記やオンラインヘルプ、Webサイト、マニュアル、
+  パッケージ等に以下のテキストを1ヵ所以上明示してください。
+  MGSDRV Ⓒ Ain./Gigamix  または  MGSDRV (C) Ain./Gigamix
+
+  (2. Show the licence: including the text files of the archive does this; where they
+  can't be included, show "MGSDRV (C) Ain./Gigamix" in at least one place: the credits,
+  online help, website, manual, package or the like.)
+
+  3. ライセンスの料金はありません
+
+  (3. There is no licence fee.)
+
+  MGSDRVの転載、配布について
+  当クラブで配布する各種アーカイブの転載、配布は自由に行なって構いませんが、アーカイブの
+  内容は変更しないでください。
+
+  (Reposting and distribution: the archives the club distributes may be freely
+  reposted and distributed, but their contents must not be changed.)
+
+MGSDRV's source code is not published (the same page: ソースコードは配布しておりません).

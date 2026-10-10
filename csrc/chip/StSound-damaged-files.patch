@@ -1,0 +1,352 @@
+bbmp: StSound takes sizes and counts from the file and reads where they say (the final
+audit of 7 October 2026): a short or damaged YM or Digi-Mix (MIX1) file made it read past
+the file and crash. Every read of the loader now stays inside the file (a damaged file is
+refused); the LZH unpacker refuses code tables a damaged file makes impossible; the player
+keeps a tracker note, a YM 2 drum and a loop point inside what the song has. Real songs
+play byte for byte as before.
+diff --git a/StSound/StSoundLibrary/LZH/LzhLib.cpp b/StSound/StSoundLibrary/LZH/LzhLib.cpp
+index bc64402..1ff4e12 100644
+--- a/StSound/StSoundLibrary/LZH/LzhLib.cpp
++++ b/StSound/StSoundLibrary/LZH/LzhLib.cpp
+@@ -129,13 +129,23 @@ int CLzhDepacker::make_table (int nchar, uchar *bitlen,
+     for (i = 1; i <= 16; i++)
+         count[i] = 0;
+     for (i = 0; i < nchar; i++)
++    {
++        if (bitlen[i] > 16)     /* bbmp: a damaged length; count[] has 17 entries */
++        {
++            memset(table, 0, sizeof(ushort) << tablebits);
++            return (1);
++        }
+         count[bitlen[i]]++;
++    }
+ 
+     start[1] = 0;
+     for (i = 1; i <= 16; i++)
+         start[i + 1] = start[i] + (count[i] << (16 - i));
+     if (start[17] != (ushort) (1U << 16))
++    {
++        memset(table, 0, sizeof(ushort) << tablebits);   /* bbmp: no stale entries */
+         return (1); /* error: bad table */
++    }
+ 
+     jutbits = 16 - tablebits;
+     for (i = 1; i <= tablebits; i++)
+@@ -210,6 +220,11 @@ void CLzhDepacker::read_pt_len (int nn, int nbit, int i_special)
+     if (n == 0)
+     {
+         c = getbits (nbit);
++        if (c >= nn)            /* bbmp: a damaged file names a code that isn't there */
++        {
++            with_error = 1;
++            c = 0;
++        }
+         for (i = 0; i < nn; i++)
+             pt_len[i] = 0;
+         for (i = 0; i < 256; i++)
+@@ -217,6 +232,11 @@ void CLzhDepacker::read_pt_len (int nn, int nbit, int i_special)
+     }
+     else
+     {
++        if (n > nn)             /* bbmp: more lengths than pt_len holds */
++        {
++            with_error = 1;
++            n = nn;
++        }
+         i = 0;
+         while (i < n)
+         {
+@@ -231,17 +251,23 @@ void CLzhDepacker::read_pt_len (int nn, int nbit, int i_special)
+                 }
+             }
+             fillbuf ((c < 7) ? 3 : c - 3);
++            if (c > 16)         /* bbmp: no code is longer than 16 bits */
++            {
++                with_error = 1;
++                c = 0;
++            }
+             pt_len[i++] = uchar(c);
+             if (i == i_special)
+             {
+                 c = getbits (2);
+-                while (--c >= 0)
++                while (--c >= 0 && i < nn)   /* bbmp: inside pt_len */
+                     pt_len[i++] = 0;
+             }
+         }
+         while (i < nn)
+             pt_len[i++] = 0;
+-        make_table (nn, pt_len, 8, pt_table);
++        if (make_table (nn, pt_len, 8, pt_table))
++            with_error = 1;     /* bbmp */
+     }
+ }
+ 
+@@ -254,6 +280,11 @@ void CLzhDepacker::read_c_len (void)
+     if (n == 0)
+     {
+         c = getbits (CBIT);
++        if (c >= NC)            /* bbmp: a damaged file names a code that isn't there */
++        {
++            with_error = 1;
++            c = 0;
++        }
+         for (i = 0; i < NC; i++)
+             c_len[i] = 0;
+         for (i = 0; i < 4096; i++)
+@@ -261,6 +292,11 @@ void CLzhDepacker::read_c_len (void)
+     }
+     else
+     {
++        if (n > NC)             /* bbmp: more lengths than c_len holds */
++        {
++            with_error = 1;
++            n = NC;
++        }
+         i = 0;
+         while (i < n)
+         {
+@@ -286,7 +322,7 @@ void CLzhDepacker::read_c_len (void)
+                     c = getbits (4) + 3;
+                 else
+                     c = getbits (CBIT) + 20;
+-                while (--c >= 0)
++                while (--c >= 0 && i < NC)   /* bbmp: inside c_len */
+                     c_len[i++] = 0;
+             }
+             else
+@@ -294,7 +330,8 @@ void CLzhDepacker::read_c_len (void)
+         }
+         while (i < NC)
+             c_len[i++] = 0;
+-        make_table (NC, c_len, 12, c_table);
++        if (make_table (NC, c_len, 12, c_table))
++            with_error = 1;     /* bbmp */
+     }
+ }
+ 
+@@ -389,6 +426,8 @@ void CLzhDepacker::decode (uint count, uchar buffer[])
+     }
+     for (;;)
+     {
++        if (with_error)         /* bbmp: a damaged file; LzUnpack reports it */
++            return;
+         c = decode_c ();
+         if (c <= UCHAR_MAX)
+         {
+diff --git a/StSound/StSoundLibrary/YmMusic.cpp b/StSound/StSoundLibrary/YmMusic.cpp
+index 55a3148..f71ab7b 100644
+--- a/StSound/StSoundLibrary/YmMusic.cpp
++++ b/StSound/StSoundLibrary/YmMusic.cpp
+@@ -418,7 +418,7 @@ void	CYmMusic::player(void)
+ 			ymChip.writeRegister(7,ymChip.readRegister(7)|0x24)	;	// Coupe TONE + NOISE canal C.
+ 			sampleNum = ptr[10]&0x7f;		// Numero du sample
+ 
+-			if (ptr[12])
++			if (ptr[12] && sampleNum < 40)	// bbmp: the built-in samples are 40
+ 			{
+ 				sampleFrq = ((MFP_CLOCK/4) / ptr[12]);
+ 				ymChip.drumStart(	2,							// Voice C
+@@ -722,7 +722,7 @@ ymTrackerLine_t *pLine;
+ 				pVoice[i].sampleVolume = pLine->volume&63;
+ 				pVoice[i].bLoop = (pLine->volume&0x40);
+ 				n = pLine->noteOn;
+-				if (n != 0xff)		// Note ON.
++				if (n != 0xff && n < nbDrum)		// Note ON. (bbmp: a sample there is)
+ 				{
+ 					pVoice[i].bRunning = 1;
+ 					pVoice[i].pSample = pDrumTab[n].pData;
+diff --git a/StSound/StSoundLibrary/Ymload.cpp b/StSound/StSoundLibrary/Ymload.cpp
+index 2b5a47c..d7b14ea 100644
+--- a/StSound/StSoundLibrary/Ymload.cpp
++++ b/StSound/StSoundLibrary/Ymload.cpp
+@@ -126,6 +126,10 @@ unsigned char	*CYmMusic::depackFile(ymu32 checkOriginalSize)
+ 
+ 		pHeader = (lzhHeader_t*)pBigMalloc;
+ 
++		// bbmp: too short for the LZH header: not packed (ymDecode checks the rest)
++		if (checkOriginalSize < sizeof(lzhHeader_t))
++			return pBigMalloc;
++
+ 		if ((pHeader->size==0) ||					// NOTE: Endianness works because value is 0
+ 			(strncmp(pHeader->id,"-lh5-",5)))
+ 		{ // Le fichier n'est pas compresse, on retourne l'original.
+@@ -135,6 +139,14 @@ unsigned char	*CYmMusic::depackFile(ymu32 checkOriginalSize)
+ 		fileSize = (ymu32)-1;
+ 
+ 		fileSize = ReadLittleEndian32((ymu8*)&pHeader->original);
++		// bbmp: a damaged header: its end past the file, or an unpacked size no YM has
++		if ((ymu32)pHeader->size + 2 > checkOriginalSize || fileSize <= 0 || fileSize > (64 << 20))
++		{
++			setLastError("LH5 Depacking Error !");
++			free(pBigMalloc);
++			pBigMalloc = NULL;
++			return NULL;
++		}
+ 		pNew = (ymu8*)malloc(fileSize);
+ 		if (!pNew)
+ 		{
+@@ -262,6 +274,20 @@ ymbool	CYmMusic::ymDecode(void)
+  ymu32 id;
+ 
+ 
++		// bbmp: every read below stays inside the file's fileSize bytes
++		ymu8 *const pEnd = pBigMalloc + (fileSize > 0 ? fileSize : 0);
++		auto fits = [pEnd](const ymu8 *p, yms64 n) -> bool
++			{ return p <= pEnd && n >= 0 && (yms64)(pEnd - p) >= n; };
++		auto readString = [pEnd](ymu8 **pp) -> ymchar *
++			{
++				if (*pp >= pEnd || !memchr(*pp, 0, pEnd - *pp)) return NULL;
++				return readNtString((ymchar**)pp);
++			};
++#define YM_DAMAGED { setLastError("Damaged YM file !"); return YMFALSE; }
++#define YM_NEED(p, n) { if (!fits((p), (n))) YM_DAMAGED }
++#define YM_STRING(dst) { if (!((dst) = readString(&ptr))) YM_DAMAGED }
++
++		YM_NEED(pBigMalloc, 4);
+ 		id = ReadBigEndian32((unsigned char*)pBigMalloc);
+ 		switch (id)
+ 		{
+@@ -324,6 +350,7 @@ ymbool	CYmMusic::ymDecode(void)
+ 
+ 			case e_YM5a://'YM5!':		// Extended YM2149 format, all machines.
+ 			case e_YM6a://'YM6!':		// Extended YM2149 format, all machines.
++				YM_NEED(pBigMalloc, 34);
+ 				if (strncmp((const char*)(pBigMalloc+4),"LeOnArD!",8))
+ 				{
+ 					setLastError("Not a valid YM format !");
+@@ -337,13 +364,16 @@ ymbool	CYmMusic::ymDecode(void)
+ 				setPlayerRate(readMotorolaWord(&ptr));
+ 				loopFrame = readMotorolaDword(&ptr);
+ 				skip = readMotorolaWord(&ptr);
++				YM_NEED(ptr, skip);
+ 				ptr += skip;
+ 				if (nbDrum>0)
+ 				{
+-					pDrumTab=(digiDrum_t*)malloc(nbDrum*sizeof(digiDrum_t));
++					pDrumTab=(digiDrum_t*)calloc(nbDrum,sizeof(digiDrum_t));
+ 					for (i=0;i<nbDrum;i++)
+ 					{
++						YM_NEED(ptr, 4);
+ 						pDrumTab[i].size = readMotorolaDword(&ptr);
++						YM_NEED(ptr, pDrumTab[i].size);
+ 						if (pDrumTab[i].size)
+ 						{
+ 							pDrumTab[i].pData = (ymu8*)malloc(pDrumTab[i].size);
+@@ -367,9 +397,11 @@ ymbool	CYmMusic::ymDecode(void)
+ 					}
+ 					attrib &= (~A_DRUM4BITS);
+ 				}
+-				pSongName = readNtString((char**)&ptr);
+-				pSongAuthor = readNtString((char**)&ptr);
+-				pSongComment = readNtString((char**)&ptr);
++				YM_STRING(pSongName);
++				YM_STRING(pSongAuthor);
++				YM_STRING(pSongComment);
++				if (nbFrame <= 0) YM_DAMAGED;
++				YM_NEED(ptr, (yms64)nbFrame * 16);
+ 				songType = YM_V5;
+ 				if (id==e_YM6a)//'YM6!')
+ 				{
+@@ -387,6 +419,7 @@ ymbool	CYmMusic::ymDecode(void)
+ 
+ 			case e_MIX1://'MIX1':		// ATARI Remix digit format.
+ 
++				YM_NEED(pBigMalloc, 24);
+ 				if (strncmp((const char*)(pBigMalloc+4),"LeOnArD!",8))
+ 				{
+ 					setLastError("Not a valid YM format !");
+@@ -399,6 +432,8 @@ ymbool	CYmMusic::ymDecode(void)
+ 				if (tmp&1) setAttrib(A_DRUMSIGNED);
+ 				sampleSize = readMotorolaDword(&ptr);
+ 				nbMixBlock = readMotorolaDword(&ptr);
++				if (nbMixBlock <= 0) YM_DAMAGED;
++				YM_NEED(ptr, (yms64)nbMixBlock * 12);
+ 				pMixBlock = (mixBlock_t*)malloc(nbMixBlock*sizeof(mixBlock_t));
+ 				for (i=0;i<nbMixBlock;i++)
+ 				{	// Lecture des block-infos.
+@@ -407,9 +442,19 @@ ymbool	CYmMusic::ymDecode(void)
+ 					pMixBlock[i].nbRepeat = readMotorolaWord(&ptr);
+ 					pMixBlock[i].replayFreq = readMotorolaWord(&ptr);
+ 				}
+-				pSongName = readNtString((char**)&ptr);
+-				pSongAuthor = readNtString((char**)&ptr);
+-				pSongComment = readNtString((char**)&ptr);
++				YM_STRING(pSongName);
++				YM_STRING(pSongAuthor);
++				YM_STRING(pSongComment);
++				// bbmp: the samples are in the file, and every block inside them
++				if (sampleSize == 0) YM_DAMAGED;
++				YM_NEED(ptr, sampleSize);
++				for (i=0;i<nbMixBlock;i++)
++				{
++					if (pMixBlock[i].sampleStart >= sampleSize ||
++						pMixBlock[i].sampleLength > sampleSize - pMixBlock[i].sampleStart ||
++						pMixBlock[i].replayFreq == 0)
++						YM_DAMAGED;
++				}
+ 
+ 				pBigSampleBuffer = (unsigned char*)malloc(sampleSize);
+ 				memcpy(pBigSampleBuffer,ptr,sampleSize);
+@@ -454,6 +499,7 @@ ymbool	CYmMusic::ymDecode(void)
+ 					setLastError("Not a valid YM format !");
+ 					return YMFALSE;
+ 				}
++				YM_NEED(pBigMalloc, 30);
+ 				ptr = pBigMalloc+12;
+ 				songType = YM_TRACKER1;
+ 				nbVoice = readMotorolaWord(&ptr);
+@@ -462,14 +508,17 @@ ymbool	CYmMusic::ymDecode(void)
+ 				loopFrame = readMotorolaDword(&ptr);
+ 				nbDrum = readMotorolaWord(&ptr);
+ 				attrib = readMotorolaDword(&ptr);
+-				pSongName = readNtString((char**)&ptr);
+-				pSongAuthor = readNtString((char**)&ptr);
+-				pSongComment = readNtString((char**)&ptr);
++				// bbmp: the tracker mixes into MAX_VOICE voices
++				if (nbVoice <= 0 || nbVoice > MAX_VOICE) YM_DAMAGED;
++				YM_STRING(pSongName);
++				YM_STRING(pSongAuthor);
++				YM_STRING(pSongComment);
+ 				if (nbDrum>0)
+ 				{
+-					pDrumTab=(digiDrum_t*)malloc(nbDrum*sizeof(digiDrum_t));
++					pDrumTab=(digiDrum_t*)calloc(nbDrum,sizeof(digiDrum_t));
+ 					for (i=0;i<(ymint)nbDrum;i++)
+ 					{
++						YM_NEED(ptr, (e_YMT2 == id) ? 6 : 2);
+ 						pDrumTab[i].size = readMotorolaWord(&ptr);
+ 						pDrumTab[i].repLen = pDrumTab[i].size;
+ 						if (e_YMT2 == id)//('YMT2' == id)
+@@ -482,6 +531,7 @@ ymbool	CYmMusic::ymDecode(void)
+ 							pDrumTab[i].repLen = pDrumTab[i].size;
+ 						}
+ 
++						YM_NEED(ptr, pDrumTab[i].size);
+ 						if (pDrumTab[i].size)
+ 						{
+ 							pDrumTab[i].pData = (ymu8*)malloc(pDrumTab[i].size);
+@@ -508,6 +558,8 @@ ymbool	CYmMusic::ymDecode(void)
+ 				}
+ 
+ 
++				if (nbFrame <= 0) YM_DAMAGED;
++				YM_NEED(ptr, (yms64)nbFrame * nbVoice * sizeof(ymTrackerLine_t));
+ 				pDataStream = ptr;
+ 				ymChip.setClock(ATARI_CLOCK);
+ 
+@@ -523,6 +575,14 @@ ymbool	CYmMusic::ymDecode(void)
+ 				break;
+ 		}
+ 
++		// bbmp: a YM 2/3 file of fewer than 14 bytes of frames has none; a loop past the
++		// end starts again at the start
++		if (songType < YM_MIX1 && nbFrame <= 0) YM_DAMAGED;
++		if (songType < YM_MIX1 && (loopFrame < 0 || loopFrame >= nbFrame)) loopFrame = 0;
++#undef YM_STRING
++#undef YM_NEED
++#undef YM_DAMAGED
++
+ 		if (!deInterleave())
+ 		{
+ 			return YMFALSE;

@@ -1,0 +1,82 @@
+bbmp: Furnace's QSound core (superctr's qsound.c) and Supervision core ("a modified version
+of Potator's sound emulation core") state no licence (the final audit of 7 October 2026), so
+they are not built: songs for these two chips play them silent (Furnace's dummy platform).
+Furnace has no other core for either.
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6dc4086..03a65d3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -732,7 +732,6 @@ src/engine/platform/sound/lynx/Mikey.cpp
+ src/engine/platform/sound/pokey/mzpokeysnd.c
+ src/engine/platform/sound/pokey/AltASAP.cpp
+ 
+-src/engine/platform/sound/qsound.c
+ 
+ src/engine/platform/sound/swan.c
+ 
+@@ -757,7 +756,6 @@ src/engine/platform/sound/ga20/iremga20.cpp
+ 
+ src/engine/platform/sound/sm8521.c
+ 
+-src/engine/platform/sound/supervision.c
+ 
+ src/engine/platform/sound/upd1771.cpp
+ 
+@@ -872,7 +870,6 @@ src/engine/platform/msm6258.cpp
+ src/engine/platform/msm6295.cpp
+ src/engine/platform/pcspkr.cpp
+ src/engine/platform/segapcm.cpp
+-src/engine/platform/qsound.cpp
+ src/engine/platform/x1_010.cpp
+ src/engine/platform/pokey.cpp
+ src/engine/platform/lynx.cpp
+@@ -899,7 +896,6 @@ src/engine/platform/snes.cpp
+ src/engine/platform/k007232.cpp
+ src/engine/platform/ga20.cpp
+ src/engine/platform/sm8521.cpp
+-src/engine/platform/supervision.cpp
+ src/engine/platform/scvtone.cpp
+ src/engine/platform/pv1000.cpp
+ src/engine/platform/k053260.cpp
+diff --git a/src/engine/dispatchContainer.cpp b/src/engine/dispatchContainer.cpp
+index 262e50b..7cad93d 100644
+--- a/src/engine/dispatchContainer.cpp
++++ b/src/engine/dispatchContainer.cpp
+@@ -51,7 +51,6 @@
+ #include "platform/pcspkr.h"
+ #include "platform/pokemini.h"
+ #include "platform/segapcm.h"
+-#include "platform/qsound.h"
+ #include "platform/vera.h"
+ #include "platform/x1_010.h"
+ #include "platform/su.h"
+@@ -76,7 +75,6 @@
+ #include "platform/vb.h"
+ #include "platform/k007232.h"
+ #include "platform/ga20.h"
+-#include "platform/supervision.h"
+ #include "platform/scvtone.h"
+ #include "platform/sm8521.h"
+ #include "platform/pv1000.h"
+@@ -599,9 +597,8 @@ void DivDispatchContainer::init(DivSystem sys, DivEngine* eng, int chanCount, do
+         ((DivPlatformPOKEY*)dispatch)->setAltASAP(eng->getConfInt("pokeyCore",1)==1);
+       }
+       break;
+-    case DIV_SYSTEM_QSOUND:
+-      dispatch=new DivPlatformQSound;
+-      break;
++    // bbmp: QSound's and Supervision's sound cores state no licence: not built, so these
++    // two chips are silent (the dummy platform below)
+     case DIV_SYSTEM_SEGAPCM:
+       dispatch=new DivPlatformSegaPCM;
+       break;
+@@ -697,9 +694,6 @@ void DivDispatchContainer::init(DivSystem sys, DivEngine* eng, int chanCount, do
+     case DIV_SYSTEM_GA20:
+       dispatch=new DivPlatformGA20;
+       break;
+-    case DIV_SYSTEM_SUPERVISION:
+-      dispatch=new DivPlatformSupervision;
+-      break;
+     case DIV_SYSTEM_UPD1771C:
+       dispatch=new DivPlatformSCV;
+       break;

@@ -1,0 +1,67 @@
+bbmp: HivelyTracker's replayer (ZXTune's 3rdparty/hvl) trusted a damaged file's wave length,
+waveform, stereo setting, note and position jump, and crashed (the final audit of 7 October
+2026). Each is kept inside what the replayer has; real songs play byte for byte as before.
+diff --git a/3rdparty/hvl/hvl_replay.c b/3rdparty/hvl/hvl_replay.c
+index 33200361..0817a2a8 100644
+--- a/3rdparty/hvl/hvl_replay.c
++++ b/3rdparty/hvl/hvl_replay.c
+@@ -266,6 +266,7 @@ struct hvl_tune *hvl_load_ahx( const uint8 *buf, uint32 buflen, uint32 defstereo
+     ht->ht_Instruments[i].ins_Volume      = bptr[0];
+     ht->ht_Instruments[i].ins_FilterSpeed = ((bptr[1]>>3)&0x1f)|((bptr[12]>>2)&0x20);
+     ht->ht_Instruments[i].ins_WaveLength  = bptr[1]&0x07;
++    if( ht->ht_Instruments[i].ins_WaveLength > 5 ) ht->ht_Instruments[i].ins_WaveLength = 5;  // bbmp: 4..128 bytes; more overruns the voice buffer
+ 
+     ht->ht_Instruments[i].ins_Envelope.aFrames = bptr[2];
+     ht->ht_Instruments[i].ins_Envelope.aVolume = bptr[3];
+@@ -303,6 +304,7 @@ struct hvl_tune *hvl_load_ahx( const uint8 *buf, uint32 buflen, uint32 defstereo
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FX[1]      = k;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FX[0]      = l;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform   = ((bptr[0]<<1)&6) | (bptr[1]>>7);
++      if( ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform > 4 ) ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform = 0;  // bbmp: there are 4 waveforms
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Fixed      = (bptr[1]>>6)&1;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Note       = bptr[1]&0x3f;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FXParam[0] = bptr[2];
+@@ -400,6 +402,7 @@ struct hvl_tune *hvl_load_hvl( const uint8 *buf, uint32 buflen, uint32 defstereo
+   ht->ht_SubsongNr       = ssn;
+   ht->ht_mixgain         = (buf[14]<<8)/100;
+   ht->ht_defstereo       = buf[15];
++  if( ht->ht_defstereo > 4 ) ht->ht_defstereo = 4;  // bbmp: the pan tables have 5 entries
+   ht->ht_defpanleft      = stereopan_left[ht->ht_defstereo];
+   ht->ht_defpanright     = stereopan_right[ht->ht_defstereo];
+   
+@@ -497,6 +500,7 @@ struct hvl_tune *hvl_load_hvl( const uint8 *buf, uint32 buflen, uint32 defstereo
+     ht->ht_Instruments[i].ins_Volume      = bptr[0];
+     ht->ht_Instruments[i].ins_FilterSpeed = ((bptr[1]>>3)&0x1f)|((bptr[12]>>2)&0x20);
+     ht->ht_Instruments[i].ins_WaveLength  = bptr[1]&0x07;
++    if( ht->ht_Instruments[i].ins_WaveLength > 5 ) ht->ht_Instruments[i].ins_WaveLength = 5;  // bbmp: 4..128 bytes; more overruns the voice buffer
+ 
+     ht->ht_Instruments[i].ins_Envelope.aFrames = bptr[2];
+     ht->ht_Instruments[i].ins_Envelope.aVolume = bptr[3];
+@@ -528,6 +532,7 @@ struct hvl_tune *hvl_load_hvl( const uint8 *buf, uint32 buflen, uint32 defstereo
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FX[0] = bptr[0]&0xf;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FX[1] = (bptr[1]>>3)&0xf;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform = bptr[1]&7;
++      if( ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform > 4 ) ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Waveform = 0;  // bbmp: there are 4 waveforms
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Fixed = (bptr[2]>>6)&1;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_Note  = bptr[2]&0x3f;
+       ht->ht_Instruments[i].ins_PList.pls_Entries[j].ple_FXParam[0] = bptr[3];
+@@ -694,8 +699,8 @@ void hvl_process_stepfx_2( const struct hvl_tune *ht, struct hvl_voice *voice, i
+       {
+         int32 new, diff;
+ 
+-        new   = period_tab[*Note];
+-        diff  = period_tab[voice->vc_TrackPeriod];
++        new   = period_tab[*Note > 60 ? 60 : *Note];  // bbmp: an HVL note is a byte; the table has 61
++        diff  = period_tab[voice->vc_TrackPeriod > 60 ? 60 : voice->vc_TrackPeriod];
+         diff -= new;
+         new   = diff + voice->vc_PeriodSlidePeriod;
+         
+@@ -1667,7 +1672,7 @@ void hvl_play_irq( struct hvl_tune *ht )
+       ht->ht_PatternBreak = 0;
+       ht->ht_PosNr        = ht->ht_PosJump;
+       ht->ht_NoteNr       = ht->ht_PosJumpNote;
+-      if( ht->ht_PosNr == ht->ht_PositionNr )
++      if( ht->ht_PosNr >= ht->ht_PositionNr )  // bbmp: a jump past the last position too
+       {
+         ++ht->ht_SongEndReached;
+         ht->ht_PosNr          = ht->ht_Restart;

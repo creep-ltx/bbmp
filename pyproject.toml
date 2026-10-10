@@ -1,0 +1,21 @@
+[project]
+name = "bytebandit-music-player"
+version = "0.1.0"
+description = "ByteBandit Music Player: browse, search and stream music from Modland, HVSC and more"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.11"
+dependencies = ["textual>=0.80", "numpy"]
+
+[project.scripts]
+bbmp = "bbmp.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bbmp = ["data/chips.xz",         # tools/make_chips.py writes it
+        "data/replayers.json"]    # tools/replayer_facts.py writes it

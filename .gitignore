@@ -1,0 +1,15 @@
+__pycache__/
+/.venv/
+*.pyc
+*.so
+/build/
+.pytest_cache/
+*.mp4
+screenshots/
+/packaging/flatpak/stage/
+/packaging/flatpak/build/
+/packaging/flatpak/repo/
+/packaging/flatpak/.flatpak-builder/
+/packaging/flatpak/bbmp.flatpak
+/packaging/flatpak/sources
+/packaging/appimage/*.AppImage

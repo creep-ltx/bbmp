@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+[Desktop Entry]
+Type=Application
+Name=ByteBandit Music Player
+GenericName=Music Player
+Comment=Tracker and chip music from Modland, HVSC and more, in the terminal
+Exec=bbmp
+Icon=io.github.bytebandit.bbmp
+Terminal=true
+Categories=AudioVideo;Audio;Player;ConsoleOnly;
+Keywords=tracker;chiptune;module;mod;sid;amiga;modland;hvsc;

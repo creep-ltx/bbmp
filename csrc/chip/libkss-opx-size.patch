@@ -1,0 +1,19 @@
+bbmp: libkss's OPX converter puts the song at 0x8000 in a 64 KB buffer whose size is
+worked out in 16 bits: an OPX over 0x8100 bytes wraps it, and the copy writes the file past
+the buffer (the final audit of 7 October 2026). Refused over 0x7F00 bytes, as libkss's own
+BGM, MGS and MPK converters do (the largest real OPX: 15,794 bytes).
+diff --git a/libkss/src/kss/opx2kss.c b/libkss/src/kss/opx2kss.c
+index 1d01f79..d561b5a 100644
+--- a/libkss/src/kss/opx2kss.c
++++ b/libkss/src/kss/opx2kss.c
+@@ -184,7 +184,9 @@ KSS *KSS_opx2kss(uint8_t *data, uint32_t size) {
+   uint16_t load_adr = 0x0100, load_size = 0x8000 + size - load_adr;
+   uint16_t init_adr = 0x0106, play_adr = 0x0103;
+ 
+-  if (size < 16 || opxdrv_size == 0)
++  /* the song goes at 0x8000 and must end inside the Z80's 64 KB: larger, load_size
++     wraps and the copy below writes past the buffer (bbmp) */
++  if (size < 16 || size > 0x7F00 || opxdrv_size == 0)
+     return NULL;
+ 
+   if ((buf = malloc(load_size + KSS_HEADER_SIZE)) == NULL)

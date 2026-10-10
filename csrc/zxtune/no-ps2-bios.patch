@@ -1,0 +1,97 @@
+bbmp: ZXTune without the PlayStation 2 BIOS built in. Highly Experimental (the PSF and
+PSF2 player) runs Sony's BIOS; ZXTune compiles a trimmed image of it into the program
+(scph10000_he.inc). That is Sony's, so no package carries it: the user provides the image
+(hebios.bin) in the player's extras folder and the player names it in BBMP_PS2_BIOS. Without
+it, or with another file, PlayStation songs are refused with one line (8 Oct 2026).
+--- a/src/module/players/xsf/psf_bios.cpp
++++ b/src/module/players/xsf/psf_bios.cpp
+@@ -10,15 +10,69 @@
+ 
+ #include "module/players/xsf/psf_bios.h"
+ 
+-#include "binary/compression/zlib.h"
++#include "binary/container_factories.h"
+ 
++#include <cstdlib>
++#include <cstring>
++#include <fstream>
++#include <stdexcept>
++
++// bbmp: the BIOS image is not built in. It is Sony's, so the user provides it: the file
++// named by BBMP_PS2_BIOS, Highly Experimental's image made from a SCPH-10000 dump.
+ namespace Module::PSF
+ {
+-  Binary::Data::Ptr GetSCPH10000HeBios()
++  namespace
+   {
+-    static const uint8_t PACKED[] = {
+-#include "module/players/xsf/scph10000_he.inc"
++    const std::size_t HE_BIOS_SIZE = 524288;
++    const char HE_MARK[] = "Highly Experimental";  // written at 0x80 by mkhebios
++
++    struct LoadedBios
++    {
++      Binary::Data::Ptr Image;
++      String Problem;
++
++      LoadedBios()
++      {
++        const char* path = std::getenv("BBMP_PS2_BIOS");
++        if (!path || !*path)
++        {
++          Problem = "PlayStation songs need the PlayStation 2 BIOS image (hebios.bin) in the extras folder: "
++                    "see bbmp extras";
++          return;
++        }
++        std::ifstream in(path, std::ios::binary);
++        Binary::Dump data(HE_BIOS_SIZE + 1);
++        in.read(reinterpret_cast<char*>(data.data()), static_cast<std::streamsize>(data.size()));
++        if (static_cast<std::size_t>(in.gcount()) != HE_BIOS_SIZE
++            || 0 != std::memcmp(data.data() + 0x80, HE_MARK, sizeof(HE_MARK) - 1))
++        {
++          Problem = "the PlayStation 2 BIOS image in the extras folder is not the right file: see bbmp extras";
++          return;
++        }
++        data.resize(HE_BIOS_SIZE);
++        Image = Binary::CreateContainer(std::move(data));
++      }
+     };
+-    return Binary::Compression::Zlib::Decompress(Binary::View{PACKED, sizeof(PACKED)}, 524288);
++
++    const LoadedBios& Get()
++    {
++      static const LoadedBios bios;
++      return bios;
++    }
++  }  // namespace
++
++  String BiosProblem()
++  {
++    return Get().Problem;
++  }
++
++  Binary::Data::Ptr GetSCPH10000HeBios()
++  {
++    const auto& bios = Get();
++    if (!bios.Image)
++    {
++      throw std::runtime_error(bios.Problem);
++    }
++    return bios.Image;
+   }
+ }  // namespace Module::PSF
+--- a/src/module/players/xsf/psf_bios.h
++++ b/src/module/players/xsf/psf_bios.h
+@@ -11,8 +11,12 @@
+ #pragma once
+ 
+ #include "binary/data.h"
++#include "string_type.h"
+ 
+ namespace Module::PSF
+ {
+   Binary::Data::Ptr GetSCPH10000HeBios();
++
++  // bbmp: why the BIOS image can't be had, or nothing when it is there
++  String BiosProblem();
+ }  // namespace Module::PSF

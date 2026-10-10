@@ -1,0 +1,31 @@
+bbmp: ZXTune without its AY Emul player, which runs the songs on Z80~Ex (GPL 2 only,
+which ZXTune's LGPL 3 and the GPL 3 can't be combined with) (7 Oct 2026). The player plays
+AY Emul songs with Game Music Emu, so nothing is lost; Z80~Ex is no longer linked.
+--- a/src/core/plugins/players/ay/aym_plugin.cpp	2026-10-07 10:32:53.664656990 +0200
++++ b/src/core/plugins/players/ay/aym_plugin.cpp	2026-10-07 10:32:53.671090213 +0200
+@@ -12,7 +12,6 @@
+ #include "core/plugins/players/multi/plugins_factory.h"
+ #include "core/plugins/players/plugin.h"
+ #include "module/players/aym/all.h"
+-#include "module/players/aym/ayemul.h"
+ #include "module/players/aym/aym_factory.h"
+ #include "module/players/aym/protracker3.h"
+ #include "module/players/aym/ts.h"
+@@ -59,15 +58,8 @@
+       auto plugin = CreatePlayerPlugin("TS"_id, CAPS, std::move(decoder), std::move(factory));
+       registrator.RegisterPlugin(std::move(plugin));
+     }
+-    {
+-      const uint_t CAPS = Capabilities::Module::Type::MEMORYDUMP | Capabilities::Module::Device::AY38910
+-                          | Capabilities::Module::Device::BEEPER;
+-
+-      auto decoder = CreateAYEMULDecoder();
+-      auto factory = Module::AYEMUL::CreateFactory();
+-      auto plugin = CreatePlayerPlugin("AY"_id, CAPS, std::move(decoder), std::move(factory));
+-      registrator.RegisterPlugin(std::move(plugin));
+-    }
++    // bbmp: no AY Emul player: it runs the songs on Z80~Ex, which is GPL 2 only and can't go
++    // with ZXTune's LGPL 3 or the GPL 3 (the player plays AY Emul with Game Music Emu)
+     {
+       const uint_t CAPS = Capabilities::Module::Type::TRACK | Capabilities::Module::Device::AY38910
+                           | Capabilities::Module::Device::TURBOSOUND;

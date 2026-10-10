@@ -1,0 +1,1548 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# ByteBandit Music Player as a Flatpak. Written by manifest.py (edit that, not this);
+# make.sh builds it. Every module is built inside the SDK from bbmp-sources, for any x86-64.
+{
+  "app-id": "io.github.bytebandit.bbmp",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "26.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "bbmp",
+  "finish-args": [
+    "--share=network",
+    "--socket=pulseaudio",
+    "--filesystem=xdg-music",
+    "--filesystem=xdg-download:ro",
+    "--env=BBMP_OPT=/app/opt"
+  ],
+  "build-options": {
+    "cflags": "-O2 -march=x86-64 -mtune=generic",
+    "cflags-override": true,
+    "cxxflags": "-O2 -march=x86-64 -mtune=generic",
+    "cxxflags-override": true,
+    "env": {
+      "BBMP_OPT": "/app/opt",
+      "BBMP_PUBLIC": "1",
+      "JOBS": "4",
+      "LIBRARY_PATH": "/app/lib"
+    },
+    "strip": true,
+    "no-debuginfo": true
+  },
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/lib/cmake",
+    "/share/man",
+    "/share/doc",
+    "*.la",
+    "*.a",
+    "/opt/*/include",
+    "/opt/*/lib/pkgconfig",
+    "/opt/*/share/man",
+    "/opt/*/share/doc"
+  ],
+  "modules": [
+    {
+      "name": "libresidfp",
+      "buildsystem": "autotools",
+      "config-opts": [
+        "--disable-static"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "sources/archives/libresidfp-1.2.2.tar.gz",
+          "sha256": "2eb0204b76d52fe825c0e1f98826f62a179033a60543032d0e8b90060ecaa50e"
+        }
+      ]
+    },
+    {
+      "name": "libsidplayfp",
+      "buildsystem": "autotools",
+      "config-opts": [
+        "--disable-static",
+        "--without-exsid",
+        "--without-usbsid"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "sources/archives/libsidplayfp-3.1.1.tar.gz",
+          "sha256": "12b79190593bf480b2d11481b5c2de62bac07f344437a66cd8d887329875c626"
+        }
+      ]
+    },
+    {
+      "name": "libopenmpt",
+      "buildsystem": "autotools",
+      "config-opts": [
+        "--disable-static",
+        "--disable-openmpt123",
+        "--disable-examples",
+        "--disable-tests",
+        "--disable-doxygen-doc",
+        "--without-portaudio",
+        "--without-portaudiocpp",
+        "--without-pulseaudio",
+        "--without-sndfile",
+        "--without-flac",
+        "--without-sdl2"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "sources/archives/libopenmpt-0.8.9+release.autotools.tar.gz",
+          "sha256": "d7ce84fd05d686c4bcf66af40eae857afa371442db60eeda3f874bd6cf6fc318"
+        }
+      ]
+    },
+    {
+      "name": "libgme",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_SHARED_LIBS=ON",
+        "-DGME_BUILD_EXAMPLES=OFF",
+        "-DGME_BUILD_TESTING=OFF",
+        "-DENABLE_UBSAN=OFF",
+        "-DCMAKE_INSTALL_LIBDIR=lib"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "path": "sources/archives/libgme-0.6.5-src.tar.gz",
+          "sha256": "a133f19278222136ba0d8c27b64a07987ba05fec9d2e6d293ccd8cabdd97ddbb"
+        }
+      ]
+    },
+    {
+      "name": "7zip",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "archive",
+          "path": "sources/archives/7z2603-src.tar.xz",
+          "sha256": "9cbde5099c6deb73691b0579063da5827522ccbbcba3f0020fd04e8c8c16c0d4",
+          "strip-components": 0
+        }
+      ],
+      "build-commands": [
+        "make -C CPP/7zip/Bundles/Alone2 -f ../../cmpl_gcc.mak -j4 DISABLE_RAR=1 MY_ARCH='-march=x86-64 -mtune=generic' CFLAGS_WARN_WALL='-Wall'",
+        "install -Dm755 CPP/7zip/Bundles/Alone2/b/g/7zz /app/bin/7zz",
+        "ln -sf 7zz /app/bin/7z",
+        "install -Dm644 DOC/License.txt /app/share/licenses/7zip/License.txt"
+      ]
+    },
+    {
+      "name": "helper-shut",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-shut.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/shut",
+          "dest": "csrc/shut"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-shut.sh /app/opt/bbmp-shut"
+      ]
+    },
+    {
+      "name": "helper-gme",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-gme.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/gme",
+          "dest": "csrc/gme"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/game-music-emu-f68963b.tar.xz",
+          "sha256": "91218a039c393208e652e9abbbd9af8d4418100e5149ab5bc4ca6c0334b689fc",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-gme.sh /app/opt/gme"
+      ]
+    },
+    {
+      "name": "helper-uade",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-uade.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/uade-8d77cd7.tar.xz",
+          "sha256": "6ade4fa2bbf59748ccdf902df56209b05b4a66e35bd41cfea099393ed547c2ca",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/bencodetools-5fa73d3.tar.xz",
+          "sha256": "83a4b86db445a5373d48cc36835ffcafbcd272bbfbfedbc144a2461e42649576",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libzakalwe-f40771d.tar.xz",
+          "sha256": "da481148e0fa44d6436c099b5ab9dbc8e865d5272488ee221b6644ea7e61a773",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-uade.sh /app/opt/uade"
+      ]
+    },
+    {
+      "name": "helper-zxtune-ay",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-zxtune.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-ay.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-vgm.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/zxtune",
+          "dest": "csrc/zxtune"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/ay",
+          "dest": "csrc/ay"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/vgm",
+          "dest": "csrc/vgm"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/zxtune-e36902f.tar.xz",
+          "sha256": "fe73db61bf4d434e53d231ecc5fbba51d68494c5fe5d0118fa22c0ede35a2a26",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/boost-1.92.0-b2-nodocs.tar.xz",
+          "sha256": "ea7b982002cc9dfbe59b0b217b206f470dc75f3de0bb2973d844118934d82411",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/ayumi-07c08b4.tar.xz",
+          "sha256": "c13583316bc44aff7151f2dc5df239d8c0c01b3f34e43699c00e8acc94bcfde0",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/arkostracker3-14d975b.tar.xz",
+          "sha256": "79e54454849699d77edc4667533af564ad702723ac0f386b6a3daef5a86af9a4",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/JUCE-2d14a1f.tar.xz",
+          "sha256": "32d276f8c46fe205656e3a7c2513b8ecef1bd8a9c5c9c3dc46be63aa4e5a0143",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/CPM-0.40.8.cmake",
+          "sha256": "78ba32abdf798bc616bab7c73aac32a17bbd7b06ad9e26a6add69de8f3ae4791",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-zxtune.sh /app/opt/zxtune",
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-ay.sh /app/opt/bbmp-ay",
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-vgm.sh /app/opt/bbmp-vgm"
+      ]
+    },
+    {
+      "name": "helper-chip",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-chip.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/chip",
+          "dest": "csrc/chip"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/StSound-a27c293.tar.xz",
+          "sha256": "b3d7a1c274ad51e8c7be0a1ae5610f0e77cd720a73775825fe5a8aae70ea04a1",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/mdxmini-003531a.tar.xz",
+          "sha256": "0a5cffb8011df9a12f6bc5f290e5b266d022a43137fbeffa43f2cb29e77fc89c",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libbinio-3baed73.tar.xz",
+          "sha256": "5fe051d1a6cc1c3d4754102223a54a0978e09fdfb996433b40d0f909fe76eae2",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/adplug-1e6133f.tar.xz",
+          "sha256": "10c449fd395ffc35f8aa6be26698bc25f229c03249015baedd2ef3efbda9d810",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/fmplayer-4fa914e.tar.xz",
+          "sha256": "4e9f39e9ae04587ea652909d1607479fdc66b7c02e38cb6449414e15d432a167",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libkss-15fb77f.tar.xz",
+          "sha256": "0026b42a7b324c25e8dcfb2d4a9cf3e7ddb2e54ecd12db44555196093bd252ab",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/eupplayer-8587733.tar.xz",
+          "sha256": "9efa31e3211dd84b5e69625d30707b56a85da9d6e3a786983f1050cfab332aa7",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/organya.h-f7a086f.tar.xz",
+          "sha256": "c27f4720aa56c16be01b15ac994d039dfffe853137eac627ad67a3efaebe97e5",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libpxtone-dec7b60.tar.xz",
+          "sha256": "d186581a7996c1ecdaad7239d8f4b7865a034b8ddd8fade52165d763a219b004",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/deadbeef_hq-b92e40f.tar.xz",
+          "sha256": "dbcf1a6d73f7242287528d9a60781c2a68f2674e814266cc96d5ab86119aeb33",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/sc68-2.2.1.tar.gz",
+          "sha256": "d7371f0f406dc925debf50f64df1f0700e1d29a8502bb170883fc41cc733265f",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/ymfm-81aec25.tar.gz",
+          "sha256": "9bcf001b30f53754c49cf2fb864792a64702b8aeebb105baa908ad5dd33f443f",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-chip.sh /app/opt/bbmp-chip"
+      ]
+    },
+    {
+      "name": "helper-psgplay",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-psgplay.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/psgplay",
+          "dest": "csrc/psgplay"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/psgplay-6f1c39f.tar.xz",
+          "sha256": "e99743d197db6422e91e8a698a7c68c4aeb0db3ed10ee433019a8ea2dcc40d95",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-psgplay.sh /app/opt/bbmp-psgplay"
+      ]
+    },
+    {
+      "name": "helper-snsf",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-snsf.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/snsf",
+          "dest": "csrc/snsf"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/snsf9x-128cb0d.tar.xz",
+          "sha256": "95ff5c7995bf161ebaae5284fb679b27da801b4773e7f0b5ba0d915e66711f69",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/deadbeef_hq-b92e40f.tar.xz",
+          "sha256": "dbcf1a6d73f7242287528d9a60781c2a68f2674e814266cc96d5ab86119aeb33",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-snsf.sh /app/opt/bbmp-snsf"
+      ]
+    },
+    {
+      "name": "helper-furnace",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-furnace.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/furnace",
+          "dest": "csrc/furnace"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/furnace-fa9541d.tar.xz",
+          "sha256": "4b6cc194ce62cdbe64d25a7fd646c4638b7293494174987a3227db5ab2a4e15f",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-furnace.sh /app/opt/furnace"
+      ]
+    },
+    {
+      "name": "helper-sunvox",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/install-sunvox.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/sunvox_lib-2.1.4d.zip",
+          "sha256": "abe851de9d65a10e06673bf33257154591a2ff63ad2bb298488a5941cc5f4057",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/install-sunvox.sh /app/opt/sunvox"
+      ]
+    },
+    {
+      "name": "helper-xmp",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-xmp.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/xmp",
+          "dest": "csrc/xmp"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libxmp-1e08121.tar.xz",
+          "sha256": "8b794cdca912cd0902db58f02d86450f73716bf983fea3d85f4777418dbb6bb3",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-xmp.sh /app/opt/bbmp-xmp"
+      ]
+    },
+    {
+      "name": "helper-retrovert",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-retrovert.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/retrovert",
+          "dest": "csrc/retrovert"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/retrovert-playback-klystrack-aad080d.tar.xz",
+          "sha256": "60a9cae346936a9c78a4d388e5c80686e15a9cc0e7a547fbbadde887a1408b26",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-retrovert.sh /app/opt/bbmp-rv"
+      ]
+    },
+    {
+      "name": "helper-musicline",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-musicline.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/musicline",
+          "dest": "csrc/musicline"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/nostalgicplayer-musicline-2485bec.tar.xz",
+          "sha256": "3921f30ab982a102f5acf4e5b5123d05719b2d4679196e0af062a8740d9d1940",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-musicline.sh /app/opt/bbmp-musicline"
+      ]
+    },
+    {
+      "name": "helper-fac",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-fac.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/fac",
+          "dest": "csrc/fac"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/emu8950-fb129b1.tar.xz",
+          "sha256": "1d00b4f2cf77525434b01fe5f92a968f966e3a9cc533092e7e2815d59175363c",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/emu2413-2e4f6f9.tar.xz",
+          "sha256": "ab1a3cfb0fb42368569766fa61c94124bf225dac994c1b30a2f06978da4ca058",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-fac.sh /app/opt/bbmp-fac"
+      ]
+    },
+    {
+      "name": "helper-psycle",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-psycle.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/psycle",
+          "dest": "csrc/psycle"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/psycle-r12005.tar.xz",
+          "sha256": "0d8b4f776c90f318f78fa5365fd708753ecfcb375039cfd1e0999a96f518d23b",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-psycle.sh /app/opt/bbmp-psycle"
+      ]
+    },
+    {
+      "name": "helper-iigs",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-iigs.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/iigs",
+          "dest": "csrc/iigs"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-iigs.sh /app/opt/bbmp-iigs"
+      ]
+    },
+    {
+      "name": "helper-nez",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-nez.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/nez",
+          "dest": "csrc/nez"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/libnezplug-161d6e2.tar.xz",
+          "sha256": "84aeab7d55a5743d410179c415dc2ffabf4946052437cf3e422660476b8d99e0",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-nez.sh /app/opt/bbmp-nez"
+      ]
+    },
+    {
+      "name": "helper-console",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-console.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/console",
+          "dest": "csrc/console"
+        },
+        {
+          "type": "dir",
+          "path": "../../licences",
+          "dest": "licences"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/rePlayer-e3bf02c.tar.xz",
+          "sha256": "8208ea7ed01a3a567af1a7fc63eccb81971ca3f28f21bace9c9466cef48361a2",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/aosdk-e359a6e.tar.xz",
+          "sha256": "5cdea6d538162b15ef4935a7479ad9da7d12ce7b1e1031e16444cd8059e34143",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-console.sh /app/opt/bbmp-console"
+      ]
+    },
+    {
+      "name": "helper-misc",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-misc.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/misc",
+          "dest": "csrc/misc"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/zlib-blast-1.3.1.tar.xz",
+          "sha256": "ef9909ce660e478e62004ed32f6316322392925038dea74d8c50161f3f7951ba",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/GoatTracker_2.77.zip",
+          "sha256": "96c2bd6a6ab3aca2f5bb18b1c764ac6ea69ac245cae14002a72cd87c554561ef",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/GoatTracker_1.53.zip",
+          "sha256": "f12df334df5b1749fa0660575d63520a5e064ed254e4390cede6b03f9808ecef",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/GoatTracker_1.53_Stereo.zip",
+          "sha256": "cf3344ab270343d213c8fbd87adae5ca1e47bd54b2be9764ca07a10a5fc3c640",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-misc.sh /app/opt/bbmp-misc"
+      ]
+    },
+    {
+      "name": "helper-adlib",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-adlib.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/adlib",
+          "dest": "csrc/adlib"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-adlib.sh /app/opt/bbmp-adlib"
+      ]
+    },
+    {
+      "name": "helper-pc",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-pc.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/pc",
+          "dest": "csrc/pc"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/mikmod-8de19ee.tar.xz",
+          "sha256": "5c0c64520cc3451618b12c763aa40c9cad3685cd7f8ff7557e61e9d186100fbf",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/PlayerPRO-0a07010.tar.xz",
+          "sha256": "567880bb5a64de34fa7ecb225985a9285b44f683eb3568f3a400d9bd1c991861",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/bmxplay-e77f921.tar.xz",
+          "sha256": "53acc589abe4779226076685a6d254ccf19df2c94aba18748120cba731947de5",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-pc.sh /app/opt/bbmp-pc"
+      ]
+    },
+    {
+      "name": "helper-synth",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-synth.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/synth",
+          "dest": "csrc/synth"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/rePlayer-e3bf02c.tar.xz",
+          "sha256": "8208ea7ed01a3a567af1a7fc63eccb81971ca3f28f21bace9c9466cef48361a2",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/openmpt-skm-0eafb12.tar.xz",
+          "sha256": "a6a46d498cbdd082461849f21dce838796e08dd1adffc23d08982b31e8c586db",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/skale-skm-loader-openmpt-27dde22.tar.xz",
+          "sha256": "3e0da971cbdd964736403cd5280b50d5dbc38c47d743f55b0b2046926b645af1",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-synth.sh /app/opt/bbmp-synth"
+      ]
+    },
+    {
+      "name": "helper-amiga",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-amiga.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/amiga",
+          "dest": "csrc/amiga"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/uade-8d77cd7.tar.xz",
+          "sha256": "6ade4fa2bbf59748ccdf902df56209b05b4a66e35bd41cfea099393ed547c2ca",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/scummvm-maxtrax-e6c3b10.tar.xz",
+          "sha256": "f04c35a295fe60e8bc04a86e6430d7a9044d655083c385b296f8c52d928212f5",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/stonefree2.lha",
+          "sha256": "3be292345dcb530bb923926e26dc873980570a5d450b5ef6f0bcf5c97a93f071",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/stonefree2.readme",
+          "sha256": "d425e7739971299d86222fa86da8eb69af13667ce280b4646236421f1803b7eb",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/vasm2_0f.tar.gz",
+          "sha256": "c84b2de1cbb87831795fe64a85c5d9a7002a766e3a7c30b0a2d7d5e99d878f49",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/lhafile-0.3.1.tar.gz",
+          "sha256": "a66a091e61af569384844ed74bf76179c575e5d28bc88bf9bf5476a3397d077d",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/amitools-0.8.1.tar.gz",
+          "sha256": "f622c0725c15737e7d4820ed147f930f4cfb7b80b04c786c2bc3943b799faf7e",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/machine68k-0.3.0.tar.gz",
+          "sha256": "40bf621b208ae402317c3bd0abb7b6ae36124a2fc416d33599f35ee337028deb",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/setuptools_scm-10.3.4-py3-none-any.whl",
+          "sha256": "82f34c3e3084fc2b57d397200637cc13f2338004052d2fee47baa5f0e902464e",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/vcs_versioning-2.5.0-py3-none-any.whl",
+          "sha256": "dbf44f6303dc817e5792cb7d0e9cc90e3046ee1e32eaa357b20ad368811313d0",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/packaging-26.3-py3-none-any.whl",
+          "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-amiga.sh /app/opt/bbmp-amiga"
+      ]
+    },
+    {
+      "name": "helper-retro",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-retro.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/retro",
+          "dest": "csrc/retro"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/emu2212-ee35dbe.tar.xz",
+          "sha256": "30a8274c9700bf8a08ec08957ca7c17a1999f70d7c734b07ce92b16a5ea886d7",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/cc65-5552824.tar.xz",
+          "sha256": "7c343f5631e33a6f15243c8acd6696e30e5f26ea5011b984e6ae7d08454c0104",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/nedplay.zip",
+          "sha256": "84602a2164280c3a10b080c21fd43f3cac7b6e41e6a53e94faf859c596b4e76f",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/rgbds-0.6.1.tar.gz",
+          "sha256": "872018509c6cbc2d9e947a1a6d509fd9dc56a010827f608c5f4fa46de2fa186a",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/GBSoundSystem-c0c6a6f.tar.xz",
+          "sha256": "5b2046f720649d4caf8a5c317c84f3d0139934e6ae5a6fd14d65990053fdb412",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/dasm-0927086.tar.xz",
+          "sha256": "8f02f0a304d17521cc90a42c179b1588214e6cba52ec2db3f60a2aa1d2f6cc98",
+          "dest": "sources/archives"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/victracker-2.0.tar.gz",
+          "sha256": "d06c726fbde199cf00d66d1945317446cbf3f43c9e5e928ad5bd501d7c75da85",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-retro.sh /app/opt/bbmp-retro"
+      ]
+    },
+    {
+      "name": "helper-darkwave",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-darkwave.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/darkwave",
+          "dest": "csrc/darkwave"
+        },
+        {
+          "type": "file",
+          "path": "sources/sha256sums.txt",
+          "dest": "sources"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/DarkWave-Studio-4.1.6-Source.zip",
+          "sha256": "db42a257cf11da396a0943551e89b9fbe07e270c7fd877d3dd489e5941cd2352",
+          "dest": "sources/archives"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-darkwave.sh /app/opt/bbmp-darkwave"
+      ]
+    },
+    {
+      "name": "helper-pcmusic",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-pcmusic.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/pcmusic",
+          "dest": "csrc/pcmusic"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-pcmusic.sh /app/opt/bbmp-pcmusic"
+      ]
+    },
+    {
+      "name": "helper-piece",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-piece.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/piece",
+          "dest": "csrc/piece"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-piece.sh /app/opt/bbmp-piece"
+      ]
+    },
+    {
+      "name": "helper-chipnsfx",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-chipnsfx.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/chipnsfx",
+          "dest": "csrc/chipnsfx"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-chipnsfx.sh /app/opt/bbmp-chipnsfx"
+      ]
+    },
+    {
+      "name": "helper-tiatracker",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-tiatracker.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/tiatracker",
+          "dest": "csrc/tiatracker"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-tiatracker.sh /app/opt/bbmp-tiatracker"
+      ]
+    },
+    {
+      "name": "helper-synder",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-synder.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/synder",
+          "dest": "csrc/synder"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-synder.sh /app/opt/bbmp-synder"
+      ]
+    },
+    {
+      "name": "helper-t0ast",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-t0ast.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/t0ast",
+          "dest": "csrc/t0ast"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-t0ast.sh /app/opt/bbmp-t0ast"
+      ]
+    },
+    {
+      "name": "helper-berotracker",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-berotracker.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/berotracker",
+          "dest": "csrc/berotracker"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-berotracker.sh /app/opt/bbmp-berotracker"
+      ]
+    },
+    {
+      "name": "helper-axs",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../tools/sources.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "file",
+          "path": "../../tools/build-axs.sh",
+          "dest": "tools"
+        },
+        {
+          "type": "dir",
+          "path": "../../csrc/axs",
+          "dest": "csrc/axs"
+        }
+      ],
+      "build-commands": [
+        "BBMP_SOURCES=$PWD/sources BBMP_SRC=$PWD/work bash tools/build-axs.sh /app/opt/bbmp-axs"
+      ]
+    },
+    {
+      "name": "sidshim",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "../../csrc/sidshim.cpp"
+        }
+      ],
+      "build-commands": [
+        "mkdir -p /app/opt/sidshim",
+        "g++ -O2 -march=x86-64 -mtune=generic -shared -fPIC -o /app/opt/sidshim/libsidshim.so sidshim.cpp -lsidplayfp"
+      ]
+    },
+    {
+      "name": "python-packages",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "sources/archives/textual-8.2.8-py3-none-any.whl",
+          "sha256": "267375fd402dc8d981457212efa71f0e3365fd17bba144ba9bb3ed7563cb374a",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/rich-15.0.0-py3-none-any.whl",
+          "sha256": "33bd4ef74232fb73fe9279a257718407f169c09b78a87ad3d296f548e27de0bb",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/markdown_it_py-4.2.0-py3-none-any.whl",
+          "sha256": "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/mdurl-0.1.2-py3-none-any.whl",
+          "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/mdit_py_plugins-0.6.1-py3-none-any.whl",
+          "sha256": "214c82fb2ac524472ab6a5bcab1de80f73b50443e187f401bfd77efbc7c6481d",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/linkify_it_py-2.2.0-py3-none-any.whl",
+          "sha256": "3adc40eb5af300b2605fcfdb968c24e1d780a90f1f2221af7c15e5111e94d443",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/uc_micro_py-2.0.0-py3-none-any.whl",
+          "sha256": "3603a3859af53e5a39bc7677713c78ea6589ff188d70f4fee165db88e22b242c",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/pygments-2.21.0-py3-none-any.whl",
+          "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/platformdirs-4.11.12-py3-none-any.whl",
+          "sha256": "b1ba966ac76153d9985a0787ffab951e7c18416189873d4e4ddb2c8a04a0a254",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/typing_extensions-4.16.0-py3-none-any.whl",
+          "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+          "dest": "wheels"
+        },
+        {
+          "type": "file",
+          "path": "sources/archives/numpy-2.5.3-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+          "sha256": "b0521d0f4aebb6e06189451025fa17a913287b13c03d5fe05c017333b654ea5b",
+          "dest": "wheels"
+        }
+      ],
+      "build-commands": [
+        "pip3 install --prefix=/app --no-index --no-cache-dir --find-links wheels textual==8.2.8 rich==15.0.0 markdown-it-py==4.2.0 mdurl==0.1.2 mdit-py-plugins==0.6.1 linkify-it-py==2.2.0 uc-micro-py==2.0.0 pygments==2.21.0 platformdirs==4.11.12 typing-extensions==4.16.0 numpy==2.5.3"
+      ]
+    },
+    {
+      "name": "bbmp",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../..",
+          "skip": [
+            "packaging",
+            ".git",
+            "tests",
+            "tools",
+            "docs",
+            "screenshots",
+            "csrc"
+          ]
+        }
+      ],
+      "build-commands": [
+        "pip3 install --prefix=/app --no-deps --no-build-isolation --no-cache-dir .",
+        "install -Dm644 COPYING /app/share/licenses/io.github.bytebandit.bbmp/COPYING",
+        "cp -r licences /app/share/licenses/io.github.bytebandit.bbmp/licences"
+      ]
+    },
+    {
+      "name": "desktop",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "path": "io.github.bytebandit.bbmp.desktop"
+        },
+        {
+          "type": "file",
+          "path": "io.github.bytebandit.bbmp.svg"
+        }
+      ],
+      "build-commands": [
+        "install -Dm644 io.github.bytebandit.bbmp.desktop /app/share/applications/io.github.bytebandit.bbmp.desktop",
+        "install -Dm644 io.github.bytebandit.bbmp.svg /app/share/icons/hicolor/scalable/apps/io.github.bytebandit.bbmp.svg"
+      ]
+    }
+  ]
+}

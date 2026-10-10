@@ -1,0 +1,21 @@
+BoyScout, by Christer Andersson, Copyright (c) 2001-2005; its GBA playback library
+(Library/BoyScout.c of BoyScout 1.0) with additions by Willem Kokke and Dave Murphy
+(WinterMute).
+
+bbmp-retro's "boyscout" engine plays BoyScout's songs the way that library plays
+them; it is written for the player and holds no part of BoyScout. The distribution's
+"Terms of Usage" (Manual/Manual.htm of BoyScout 1.0):
+
+  The BoyScout distribution is provided as is, and may only be changed by me,
+  Christer Andersson. It is okay to distribute this distribution, as long as it is
+  done in a way to guarantee that it is available freely and free, unless another
+  agreement is made with me.
+
+  I do not provide any guarantee of functionality of any part of this distribution.
+
+  This BoyScout distribution can be used freely in any commercial or non-commercial
+  project.
+
+  The usage of this distribution is totally on the responsiblity of the user. For
+  any damages of whatever property, possibly linked to this distribution, I cannot
+  be held responsible.

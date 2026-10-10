@@ -1,0 +1,27 @@
+bbmp: sc68 followed a damaged chunk size past the end of the file and crashed (the final
+audit of 7 October 2026); such a file is refused. And the data is followed by 8 bytes of
+zeros, so a name or a value at the very end can't be read past it.
+--- a/sc68-2.2.1/file68/file68.c
++++ b/sc68-2.2.1/file68/file68.c
+@@ -604,7 +604,8 @@
+     goto error;
+   }
+ 
+-  room = len + sizeof(disk68_t) - sizeof(mb->data);
++  /* bbmp: 8 bytes of zeros after the data end a name and a last value there */
++  room = len + sizeof(disk68_t) - sizeof(mb->data) + 8;
+   mb = SC68alloc(room);
+   if (!mb) {
+     errorstr = "memory allocation";
+@@ -630,6 +631,11 @@
+     chk_size = LPeek(b + 4);
+     b += 8;
+     len -= 8;
++    /* bbmp: a damaged size would take the next chunk from outside the file */
++    if (chk_size < 0 || chk_size > len) {
++      errorstr = "chunk past the end of the file";
++      goto error;
++    }
+ 
+     if (!strcmp(chk, CH68_BASE)) {
+       /* nothing to do. */

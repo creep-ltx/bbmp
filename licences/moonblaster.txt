@@ -1,0 +1,25 @@
+MoonBlaster 1.4's replayer
+==========================
+
+MoonBlaster 1.4 (Moonsoft)
+
+bbmp-chip plays MoonBlaster songs (.mbm) with libkss (Mitsutaka Okazaki,
+https://github.com/digital-sound-antiques/libkss), which builds MoonBlaster 1.4's
+replayer, mbr143.001 (SHA1 4f19619285a39e2c529c023f4aadfc5fe517bf6a), in unchanged as
+data (modules/drivers/mbr143.h) and runs it in an emulated MSX.
+
+Moonsoft made MoonBlaster 1.4 freeware on 3 June 2012. From the MSX Resource Center's
+announcement, "Moonblaster 1.4 declared freeware, added to downloads database" (Jorito,
+03-06-2012, https://www.msx.org/node/39448):
+
+  Unfortunately, Moonblaster is no longer for sale. When a while back on our forums a
+  new question where to get Moonblaster arose, this prompted us to contact Moonsoft, the
+  makers of Moonblaster. Upon inquiry, the members of Moonsoft agreed to make
+  Moonblaster freely available to the MSX community. So we have added it to our
+  downloads database, and here it is: the freeware Moonblaster 1.4, the latest version,
+  ready to use for any MSX2 or higher, with 128kB RAM and MSX-MUSIC, MSX-AUDIO or both!
+  The download contains the music program itself, source code for the program and the
+  replayer, the scanned Dutch manual for version 1.3, the appendix for version 1.4 (also
+  in Dutch) and a list of all available keyboard shortcuts in both Dutch and English.
+
+No other terms were given for the replayer.

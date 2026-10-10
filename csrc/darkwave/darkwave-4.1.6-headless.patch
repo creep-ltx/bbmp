@@ -1,0 +1,522 @@
+diff --color -ruN flat/BassHead.cpp mod/BassHead.cpp
+--- flat/BassHead.cpp	2026-09-30 20:30:03.197441686 +0200
++++ mod/BassHead.cpp	2026-09-30 20:32:26.283716373 +0200
+@@ -1837,8 +1837,10 @@
+     for(i = 0; i < VoiceCount; i++)
+     Voices[i]->WriteMessage(&message);
+    
++#ifndef DW_HEADLESS
+     if(GUI)
+       GUI->SetProperty(index, value, SettingProgram != 0 ? true : false);
++#endif
+   }
+ }
+ 
+@@ -1917,6 +1919,7 @@
+ 
+ HWND CBassHead::CreateGUI(HWND parent)
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     delete GUI;
+@@ -1927,8 +1930,12 @@
+     GUI = new CBassHeadGUI(parent, 0, this, Graphics);
+   }
+   return GUI->Handle;
++#else
++  return 0;
++#endif
+ }
+ 
++#ifndef DW_HEADLESS
+ CBassHeadGUI::CBassHeadGUI(HWND parent, CColorManager *colorManager, CBassHead *machine, SBassHeadGraphics *graphics)
+ : CLiteContainer(parent, graphics->Background->GetWidth(), graphics->Background->GetHeight(), graphics->Background)
+ {
+@@ -2150,4 +2157,5 @@
+     Font->DrawText(frameBuffer, Text[i], X, y, Width, Font->CellHeight);
+     y += Font->CellHeight;
+   }
+-}
+\ No newline at end of file
++}
++#endif
+diff --color -ruN flat/BassHead.h mod/BassHead.h
+--- flat/BassHead.h	2026-09-30 20:30:03.202831462 +0200
++++ mod/BassHead.h	2026-09-30 20:32:26.227343444 +0200
+@@ -41,6 +41,8 @@
+   CFrameBuffer *Font;
+ };
+ 
++class CBassHeadGUI;
++#ifndef DW_HEADLESS
+ class CLCDScreen : public CLiteControl
+ {
+ public:
+@@ -76,6 +78,7 @@
+   CLCDScreen            *Screen;   
+ };
+ 
++#endif
+ class CBassHeadVoice 
+ {
+ public:
+@@ -177,4 +180,4 @@
+   bool              Loaded;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --color -ruN flat/DrumKit.cpp mod/DrumKit.cpp
+--- flat/DrumKit.cpp	2026-09-30 20:30:03.198652711 +0200
++++ mod/DrumKit.cpp	2026-09-30 20:32:26.323918452 +0200
+@@ -1618,11 +1618,15 @@
+ 
+ bool CDrumKit::GetGUIRect(short *x1, short *y1, short *x2, short *y2)
+ {
++#ifndef DW_HEADLESS
+   *x1 = 0;
+   *x2 = Info->Background->GetWidth();
+   *y1 = 0;
+   *y2 = Info->Background->GetHeight();
+   return true;
++#else
++  return false;
++#endif
+ }
+ 
+ bool CDrumKit::IsSynth()
+@@ -1679,8 +1683,10 @@
+   delete Ports[1];
+   delete Ports;
+   _mm_free(NoiseBuffer);
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+     delete GUI;
++#endif
+ }
+ 
+ void CDrumKit::SetBlockSamples(int blockSamples)
+@@ -1824,13 +1830,16 @@
+     voice = DrumKitPropertyVoices[index];
+     if(voice != -1)
+       Voices[voice]->WriteMessage(&message);
++#ifndef DW_HEADLESS
+     if(GUI)
+       GUI->SetProperty(index, value);
++#endif
+   }
+ }
+ 
+ HWND CDrumKit::CreateGUI(HWND parent)
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     delete GUI;
+@@ -1841,6 +1850,9 @@
+     GUI = new CDrumKitGUI(parent, this, Info);
+   
+   return GUI->Handle;
++#else
++  return 0;
++#endif
+ }
+ 
+ CDrumKitInfo::CDrumKitInfo(CHost *host)
+@@ -1863,6 +1875,7 @@
+   return new CDrumKit(Host, this);
+ }
+ 
++#ifndef DW_HEADLESS
+ #define X_S 56
+ 
+ #define X_1 28
+@@ -1980,4 +1993,5 @@
+     return;
+ 
+   Knob[index]->SetValue(value);
+-}
+\ No newline at end of file
++}
++#endif
+diff --color -ruN flat/DrumKit.h mod/DrumKit.h
+--- flat/DrumKit.h	2026-09-30 20:30:03.203531328 +0200
++++ mod/DrumKit.h	2026-09-30 20:32:26.235659025 +0200
+@@ -251,6 +251,7 @@
+   CHost *Host;
+ };
+ 
++#ifndef DW_HEADLESS
+ class CDrumKitGUI : public CLiteContainer
+ {
+ public:
+@@ -265,4 +266,5 @@
+   int            KnobCount;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
++#endif
+diff --color -ruN flat/MinBLEP.cpp mod/MinBLEP.cpp
+--- flat/MinBLEP.cpp	2026-09-30 20:30:03.200780173 +0200
++++ mod/MinBLEP.cpp	2026-09-30 20:32:26.484553451 +0200
+@@ -104,6 +104,7 @@
+ 
+ CMinBLEP::CMinBLEP(int resourceID)
+ {  
++#ifndef DW_HEADLESS
+   HGLOBAL        resource;
+   MinBLEPHeader *header;
+   int            i, samples;
+@@ -123,6 +124,14 @@
+     Wave->Data[i] = data[i];
+ 
+   FreeResource(resource);
++#else
++  extern const char DarkWaveMinBLEP[];
++  const MinBLEPHeader *header = (const MinBLEPHeader*)DarkWaveMinBLEP;
++  ZeroCrossings = header->ZeroCrossings;
++  OverSampling  = header->OverSampling;
++  Wave = new CWave(header->Samples);
++  memcpy(Wave->Data, header + 1, sizeof(double) * header->Samples);
++#endif
+ }
+ 
+ CMinBLEP::CMinBLEP(CMinBLEP *minBLEP)
+diff --color -ruN flat/Mixer.cpp mod/Mixer.cpp
+--- flat/Mixer.cpp	2026-09-30 20:30:03.201092094 +0200
++++ mod/Mixer.cpp	2026-09-30 20:32:26.379983799 +0200
+@@ -96,8 +96,10 @@
+ 
+   delete Mute;
+ 
++#ifndef DW_HEADLESS
+   if(GUI)
+     delete GUI;
++#endif
+ 
+   delete Max;
+ 
+@@ -134,8 +136,10 @@
+     if(isSolo)
+     {
+       if(SoloTrack != -1)
++#ifndef DW_HEADLESS
+         if(GUI)
+           GUI->Track[SoloTrack]->SetSolo(false);
++#endif
+       SoloTrack = track;
+     }
+   }
+@@ -143,6 +147,7 @@
+ 
+ HWND DARKCALL CMixer::CreateGUI(HWND parent)
+ {
++#ifndef DW_HEADLESS
+   if(GUI)
+   {
+     delete GUI;
+@@ -152,10 +157,14 @@
+   if(GUI == 0)
+     GUI = new CMixerGUI(parent, 0, this, Graphics, Tracks, AUXTracks);
+   return GUI->Handle;
++#else
++  return 0;
++#endif
+ }
+ 
+ void DARKCALL CMixer::OnIdle()
+ {
++#ifndef DW_HEADLESS
+   int i;
+ 
+   if(GUI)
+@@ -163,6 +172,8 @@
+     for(i = 0; i < (Tracks + AUXTracks); i++)
+       GUI->Track[i]->SetVolume(Max[i * 2], Max[(i * 2) + 1]);
+   }
++#else
++#endif
+ }
+ 
+ void DARKCALL CMixer::GetPropertyValueDisplay(int index, double value, char *text)
+@@ -352,8 +363,10 @@
+ 
+       index += (Tracks * TRACK_PROPERTY_COUNT);   
+     }
++#ifndef DW_HEADLESS
+     if(GUI)
+       GUI->SetProperty(index, value);
++#endif
+   }
+ }
+ 
+@@ -432,6 +445,7 @@
+   return false;
+ }
+ 
++#ifndef DW_HEADLESS
+ CMixerHeader::CMixerHeader(CControl *parent, SMixerGraphics *graphics)
+ : CLiteContainer(parent, graphics->Header->GetWidth(), graphics->Header->GetHeight(), graphics->Header)
+ {
+@@ -653,6 +667,7 @@
+   LevelRight->SetVolume(right);
+ }
+ 
++#endif
+ CMixerInfo::CMixerInfo(CHost *host)
+ {
+   Host = host;
+@@ -703,6 +718,7 @@
+   return new CMixer(Host, &Graphics, 8, 2);
+ }
+ 
++#ifndef DW_HEADLESS
+ CLiteMeter::CLiteMeter(CLiteContainer *parent, int x, int y, int width, int height)
+ : CLiteControl(parent, x, y, width, height)
+ {
+@@ -752,4 +768,5 @@
+ {
+   Volume = volume;
+   Parent->Render(X, Y, Width, Height);
+-}
+\ No newline at end of file
++}
++#endif
+diff --color -ruN flat/Mixer.h mod/Mixer.h
+--- flat/Mixer.h	2026-09-30 20:30:03.204354078 +0200
++++ mod/Mixer.h	2026-09-30 20:32:26.251482016 +0200
+@@ -39,6 +39,8 @@
+   CBitFont     *BitFont;
+ };
+ 
++class CMixerGUI;
++#ifndef DW_HEADLESS
+ class CLiteMeter : public CLiteControl
+ {
+ public:
+@@ -97,6 +99,7 @@
+   CLiteMeter     *LevelLeft, *LevelRight;
+ };
+ 
++#endif
+ class CMixer : public CMachine
+ {
+ public:
+@@ -144,4 +147,4 @@
+   bool           Loaded;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif
+diff --color -ruN flat/SpatialVerb.cpp mod/SpatialVerb.cpp
+--- flat/SpatialVerb.cpp	2026-09-30 20:30:03.201764208 +0200
++++ mod/SpatialVerb.cpp	2026-09-30 20:32:26.476615045 +0200
+@@ -147,6 +147,7 @@
+   PROPERTY_FDN_GAIN
+ };
+ 
++#ifndef DW_HEADLESS
+ CSpatialVerbGUI::CSpatialVerbGUI(HWND parent, CColorManager *colorManager, CSpatialVerb *machine, SSpatialVerbGraphics *graphics)
+ : CLiteContainer(parent, graphics->Background->GetWidth(), graphics->Background->GetHeight(), graphics->Background)
+ {
+@@ -297,6 +298,7 @@
+ 
+ // CSpatialVerb
+ 
++#endif
+ CSpatialVerb::CSpatialVerb(CHost *host, SSpatialVerbGraphics *graphics)
+ : CMachine(host)
+ {
+@@ -350,12 +352,14 @@
+ 
+   ModelRoom();
+   ModelFIRs();
++#ifndef DW_HEADLESS
+   if(GUI)
+   {
+     UpdateGUIRoom();
+     UpdateGUIImpulse();
+     UpdateGUIImpulse2();
+   }
++#endif
+ }
+ 
+ void CSpatialVerb::SetBlockSamples(int blockSamples)
+@@ -365,8 +369,11 @@
+ 
+ void CSpatialVerb::OnShowGUI()
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+     GUI->OnShowGUI();
++#else
++#endif
+ }
+ 
+ CSpatialVerb::~CSpatialVerb()
+@@ -374,8 +381,10 @@
+   delete Ports[0];
+   delete Ports[1];
+   delete Ports;
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+     delete GUI;
++#endif
+   delete Properties;
+   FreeRays();
+   delete LeftFIR;
+@@ -384,6 +393,7 @@
+ 
+ HWND CSpatialVerb::CreateGUI(HWND parent)
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     delete GUI;
+@@ -397,15 +407,22 @@
+     UpdateGUIImpulse2();
+   }
+   return GUI->Handle;
++#else
++  return 0;
++#endif
+ }
+ 
+ bool CSpatialVerb::GetGUIRect(short *x1, short *y1, short *x2, short *y2)
+ {
++#ifndef DW_HEADLESS
+   *x1 = 0;
+   *x2 = Graphics->Background->GetWidth();
+   *y1 = 0;
+   *y2 = Graphics->Background->GetHeight();
+   return true;
++#else
++  return false;
++#endif
+ }
+ 
+ 
+@@ -487,16 +504,20 @@
+ 
+ void CSpatialVerb::UpdateGUIImpulse()
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     GUI->Lock();
+     GUI->UpdateImpulse(EarlySamples, LeftFIR, RightFIR);
+     GUI->Release();
+   }
++#else
++#endif
+ }
+ 
+ void CSpatialVerb::UpdateGUIRoom()
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     UpdateDstPos();
+@@ -504,6 +525,8 @@
+     GUI->UpdateRoom(LeftImageSource, RightImageSource, &RoomSize, &SrcLeftPos, &SrcRightPos, &DstLeftPos, &DstRightPos, EarlyTime);
+     GUI->Release();
+   }
++#else
++#endif
+ }
+ 
+ void CSpatialVerb::OnIdle()
+@@ -563,6 +586,7 @@
+ 
+ void CSpatialVerb::MoveNode(int node, SPos *pos)
+ {
++#ifndef DW_HEADLESS
+   SPos *nodePos;
+   double x, y;
+   int   xProp, yProp;
+@@ -660,6 +684,8 @@
+     if(Properties[yProp] != y)
+       SetPropertyAutomated(yProp, y);
+   }
++#else
++#endif
+ }
+ 
+ void CSpatialVerb::AfterSetProgram()
+@@ -678,8 +704,10 @@
+     if(SettingProgram)
+       return;
+ 
++#ifndef DW_HEADLESS
+     if(GUI)
+       GUI->SetProperty(index, value);
++#endif
+ 
+     NeedToUpdateGUI = true;
+ 
+@@ -723,9 +751,11 @@
+ 
+   if(NeedToUpdateGUI)
+   {
++#ifndef DW_HEADLESS
+     if(GUI)
+       for(i = 0; i < PropertyCount; i++)
+         GUI->SetProperty(i, Properties[i]);
++#endif
+     NeedToUpdateGUI = false;
+   }
+ 
+@@ -827,12 +857,15 @@
+ 
+ void CSpatialVerb::UpdateGUIImpulse2()
+ {
++#ifndef DW_HEADLESS
+   if(GUI != 0)
+   {
+     GUI->Lock();
+     GUI->UpdateImpulse2(EarlySamples * 2, FDN, EarlySamples);
+     GUI->Release();
+   }
++#else
++#endif
+ }
+ 
+ bool CSpatialVerb::IsSynth()
+@@ -877,4 +910,4 @@
+     Loaded              = true;
+   }
+   return new CSpatialVerb(Host, &Graphics);
+-}
+\ No newline at end of file
++}
+diff --color -ruN flat/SpatialVerb.h mod/SpatialVerb.h
+--- flat/SpatialVerb.h	2026-09-30 20:30:03.204843035 +0200
++++ mod/SpatialVerb.h	2026-09-30 20:32:26.259304843 +0200
+@@ -46,6 +46,7 @@
+ class CSpatialVerbGUI;
+ class CRoomView;
+ 
++#ifndef DW_HEADLESS
+ class CSpatialVerbGUI : public CLiteContainer
+ {
+ public:
+@@ -73,6 +74,7 @@
+   CSpatialVerb          *SpatialVerb;
+ };
+ 
++#endif
+ class CSpatialVerb : public CMachine
+ {
+ public:
+@@ -132,4 +134,4 @@
+   bool                 Loaded;
+ };
+ 
+-#endif
+\ No newline at end of file
++#endif

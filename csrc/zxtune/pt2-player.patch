@@ -1,0 +1,38 @@
+--- a/src/module/players/aym/protracker2.cpp	2026-10-02 16:14:23.665221598 +0200
++++ b/src/module/players/aym/protracker2.cpp	2026-10-02 16:14:23.665556412 +0200
+@@ -178,7 +178,8 @@
+ 
+   inline uint_t GetVolume(uint_t volume, uint_t level)
+   {
+-    return (volume * 17 + (volume > 7 ? 1 : 0)) * level / 256;
++    // rounded, as Pro Tracker 2's own player makes its table (bbmp; checked against it)
++    return ((volume * 17 + (volume > 7 ? 1 : 0)) * level + 128) / 256;
+   }
+ 
+   struct ChannelState
+@@ -319,9 +320,22 @@
+       const Sample::Line& curSampleLine = curSample.GetLine(dst.PosInSample);
+       const Ornament& curOrnament = Data->Ornaments.Get(dst.OrnamentNum);
+ 
+-      // apply tone
+-      const int_t halftones = int_t(dst.Note) + curOrnament.GetLine(dst.PosInOrnament);
+-      channel.SetTone(halftones, dst.Sliding + curSampleLine.Vibrato);
++      // apply tone, as Pro Tracker 2's own player finds it (bbmp; checked against it): the
++      // note and its ornament are added in a byte and doubled in a byte, and that is the
++      // offset into the 96 notes' table, unchecked. Past the table's end are the first
++      // bytes of the player's volume table, and a note there plays what they say.
++      const uint_t index = (static_cast<uint8_t>(int_t(dst.Note) + curOrnament.GetLine(dst.PosInOrnament)) * 2) & 0xff;
++      const int_t toneOffset = dst.Sliding + curSampleLine.Vibrato;
++      if (index < 96 * 2)
++      {
++        channel.SetTone(index / 2, toneOffset);
++      }
++      else
++      {
++        const auto volumeByte = [](uint_t at) { return GetVolume(at / 16, at % 16); };
++        const int_t period = volumeByte(index - 96 * 2) | volumeByte(index - 96 * 2 + 1) << 8;
++        channel.SetTone(static_cast<uint_t>(period + toneOffset) & 0xfff);
++      }
+       if (curSampleLine.ToneMask)
+       {
+         channel.DisableTone();

@@ -1,0 +1,52 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Starts ByteBandit Music Player from its AppImage (packaging/appimage/make.py).
+HERE="$(dirname "$(readlink -f "$0")")"
+
+# Every program in here asks for the C library's loader at this fixed place (the
+# AppImage is mounted somewhere new each time, and the path is written into each program
+# when the AppImage is made, so it can't hold the user's name or number): put a copy of
+# ours there. /tmp is shared by every user of the computer, so the folder is used only
+# when it is this user's own, a real folder that nobody else may write to; else another
+# user could put a loader of theirs there, which would run as this user.
+LD="/tmp/.bbmp-ld-@GLIBC@"
+ME="$(id -u)"
+mkdir -m 700 "$LD" 2>/dev/null
+if [ -L "$LD" ] || [ ! -d "$LD" ] || [ "$(stat -c %u "$LD" 2>/dev/null)" != "$ME" ]; then
+    echo "bbmp: $LD belongs to another user of this computer (or isn't a folder), so the" >&2
+    echo "player can't start safely. Ask them, or the computer's administrator, to remove" >&2
+    echo "it; or use the player's Flatpak." >&2
+    exit 1
+fi
+# nobody else may write into it, nor own the loader in it
+chmod go-w "$LD" || exit 1
+L="$LD/ld-linux-x86-64.so.2"
+if [ -e "$L" ] || [ -L "$L" ]; then
+    if [ -L "$L" ] || [ "$(stat -c %u "$L")" != "$ME" ] || [ -n "$(find "$L" -perm /022)" ]; then
+        rm -f "$L" || exit 1
+    fi
+fi
+if ! cmp -s "$HERE/usr/lib/ld-linux-x86-64.so.2" "$LD/ld-linux-x86-64.so.2" 2>/dev/null; then
+    TMP="$LD/.ld.$$"
+    if ! cp "$HERE/usr/lib/ld-linux-x86-64.so.2" "$TMP" 2>/dev/null \
+        || ! chmod 755 "$TMP" || ! mv -f "$TMP" "$LD/ld-linux-x86-64.so.2"; then
+        rm -f "$TMP"
+        echo "bbmp: can't put the program loader in $LD (is /tmp writable?)" >&2
+        exit 1
+    fi
+fi
+
+export BBMP_OPT="$HERE/app/opt"
+export BBMP_BUNDLE="$HERE:$LD"            # shown to the replayers in their sandbox
+export PYTHONHOME="$HERE/usr"
+export PYTHONPATH="$HERE/app/lib/python3.14/site-packages"
+export PYTHONNOUSERSITE=1
+export PATH="$HERE/app/bin:$HERE/usr/bin:$PATH"
+# the web's certificates: the system's, wherever this distribution keeps them
+if [ -z "$SSL_CERT_FILE" ]; then
+    for f in /etc/ssl/certs/ca-certificates.crt /etc/pki/tls/certs/ca-bundle.crt \
+             /etc/ssl/ca-bundle.pem /etc/pki/tls/cacert.pem /etc/ssl/cert.pem; do
+        if [ -r "$f" ]; then export SSL_CERT_FILE="$f"; break; fi
+    done
+fi
+exec "$HERE/usr/bin/python3.14" -m bbmp "$@"

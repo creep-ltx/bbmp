@@ -1,0 +1,17 @@
+bbmp: Snes9x's DSP reads a sample directory entry at up to 0x102FF, past the 0x100 bytes of
+padding after the SPC's 64 KB of memory: on every song (ASan, the final audit of 7 October
+2026). With 0x400 bytes it stays inside; real songs play byte for byte as before.
+diff --git a/snsf9x/snsf9x/snes9x/apu/SNES_SPC.h b/snsf9x/snsf9x/snes9x/apu/SNES_SPC.h
+index a086869..309f3f7 100644
+--- a/snsf9x/snsf9x/snes9x/apu/SNES_SPC.h
++++ b/snsf9x/snsf9x/snes9x/apu/SNES_SPC.h
+@@ -190,7 +190,8 @@ private:
+ 				uint16_t align; // makes compiler align data for 16-bit access
+ 			} padding1 [1];
+ 			uint8_t ram      [0x10000];
+-			uint8_t padding2 [0x100];
++			// bbmp: the DSP reads a sample directory entry at up to 0x102FF
++			uint8_t padding2 [0x400];
+ 		} ram;
+ 	};
+ 	state_t m;

@@ -1,0 +1,95 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# The Mac version (bbmp-mac): builds the replayers on macOS, runs the tests, and says what
+# works. Runs when the mac branch is pushed, or by hand (Actions, "Run workflow").
+name: mac
+on:
+  push:
+    branches: [mac]
+  workflow_dispatch:
+# no pull_request trigger: a fork's code must never run where the BBMP_SOURCES_KEY secret is
+
+# the job only reads: the token it gets cannot push or change anything
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-14            # Apple Silicon
+    timeout-minutes: 90
+    env:
+      JOBS: 4
+      DYLD_FALLBACK_LIBRARY_PATH: /opt/homebrew/lib
+      BBMP_AUDIO: silent         # no speakers here
+      HAS_SOURCES_KEY: ${{ secrets.BBMP_SOURCES_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false   # nothing later needs git credentials
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # every source at the version used, from bbmp-sources (an archive of the exact source
+      # tarballs the build uses), when its read-only key is given (the secret
+      # BBMP_SOURCES_KEY); else the scripts download them
+      - name: bbmp-sources
+        if: ${{ env.HAS_SOURCES_KEY == 'true' }}
+        uses: actions/checkout@v4
+        with:
+          repository: creep-ltx/bbmp-sources
+          ssh-key: ${{ secrets.BBMP_SOURCES_KEY }}
+          path: bbmp-sources
+          persist-credentials: false   # the key is not left on the machine for later steps
+      - name: Use bbmp-sources
+        if: ${{ env.HAS_SOURCES_KEY == 'true' }}
+        run: echo "BBMP_SOURCES=$GITHUB_WORKSPACE/bbmp-sources" >> "$GITHUB_ENV"
+      - name: Tools and libraries
+        run: |
+          brew install bash cmake pkg-config autoconf automake libtool subversion llvm boost \
+            gnu-sed coreutils findutils grep gnu-tar make bison \
+            libopenmpt game-music-emu libsidplayfp libsamplerate libsndfile
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+          ls "$(brew --prefix libsidplayfp)/include/sidplayfp/builders" "$(brew --prefix libsidplayfp)/lib"
+          python -m pip install --quiet textual numpy pytest
+      - name: Replayers kept from the last run
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/opt
+          key: replayers-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: replayers-${{ runner.os }}-
+      - name: Build the replayers
+        run: |
+          tools/mac/build-all.sh
+          # what a failed CMake build of ay left to look at
+          find ~/.local/src -path '*ThirdPartyLzh.dir/flags.make' -exec sh -c 'echo "== $1"; cat -vet "$1" | head -20' _ {} \; >> mac-logs/ay-flags.txt 2>&1 || true
+      - name: The sandbox
+        run: |
+          python tools/mac/sandbox-probe.py 2>&1 | tee mac-logs/sandbox.txt
+          log show --last 10m --style compact --predicate 'eventMessage CONTAINS "deny("' \
+            2>/dev/null | grep -v -e mDNSResponder -e trustd | tail -80 | tee mac-logs/sandbox-denials.txt
+        continue-on-error: true
+      - name: Tests
+        run: python -m pytest -q -p no:cacheprovider 2>&1 | tee mac-logs/pytest.txt | tail -40
+        continue-on-error: true
+      - name: What the player finds
+        run: ./bbmp info 2>&1 | tee mac-logs/info.txt
+        continue-on-error: true
+      - name: Package bbmp-mac
+        run: python tools/mac/package.py --out dist 2>&1 | tee mac-logs/package.txt
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: The package starts
+        run: |
+          tar xzf dist/bbmp-mac-*.tar.gz -C "$RUNNER_TEMP"
+          env -i HOME="$HOME" PATH=/usr/bin:/bin "$RUNNER_TEMP/bbmp-mac/bbmp" info 2>&1 | tee mac-logs/package-info.txt
+      - name: The package makes sound
+        run: tools/mac/sound-check.sh "$RUNNER_TEMP/bbmp-mac" "$RUNNER_TEMP/sound" 2>&1 | tee mac-logs/sound.txt
+        continue-on-error: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mac-logs
+          path: mac-logs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bbmp-mac
+          path: dist/bbmp-mac-*.tar.gz

@@ -1,0 +1,35 @@
+diff --git a/src/main.cpp b/src/main.cpp
+index 71cd034..bf0432e 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -489,6 +489,22 @@ TAParamResult pOutFormat(String val) {
+   return TA_PARAM_SUCCESS;
+ }
+ 
++// modland-player: the rate a file is written at (the player's is 48000)
++TAParamResult pOutRate(String val) {
++  try {
++    int rate=std::stoi(val);
++    if (rate<8000 || rate>192000) {
++      logE("output rate shall be between 8000 and 192000.");
++      return TA_PARAM_ERROR;
++    }
++    exportOptions.sampleRate=rate;
++  } catch (std::exception& e) {
++    logE("output rate shall be a number.");
++    return TA_PARAM_ERROR;
++  }
++  return TA_PARAM_SUCCESS;
++}
++
+ TAParamResult pBitRate(String val) {
+   try {
+     int br=std::stoi(val);
+@@ -636,6 +652,7 @@ void initParams() {
+   params.push_back(TAParam("a","audio",true,pAudio,"jack|sdl|portaudio|pipe","set audio engine (SDL by default)"));
+   params.push_back(TAParam("o","output",true,pOutput,"<filename>","output audio to file"));
+   params.push_back(TAParam("f","outformat",true,pOutFormat,"u8|s16|f32|opus|flac|vorbis|mp3","set audio output format"));
++  params.push_back(TAParam("","outrate",true,pOutRate,"<rate>","set output file sample rate"));
+   params.push_back(TAParam("b","bitrate",true,pBitRate,"<rate>","set output file bit rate (lossy compression only)"));
+   params.push_back(TAParam("M","ratemode",true,pRateMode,"constant|variable|average","set output bit rate mode (MP3 only)"));
+   params.push_back(TAParam("Q","compression",true,pCompression,"<level>","set output quality/compression level from 0-10 (Vorbis, FLAC and MP3 VBR only)"));

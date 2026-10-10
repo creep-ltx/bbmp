@@ -1,0 +1,335 @@
+diff -ruN a/psycle/src/psycle/host/convert_internal_machines.private.hpp b/psycle/src/psycle/host/convert_internal_machines.private.hpp
+--- a/psycle/src/psycle/host/convert_internal_machines.private.hpp	2026-09-29 07:29:16.541996667 +0200
++++ b/psycle/src/psycle/host/convert_internal_machines.private.hpp	2026-09-29 07:29:16.542996687 +0200
+@@ -296,19 +296,19 @@
+ 					const char* operator()(const std::pair<int,std::string>& type) const throw(std::exception)
+ 					{
+ 						const_iterator i = find(type);
+-						if(i == end()) throw std::exception("internal machine replacement plugin not declared");
++						if(i == end()) throw std::runtime_error("internal machine replacement plugin not declared");
+ 						return i->second;
+ 					}
+ 					const char* operator()(const int & type) const throw(std::exception)
+ 					{
+ 						const_iterator i = find(std::pair<int,std::string>(type,""));
+-						if(i == end()) throw std::exception("internal machine replacement plugin not declared");
++						if(i == end()) throw std::runtime_error("internal machine replacement plugin not declared");
+ 						return i->second;
+ 					}
+ 					const char* operator()(std::string plugname) const throw(std::exception)
+ 					{
+ 						const_iterator i = find(std::pair<int,std::string>(nativeplug,plugname));
+-						if(i == end()) throw std::exception("internal machine replacement plugin not declared");
++						if(i == end()) throw std::runtime_error("internal machine replacement plugin not declared");
+ 						return i->second;
+ 					}
+ 				};
+diff -ruN a/psycle/src/psycle/host/Machine.cpp b/psycle/src/psycle/host/Machine.cpp
+--- a/psycle/src/psycle/host/Machine.cpp	2026-09-29 07:29:16.543996706 +0200
++++ b/psycle/src/psycle/host/Machine.cpp	2026-09-29 07:29:16.544996726 +0200
+@@ -13,6 +13,8 @@
+ 	// This one is included to update the buffers that wiredlg uses for display. 
+ 	// Find a way to manage these buffers without its inclusion
+ 	#include "WireDlg.hpp"
++#else
++	#include "LuaArray.hpp" // PSArray, of which the scope buffers are made
+ #endif //!defined WINAMP_PLUGIN
+ 
+ // The inclusion of the following headers is needed because of a bad design.
+@@ -1256,6 +1258,8 @@
+ 				}				
+ 				// dummy name goes here
+ 				sprintf(p->_editName,"X %s",pMachine->_editName);
++				// modland: a machine whose data can't be read is a missing machine
++				static_cast<Dummy*>(p)->dllName = dllName[0] ? std::string(dllName) : std::string(pMachine->GetName()) + " (data of another version)";
+ 				p->_numPars=0;
+ 				delete pMachine;
+ 				pMachine=p;
+diff -ruN a/psycle/src/psycle/host/Machine.hpp b/psycle/src/psycle/host/Machine.hpp
+--- a/psycle/src/psycle/host/Machine.hpp	2026-09-29 07:29:16.545996746 +0200
++++ b/psycle/src/psycle/host/Machine.hpp	2026-09-29 07:29:16.546996765 +0200
+@@ -87,7 +87,7 @@
+ 						public:
+ 							rethrow_functor(Crashable & crashable, bool do_rethrow) : crashable_(crashable), do_rethrow_(do_rethrow) {}
+ 							template<typename E> void operator_                (universalis::compiler::location const & location,              E const * const e = 0) const throw(function_error) { rethrow(location, e, 0); }
+-							template<          > void operator_<std::exception>(universalis::compiler::location const & location, std::exception const * const e    ) const throw(function_error) { rethrow(location, e, e); }
++							                     void operator_                (universalis::compiler::location const & location, std::exception const * const e    ) const throw(function_error) { rethrow(location, e, e); }
+ 						private:
+ 							template<typename E> void rethrow                  (universalis::compiler::location const & location,              E const * const e, std::exception const * const standard) const throw(function_error)
+ 							{
+@@ -215,7 +215,7 @@
+ 			Mapping const & GetMapping() const { return pinMapping; }
+ 			inline float GetVolume() const { return volume * volMultiplier; };
+ 			inline void GetVolume(float &value) const { value = volume * volMultiplier; };
+-			inline void SetVolume(float value);
++			void SetVolume(float value);
+ 			inline float GetVolMultiplier() const { return volMultiplier; }
+ 			inline Machine & GetSrcMachine() const { assert(srcMachine); return *srcMachine; };
+ 			inline Machine & GetDstMachine() const { assert(dstMachine); return *dstMachine; };
+@@ -344,14 +344,14 @@
+ 
+ 			///\name cpu time usage measurement
+ 			///\{
+-				public: void reset_time_measurement() throw() { accumulated_processing_time_ = 0; processing_count_ = 0; }
++				public: void reset_time_measurement() throw() { accumulated_processing_time_ = cpu_time_clock::duration::zero(); processing_count_ = 0; }
+ 
+ 				public:  cpu_time_clock::duration accumulated_processing_time() const throw() { return accumulated_processing_time_; }
+ 				private: cpu_time_clock::duration accumulated_processing_time_;
+-				protected: void accumulate_processing_time(std::chrono::nanoseconds d) throw() {
++				protected: void accumulate_processing_time(::std::chrono::nanoseconds d) throw() {
+ 						if(loggers::warning() && d.count() < 0) {
+ 							std::ostringstream s;
+-							s << "time went backward by: " << std::chrono::nanoseconds(d).count() * 1e-9 << 's';
++							s << "time went backward by: " << ::std::chrono::nanoseconds(d).count() * 1e-9 << 's';
+ 							loggers::warning()(s.str(), UNIVERSALIS__COMPILER__LOCATION);
+ 						} else accumulated_processing_time_ += d;
+ 					}
+diff -ruN a/psycle/src/psycle/host/Plugin.cpp b/psycle/src/psycle/host/Plugin.cpp
+--- a/psycle/src/psycle/host/Plugin.cpp	2026-09-29 07:29:16.547996785 +0200
++++ b/psycle/src/psycle/host/Plugin.cpp	2026-09-29 07:29:16.547996785 +0200
+@@ -44,6 +44,7 @@
+ 		}
+ 
+ 		bool PluginFxCallback::FileBox(bool openMode, char* filter, char inoutName[]) { 
++#if defined DIVERSALIS__OS__MICROSOFT
+ 			int modes=OFN_HIDEREADONLY|OFN_EXPLORER|OFN_ENABLESIZING;
+ 			if (openMode) {	modes |= OFN_FILEMUSTEXIST|OFN_DONTADDTORECENT; }
+ 			else { modes |= OFN_NOREADONLYRETURN|OFN_OVERWRITEPROMPT|OFN_PATHMUSTEXIST; }
+@@ -68,6 +69,9 @@
+ 				return true;
+ 			}
+ 			return false;
++#else
++			return false; // nobody to ask
++#endif
+ 		}
+ 
+ 		#pragma warning(push)
+@@ -94,6 +98,7 @@
+ 			} catch(...){}
+ 		}
+ 
++#if defined DIVERSALIS__OS__MICROSOFT
+ 		#if 1 /* <bohan> i'm really not sure about the origin of the problem so i prefer to add the work around unconditionally */ 
+ 			
+ 			// dos/win9x needs a work around for boost::filesystem::equivalent
+@@ -117,8 +122,11 @@
+ 			}}
+ 		#endif
+ 
++#endif
++
+ 		void Plugin::Instance(std::string file_name) throw(psycle::host::exception)
+ 		{
++#if defined DIVERSALIS__OS__MICROSOFT
+ 			char const static path_env_var_name[] =
+ 			{
+ 				#if defined DIVERSALIS__OS__LINUX
+@@ -199,6 +207,10 @@
+ 					}
+ 				#endif		
+ 			}
++#else
++			// the machine loader has given the whole path of the library
++			_dll = ::LoadLibrary(file_name.c_str());
++#endif
+ 			if(!_dll)
+ 			{
+ 				std::ostringstream s; s
+@@ -292,7 +304,7 @@
+ 
+ 		bool Plugin::LoadDll(std::string psFileName)
+ 		{
+-			std::transform(psFileName.begin(),psFileName.end(),psFileName.begin(),std::tolower);
++			std::transform(psFileName.begin(),psFileName.end(),psFileName.begin(),[](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+ 			std::string sPath2;
+ 			std::string sPath;
+ 			int shellIdx=0;
+@@ -377,7 +389,7 @@
+ 			return true;
+ 		}
+ 
+-		void Plugin::Free() throw(...)
++		void Plugin::Free() noexcept(false)
+ 		{
+ 			const std::exception * exception(0);
+ 			try
+diff -ruN a/psycle/src/psycle/host/Plugin.hpp b/psycle/src/psycle/host/Plugin.hpp
+--- a/psycle/src/psycle/host/Plugin.hpp	2026-09-29 07:29:16.549996825 +0200
++++ b/psycle/src/psycle/host/Plugin.hpp	2026-09-29 07:29:16.549996825 +0200
+@@ -106,7 +106,7 @@
+ 					///\todo doc
+ 					bool LoadDll(std::string psFileName);
+ 					///\todo doc
+-					void Instance(std::string file_name) throw(...);
++					void Instance(std::string file_name) throw(psycle::host::exception);
+ 					///\todo doc
+ 					virtual void Init();
+ 				private:
+@@ -118,7 +118,7 @@
+ 			///\{
+ 				public:
+ 					///\todo doc
+-					void Free() throw(...);
++					void Free() noexcept(false);
+ 					///\todo doc
+ 					virtual ~Plugin() throw();
+ 			///\}
+diff -ruN a/psycle/src/psycle/host/Song.cpp b/psycle/src/psycle/host/Song.cpp
+--- a/psycle/src/psycle/host/Song.cpp	2026-09-29 07:29:16.550996844 +0200
++++ b/psycle/src/psycle/host/Song.cpp	2026-09-29 07:29:16.551996864 +0200
+@@ -2196,6 +2196,7 @@
+ 									pPlugin->SkipLoad(pFile);
+ 									Machine* pOldMachine = pMac[i];
+ 									pMac[i] = new Dummy(pOldMachine);
++									static_cast<Dummy*>(pMac[i])->dllName = sDllName; // modland: which plugin is missing
+ 									pMac[i]->_macIndex=i;
+ 									pMac[i]->Init();
+ 									zapObject(pOldMachine);
+@@ -2266,6 +2267,7 @@
+ 									MessageBox(NULL,sError, "Loading Error", MB_OK);
+ #endif // !defined WINAMP_PLUGIN
+ 									pMac[i] = new Dummy(pTempMac);
++									if (vstL[instance].valid) static_cast<Dummy*>(pMac[i])->dllName = vstL[instance].dllName; // modland: which plugin is missing
+ 									pMac[i]->_macIndex=i;
+ 									zapObject(pTempMac);
+ 									if (type == MACH_VSTFX ) pMac[i]->_mode = MACHMODE_FX;
+@@ -2372,7 +2374,7 @@
+ 				{
+ 					if (busEffect[i] != 255)
+ 					{
+-						if ( busEffect[i] > 128 || !_machineActive[busEffect[i]] )
++						if ( busEffect[i] >= 128 || !_machineActive[busEffect[i]] ) // modland: was "> 128", one past the end
+ 							busEffect[i] = 255;
+ 						// If there's a dummy, force it to be an effect
+ 						else if (pMac[busEffect[i]]->_type == MACH_DUMMY ) 
+@@ -2394,7 +2396,7 @@
+ 					}
+ 					if (busMachine[i] != 255)
+ 					{
+-						if (busMachine[i] > 128 || !_machineActive[busMachine[i]])
++						if (busMachine[i] >= 128 || !_machineActive[busMachine[i]]) // modland: was "> 128", one past the end
+ 							busMachine[i] = 255;
+ 						 // If there's a dummy, force it to be a Generator
+ 						else if (pMac[busMachine[i]]->_type == MACH_DUMMY ) 
+diff -ruN a/psycle/src/psycle/host/Song.hpp b/psycle/src/psycle/host/Song.hpp
+--- a/psycle/src/psycle/host/Song.hpp	2026-09-29 07:29:16.552996883 +0200
++++ b/psycle/src/psycle/host/Song.hpp	2026-09-29 07:29:16.552996883 +0200
+@@ -411,7 +411,7 @@
+ 			cpu_time_clock::duration accumulated_processing_time_, accumulated_routing_time_;
+ 
+ 		/// cpu time usage measurement
+-		void reset_time_measurement() { accumulated_processing_time_ = accumulated_routing_time_ = 0; }
++		void reset_time_measurement() { accumulated_processing_time_ = accumulated_routing_time_ = cpu_time_clock::duration::zero(); }
+ 
+ 		/// total processing cpu time usage measurement
+ 		cpu_time_clock::duration accumulated_processing_time() const throw() { return accumulated_processing_time_; }
+@@ -419,7 +419,7 @@
+ 		void accumulate_processing_time(cpu_time_clock::duration d) throw() {
+ 			if(loggers::warning() && d.count() < 0) {
+ 				std::ostringstream s;
+-				s << "time went backward by: " << std::chrono::nanoseconds(d).count() * 1e-9 << 's';
++				s << "time went backward by: " << ::std::chrono::nanoseconds(d).count() * 1e-9 << 's';
+ 				loggers::warning()(s.str(), UNIVERSALIS__COMPILER__LOCATION);
+ 			} else accumulated_processing_time_ += d;
+ 		}
+@@ -430,7 +430,7 @@
+ 		void accumulate_routing_time(cpu_time_clock::duration d) throw() {
+ 			if(loggers::warning() && d.count() < 0) {
+ 				std::ostringstream s;
+-				s << "time went backward by: " << std::chrono::nanoseconds(d).count() * 1e-9 << 's';
++				s << "time went backward by: " << ::std::chrono::nanoseconds(d).count() * 1e-9 << 's';
+ 				loggers::warning()(s.str(), UNIVERSALIS__COMPILER__LOCATION);
+ 			} else accumulated_routing_time_ += d;
+ 		}
+diff -ruN a/psycle-helpers/src/psycle/helpers/dither.cpp b/psycle-helpers/src/psycle/helpers/dither.cpp
+--- a/psycle-helpers/src/psycle/helpers/dither.cpp	2026-09-29 07:29:16.558997001 +0200
++++ b/psycle-helpers/src/psycle/helpers/dither.cpp	2026-09-29 07:29:16.558997001 +0200
+@@ -7,7 +7,7 @@
+ Dither::Dither() : bitdepth(16), pdf(Pdf::triangular), noiseshape(NoiseShape::none) {
+ 	// copied verbatim from mt19937 demo
+ 	uint32_t init[4] = { 0x123, 0x234, 0x345, 0x456 };
+-	mt.init_by_array(init, sizeof init);
++	mt.init_by_array(init, sizeof init / sizeof *init); // modland: the length is in keys, not in bytes
+ }
+ 
+ void Dither::Process(float * inSamps, unsigned int length) {
+diff -ruN a/psycle-plugins/src/psycle/plugins/druttis/blwtbl/Waveform.h b/psycle-plugins/src/psycle/plugins/druttis/blwtbl/Waveform.h
+--- a/psycle-plugins/src/psycle/plugins/druttis/blwtbl/Waveform.h	2026-09-29 07:29:16.572997276 +0200
++++ b/psycle-plugins/src/psycle/plugins/druttis/blwtbl/Waveform.h	2026-09-29 07:29:16.573997296 +0200
+@@ -42,6 +42,9 @@
+ 
+ 		/// Returns a linear interpolated sample by phase and index
+ 		inline float GetSample(float phase, int frequency) {
++			// modland: the table has MAX_FREQUENCY (48000) entries, and an oscillator that is
++			// modulated far up asked for entries beyond them
++			if (frequency > 47999) frequency = 47999; else if (frequency < 0) frequency = 0;
+ 			const float *pdata = &m_wave.pdata[m_wave.preverse[frequency] << WAVESIBI];
+ 			register int offset = rint<int>(phase);
+ 			const float frac = phase - (float) offset;
+diff -ruN a/psycle-plugins/src/psycle/plugins/druttis/eq3/eq3.cpp b/psycle-plugins/src/psycle/plugins/druttis/eq3/eq3.cpp
+--- a/psycle-plugins/src/psycle/plugins/druttis/eq3/eq3.cpp	2026-09-29 07:29:16.574997315 +0200
++++ b/psycle-plugins/src/psycle/plugins/druttis/eq3/eq3.cpp	2026-09-29 07:29:16.575997335 +0200
+@@ -320,8 +320,14 @@
+ 		{
+ 			right = left;
+ 		}
++#if defined BBMP_EQ3_BEFORE_2010
++		// modland: as EQ-3 1.0 was, until revision 9851 of August 2010
++		master[0] = (float) left / 256.0f;
++		master[1] = (float) right / 256.0f;
++#else
+ 		master[0] = (float) left / 128.0f;
+ 		master[1] = (float) right / 128.0f;
++#endif
+ 		break;
+ 	}
+ }
+@@ -428,6 +434,19 @@
+ 	--psamplesright;
+ 	do
+ 	{
++#if defined BBMP_EQ3_BEFORE_2010
++		// modland: EQ-3 1.0 had its three bands side by side, and added what they gave
++		il = *++psamplesleft;
++		*psamplesleft = (bands[0][0].Work(il) +
++							bands[1][0].Work(il) +
++							bands[2][0].Work(il))
++							* master[0];
++		ir = *++psamplesright;
++		*psamplesright = (bands[0][1].Work(ir) +
++							bands[1][1].Work(ir) +
++							bands[2][1].Work(ir))
++							* master[1];
++#else
+ 		il = *++psamplesleft;
+ 		*psamplesleft = (bands[0][0].Work(
+ 							bands[1][0].Work(
+@@ -438,6 +457,7 @@
+ 							bands[1][1].Work(
+ 							bands[2][1].Work(ir))))
+ 							* master[1];
++#endif
+ 	}
+ 	while (--numsamples);
+ 	
+diff -ruN a/psycle-plugins/src/psycle/plugins/pooplog_synth/pooplog_synth.cpp b/psycle-plugins/src/psycle/plugins/pooplog_synth/pooplog_synth.cpp
+--- a/psycle-plugins/src/psycle/plugins/pooplog_synth/pooplog_synth.cpp	2026-09-29 07:29:16.577997375 +0200
++++ b/psycle-plugins/src/psycle/plugins/pooplog_synth/pooplog_synth.cpp	2026-09-29 07:29:16.577997375 +0200
+@@ -833,7 +833,15 @@
+ 		int size = sizeof(SYNPAR);
+ 		//Fix for 64bit architecture. It should not report 8byte pointers, because pointers are *skipped* with size 4. See PutData and GetData.
+ #if defined _WIN64 || defined __LP64__ || defined __LLP64__
+-		size -= SYNPARSKIPSIZE+OSCPARSKIPSIZE+VCFPARSKIPSIZE;
++		// modland: what is saved is the structure as a 32-bit program has it, and songs of
++		// the old format (PSY2) are read by this size. It was the size here minus 36.
++		#if defined SYNTH_ULTRALIGHT
++			size = 312;
++		#elif defined SYNTH_LIGHT
++			size = 412;
++		#else
++			size = 1368;
++		#endif
+ #endif // POINTER SIZE
+ 		return size;
+ 	}

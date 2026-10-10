@@ -1,0 +1,9 @@
+MusicMaker-4V and MusicMaker-8V, UADE's players for Music Maker songs (Thomas Winischhofer).
+
+Their terms, as UADE's source gives them (amigasrc/players/other/music_maker/README); no
+other licence text comes with them:
+
+  Thomas Winischhofer <thomas@winischhofer.net> was kind to publish
+  MusicMaker[48] under BSD license.
+
+  UADE team thanks Thomas.

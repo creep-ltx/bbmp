@@ -1,0 +1,72 @@
+Notices of the parts of bbmp-vgm under the BSD 3-clause and MIT licences
+========================================================================
+
+MAME's sound cores in libvgm (BSD-3-Clause, as each file says)
+---------------------------------------------------------------
+
+c140.c (R. Belmont); c219.c (R. Belmont, superctr, Valley Bell); c352.c
+(R. Belmont, superctr); c6280_mame.c (Charles MacDonald); es5503.c (R. Belmont); gb.c
+(Wilbert Pol, Anthony Kruize); iremga20.c (Acho A. Tang, R. Belmont, Valley Bell);
+k051649.c (Bryan McPhail); k053260.c (Ernesto
+Corvi, Alex W. Jackson); k054539.c (Olivier Galibert);
+multipcm.c (Miguel Angel Horna); okiadpcm.c (Andrew Gardner, Aaron Giles); okim6258.c
+(Barry Rodewald); okim6295.c (Mirko Buffoni, Aaron Giles); pokey.c (Brad Oliver, Eric
+Smith, Juergen Buchmueller); qsound_mame.c (Paul Leaman, Miguel Angel Horna); rf5c68.c
+(Olivier Galibert, Aaron Giles); saa1099_mame.c (Juergen Buchmueller, Manuel Abadia);
+scsp.c, scspdsp.c (ElSemi, R. Belmont); segapcm.c (Hiromitsu Shioya, Olivier Galibert);
+sn76496.c (Nicola Salmoria); upd7759.c (Juergen Buchmueller, Mike Balfour, Howie Cohen,
+Olivier Galibert, Aaron Giles); x1_010.c (Luca Elia); ymf271.c (Olivier Galibert,
+R. Belmont, hap); ymz280b.c (Aaron Giles).
+
+Copyright (c) the copyright holders named above
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+emu2149 and emu2413 (Mitsutaka Okazaki), mikey (laoo): MIT
+-----------------------------------------------------------
+
+Copyright (c) 2001-2020 Mitsutaka Okazaki (emu2149, emu2413)
+Copyright (c) laoo (mikey)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

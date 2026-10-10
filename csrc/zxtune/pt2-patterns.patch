@@ -1,0 +1,35 @@
+--- a/src/formats/chiptune/aym/protracker2.cpp	2026-10-02 16:02:10.976691894 +0200
++++ b/src/formats/chiptune/aym/protracker2.cpp	2026-10-02 16:02:43.150418764 +0200
+@@ -38,7 +38,9 @@
+     const std::size_t MAX_SIZE = 0x3800;
+     const std::size_t MAX_POSITIONS_COUNT = 255;
+     const std::size_t MIN_PATTERN_SIZE = 5;
+-    const std::size_t MAX_PATTERN_SIZE = 64;
++    // Pro Tracker 2's player plays a pattern to its end, however long (bbmp; some of
++    // Modland's songs have patterns longer than the editor's 64 rows)
++    const std::size_t MAX_PATTERN_SIZE = 256;
+     const std::size_t MAX_PATTERNS_COUNT = 32;
+     const std::size_t MAX_SAMPLES_COUNT = 32;
+     const std::size_t MAX_ORNAMENTS_COUNT = 16;
+@@ -710,11 +712,7 @@
+         while (state.Offset < Data.Size())
+         {
+           const uint_t cmd = PeekByte(state.Offset++);
+-          if (cmd == 0)
+-          {
+-            continue;
+-          }
+-          else if (cmd >= 0xe1)  // sample
++          if (cmd >= 0xe1)  // sample
+           {
+             const uint_t num = cmd - 0xe0;
+             builder.SetSample(num);
+@@ -781,7 +779,7 @@
+           {
+             builder.SetNoGliss();
+           }
+-          else if (cmd >= 0x01)  // noise add
++          else  // noise add; 00 too, in a row, as Pro Tracker 2's player reads it (bbmp)
+           {
+             const int_t val = static_cast<int8_t>(PeekByte(state.Offset++));
+             builder.SetNoiseAddon(val);

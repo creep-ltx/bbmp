@@ -1,0 +1,56 @@
+Musicline Editor: checked: every write to the sound chip matches the original Amiga routine
+FAC SoundTracker: checked: every chip write matches FAC's own routine · open: 50 or 60 Hz
+Psycle: not checked against Psycle itself · old plugins may sound different today
+SoundSmith: tempo and notes checked against MTPng · never compared with a real Apple IIGS
+SGC: compared with Game Music Emu's SGC player: 84% of songs alike
+Noise Tracker GS 1: tempo checked against the Amiga original of one song
+WonderSwan: not checked against another emulator
+SPU: compared with a second emulator in 10 songs · reverb differs between the two
+Ad Lib - EdLib Packed: converted as the editor converts, then played by AdPlug
+GoatTracker: newest file format mostly matches the C64 programs in HVSC · older ones not exactly
+GoatTracker 2: early version 2 files: notes match HVSC, register values not exactly
+Archimedes Tracker: played by libxmp
+Coconizer: played by libxmp
+SCC-Musixx: checked: every chip write matches the tracker's replay routine
+MaxTrax: ScummVM's player with its tempo fault mended · no reference to compare with
+Zoundmonitor: UADE's player · samples now found
+NerdTracker 2: checked against the composers' own NSF files · plays at 50 Hz
+Buzz: only songs made with BmxPlay's five machines can be played
+ProTrekkr 2.0: ProTrekkr's own replayer · no reference to compare with
+Ad Lib - Ken's AdLib Music: played by AdPlug · only its instrument file was missing
+Jesper Olsen: compared with UADE's second player: alike in 30 of 35 songs
+JayTrax: the synth's own engine · no reference to compare with
+Stonetracker: StoneTracker's own routine under UADE · no reference to compare with
+Cybertracker C64: the C64 tracker itself on an emulated C64 · not checked
+Skale Tracker: PLAYS DRY: the songs' delay and reverb effects are missing
+Gameboy Tracker: checked: chip writes match the tracker's own driver in 24 of 25 songs
+MikMod UNITRK: libmikmod · compared with the XM originals of four songs
+Ixalance: Retrovert's plugin
+Onyx Music File: converted for libopenmpt · no reference to compare with
+Pierre Adane Packer: UADE · only its sample file was missing
+Westwood SND: PC speaker sounds, mostly effects · tick rate assumed for Kyrandia
+Picatune: 11 of 17 songs match BeRo's exported programs, 6 deviate in places
+Klystrack: Retrovert's plugin
+Synth Pack: UADE · only its sample file was missing
+PokeyNoise: UADE · only its settings file was missing
+ProTrekkr: ProTrekkr's own replayer · no reference to compare with
+TSS: checked sample for sample against the author's JavaScript version
+Ken's Digital Music: Ken Silverman's engine · songs are cut where they start again
+Buzzic 2: no reference to compare with
+NoiseTrekker 2: KNOWN FAULT: plays too loud and clips
+PlayerPro: PlayerPRO's own driver
+Digital Sound Interface Kit: checked: same waveform as the S3M originals of three songs
+SBStudio: plays without the AWE32's effects
+Megatracker: played by libxmp
+Buzzic: version 1.0 checked sample by sample against Buzzic's generated player
+NoiseTrekker: KNOWN FAULT: plays too loud and clips
+Cubic Tiny XM: converted to XM for libopenmpt · both songs are quiet in the files
+FuchsTracker: played by libxmp
+Gameboy Sound System GBR: no reference to compare with
+Beepola: Beepola's own Z80 engines on an emulated Spectrum · no recording to compare with
+Spectrum - Flash Tracker: length and pitch checked against the STC versions of three songs
+Starkos: Arkos Tracker 3's own converter and player
+Spectrum - Fuxoft AY Language: checked register by register against the original Z80 players: 27 of 30 the same
+AY Amadeus: the same engine as Fuxoft AY Language
+Spectrum - Vortex Tracker II: played by ZXTune · compared with ZXTune's own reading
+ArkosTracker: Arkos Tracker 3's own player

@@ -1,0 +1,8 @@
+; SPDX-License-Identifier: GPL-3.0-or-later
+; bbmp-retro, Gameboy Tracker engine: where rgblink has to put two sections.
+; The driver's frequency table, and right behind it the words of mgb_gbs.asm
+; that stand for the notes above the table.
+ROM0
+	org $3E00
+	"SoundSystem Frequency Table"
+	"modland past the table"

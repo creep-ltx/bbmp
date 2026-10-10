@@ -1,0 +1,3 @@
+// SPDX-License-Identifier: GPL-2.0-only
+// bbmp-tiatracker: stands in for Qt's <QJsonArray> (see qtshim.h)
+#include "qtshim.h"

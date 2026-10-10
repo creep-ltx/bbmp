@@ -1,0 +1,781 @@
+# What is known about formats beyond what the census counts. tools/format_status.py
+# makes docs/formats.md from this file and tools/format_census.json.
+#
+#   status   verified   the replayer's output, or what it writes to the sound chip,
+#                       was compared with the original replay routine and is the same
+#            compared   compared with another player of the format and found alike
+#            unchecked  plays; there was nothing to compare it with
+#            faults     plays, and something is known to be wrong or missing
+#            off        a replayer exists and is switched off
+#            (a format that needs a file from the user which isn't there is shown as
+#            "needs a file from you" by the player, whatever is said here)
+#            no         doesn't play
+#   all      songs that play, of all the format's songs, where all were tried
+#   basis    what the status rests on
+#   note     what is wrong, missing or open
+#   nosong   how many of the format's files hold no song (empty, or damaged in the
+#            collection), in words; they are not counted against the format
+
+["Musicline Editor"]
+status = "verified"
+all = "815 of 817"
+basis = "every write to the sound chip matches the original Amiga routine, in 59 songs with 4 channels"
+note = "The waves its synthesizer effects make, and songs with 8 channels, were compared by sound only. One file is cut short, one is silent."
+
+["FAC SoundTracker"]
+status = "verified"
+all = "644 of 644"
+basis = "written for this player in a clean room, from a description of the format only; the same chip writes as before in all 644 songs, and the same sound sample for sample (those writes match FAC's own routine in 60 songs on both chips)"
+note = "Open: 50 or 60 Hz, which the files don't say; played at 60. Six songs name a drum kit that is missing and play without drums."
+
+["SCC-Musixx"]
+status = "verified"
+all = "97 of 97"
+basis = "a replayer written for this player from a description of the tracker's replay routine (clean room): every write to the chip matches the routine in all 97 songs, and the audio is byte for byte that of the port of the routine it replaced"
+
+["The 0ok Amazing Synth Tracker"]
+status = "verified"
+all = "8 of 8"
+basis = "written for this player from a description of the tracker's behaviour (clean room): bit for bit the same as the tracker's own WAV export in all 77 songs tried, on x86-64"
+note = "T0AST, BeRo's first synthesizer for 64k intros (2004-06). Its sound depends on the x87 unit's arithmetic; on other processors than x86 the songs sound the same but are not bit for bit the tracker's."
+
+["Synder SNG-Player"]
+status = "verified"
+all = "66 of 66"
+basis = "written for this player from a description of the original's behaviour (clean room): sample for sample the same as the original program's own recordings of all 133 songs of both Synder formats"
+note = "The files are not C64 register dumps but six synthesizer settings per voice per frame, played on the SNG-Player's own small synthesizer at 48000 Hz. Each song plays once to its end."
+
+["Synder SNG-Player Stereo"]
+status = "verified"
+all = "67 of 67"
+basis = "as Synder SNG-Player: sample for sample the same as the original program's own recordings of all 133 songs"
+note = "The original keeps voices 5 to 8 in the same memory as its noise table, which colours the sound of the 6- and 8-voice songs; the player keeps that fault, so they sound as in the original."
+
+["Gameboy Tracker"]
+status = "verified"
+all = "25 of 25"
+basis = "written for this player in a clean room, from a description of the format only; the same GBS image as before for every song; chip writes match the tracker's own driver in 24 of 25 songs"
+note = "One song (il saint) differs in 46 writes."
+
+["TSS"]
+status = "verified"
+all = "14 of 14"
+basis = "10 songs sample for sample the same as the author's JavaScript version"
+
+["Digital Sound Interface Kit"]
+status = "verified"
+all = "7 of 7"
+basis = "the same waveform as the S3M originals of three songs"
+
+["NerdTracker 2"]
+status = "verified"
+all = "54 of 54"
+basis = "8 of 10 songs write for write the same as their composers' own NSF files"
+note = "Plays at the tracker's 50 Hz, not an American NES's 60."
+
+["Spectrum - Fuxoft AY Language"]
+status = "verified"
+all = "39 of 39"
+basis = "27 of 30 songs register for register the same as the original Z80 players in Modland's AY rips"
+note = "Three songs differ in a few places (notes above the note table). Nine have no rip to compare with."
+
+["AY Amadeus"]
+status = "compared"
+all = "33 of 33"
+basis = "the same engine as Fuxoft AY Language, which is verified"
+
+["Buzzic"]
+status = "verified"
+all = "4 of 4"
+basis = "version 1.0 sample by sample the same as the player Buzzic generates; played by a replayer written for this player from a description of the format (clean room), bit for bit the same as before"
+note = "The one song of version 1.1 has nothing to compare with."
+
+["SGC"]
+status = "compared"
+all = "384 of 386"
+basis = "against Game Music Emu's SGC player in 746 songs: 84% alike, 14% roughly, 1% not"
+note = "Two ColecoVision songs need the ColecoVision BIOS, which the player doesn't have. Songs without a track list have the game's sound effects among their subsongs, and their length is a guess that is wrong for about 1 in 10."
+
+["SPU"]
+status = "compared"
+all = "163 of 164"
+basis = "against a second emulator in 10 songs"
+note = "A note that was sounding when the rip was made is missing until it is struck again, and reverb differs between the two emulators (neither is known to be right). One file (Raiden DX 01) is refused: an entry of its log makes no sense."
+
+["Jesper Olsen"]
+status = "compared"
+all = "37 of 37"
+basis = "a replayer written for this player from a description of the games' drivers (clean room): the same Paula register writes, in the same ticks, as the games' own routines under UADE, in all 55 tracks of the 35 LollyPop, Georg Glaxo and Harald Hardtand songs; the two Guldkornsexpressen songs carry their own routine and play through UADE"
+note = "The sound is ScummVM's Paula (A500 filter, UADE's stereo of 0.4), not UADE's: loudness within 0.2 dB of the old player on 10 tracks. Georg Glaxo's songs are played with that game's driver, known by their contents."
+
+["MikMod UNITRK"]
+status = "compared"
+all = "25 of 25"
+basis = "against the XM originals of four songs: same length, alike in sound"
+
+["Spectrum - Flash Tracker"]
+status = "compared"
+all = "66 of 66"
+basis = "three songs against their STC versions: same length, same pitch"
+note = "Played at 50 Hz; a real Pentagon has 48.8, 2.4% slower."
+
+["Spectrum - Vortex Tracker II"]
+status = "compared"
+all = "12 of 12"
+basis = "against ZXTune's own reading of the same songs"
+note = "The files don't say which chip; YM is used."
+
+["SoundSmith"]
+status = "compared"
+all = "243 of 243"
+basis = "written for this player in a clean room, from a description of the formats only; the same chip writes as before in every song (243 of 243), and the same sound sample for sample; tempo and notes against MTPng, another player"
+note = "Never compared with an Apple IIGS or an emulator of one. 33 songs use instruments their wave bank lacks; those notes are silent, as on the IIGS."
+
+["Noise Tracker GS 1"]
+status = "unchecked"
+all = "71 of 71"
+basis = "written for this player in a clean room, from a description of the format only; the same chip writes as before in every song (71 of 71), and the same sound sample for sample; tempo against the Amiga original of one song"
+note = "Pitch could not be settled by the comparison."
+
+["WonderSwan"]
+status = "unchecked"
+all = "168 of 168"
+basis = "Mednafen's emulation; nothing to compare with"
+note = "Songs loop; the player finds the loop and plays it once. A file has the game's sound effects among its songs."
+
+["Gameboy Sound System GBR"]
+status = "unchecked"
+all = "31 of 31"
+note = "A file doesn't say how many songs it has or which are music."
+
+["MaxTrax"]
+status = "unchecked"
+all = "79 of 79"
+basis = "ScummVM's player with a fault of its tempo changes mended"
+note = "Three Dune 2 files start with a sound effect of 0.2 seconds."
+
+["Zoundmonitor"]
+status = "unchecked"
+all = "10 of 10"
+basis = "UADE's player"
+
+["Stonetracker"]
+status = "unchecked"
+all = "32 of 32"
+basis = "the tracker's own replay routine, run by UADE"
+note = "A song that jumps back to an earlier position as part of its structure would be ended there."
+
+["Pierre Adane Packer"]
+status = "unchecked"
+all = "22 of 22"
+basis = "UADE's player"
+
+["Synth Pack"]
+status = "unchecked"
+all = "17 of 17"
+basis = "UADE's player"
+
+["PokeyNoise"]
+status = "unchecked"
+all = "17 of 17"
+basis = "UADE's player"
+
+["Cybertracker C64"]
+status = "unchecked"
+all = "32 of 32"
+basis = "the C64 tracker itself on an emulated C64"
+
+["Onyx Music File"]
+status = "unchecked"
+all = "24 of 24"
+basis = "written for this player in a clean room, from a description of the format only; made into a module that libopenmpt plays, the same module and sound as before in all 24 songs"
+note = "Not compared with the original program."
+
+["Westwood SND"]
+status = "unchecked"
+all = "22 of 22"
+note = "PC speaker sounds, mostly effects. The tick rate is ScummVM's for Eye of the Beholder and assumed for Kyrandia."
+
+["Beepola"]
+status = "unchecked"
+all = "105 of 105"
+basis = "a clean-room rewrite of Beepola's eight engines, the same as the old Z80 engines sample for sample in all 105 songs"
+note = "Most songs need three pieces of data the player downloads on request (bbmp download beepoladata); the others play without them. The ROM Beep engine plays two octaves above the other engines, as Beepola and the Spectrum's BEEP do."
+
+["Starkos"]
+status = "unchecked"
+all = "65 of 65"
+basis = "Arkos Tracker 3's own converter and player"
+
+["ArkosTracker"]
+status = "unchecked"
+all = "2 of 2"
+basis = "Arkos Tracker 3's own player"
+note = "ZX-Art has 17 more: 4 of 5 tried play (2 October 2026); the fifth is a bank of sound effects (Chibi Akumas SFX) and gives no sound."
+
+["JayTrax"]
+status = "compared"
+all = "35 of 35"
+basis = "a replayer written for this player from a description of the format (clean room); with BBMP_JXS_TODAY=1 bit for bit the same as the CrossX engine it replaces, on all 67 tracks"
+note = "Played as the original would sound without three faults of the engine used before: each track from a fresh start (it played every track once silently first, and 23 tracks carried settings from that pass into what was heard), the dyna-morph effect's sine wave made (it was never made: 26 tracks use it), and no leftover memory at a track's start. Not compared with the JayTrax editor itself."
+
+["ProTrekkr 2.0"]
+status = "unchecked"
+all = "41 of 41"
+basis = "ProTrekkr's own replayer"
+
+["ProTrekkr"]
+status = "unchecked"
+all = "14 of 14"
+basis = "ProTrekkr's own replayer"
+
+["PlayerPro"]
+status = "unchecked"
+all = "9 of 9"
+basis = "PlayerPRO's own driver"
+
+["Buzzic 2"]
+status = "verified"
+all = "12 of 12"
+basis = "sample by sample the same as Buzzic 2's own synthesizer (Stan's code), all 12 songs; played by a replayer written for this player from a description of it (clean room)"
+
+["Cubic Tiny XM"]
+status = "unchecked"
+all = "2 of 2"
+note = "Both songs are quiet, which is in the files."
+
+["Ixalance"]
+status = "unchecked"
+all = "24 of 24"
+basis = "the player's own iXalance engine, written in a clean room, the same as the old plugin sample for sample in all 24 songs (7 of them need three library samples the player downloads on request: bbmp download ixalancesamples)"
+
+["Klystrack"]
+status = "unchecked"
+all = "17 of 17"
+basis = "Retrovert's plugin"
+
+["Coconizer"]
+status = "unchecked"
+all = "57 of 57"
+basis = "libxmp"
+
+["Megatracker"]
+status = "unchecked"
+all = "6 of 6"
+basis = "libxmp"
+
+["FuchsTracker"]
+status = "unchecked"
+all = "2 of 2"
+basis = "libxmp"
+
+["Ad Lib - Ken's AdLib Music"]
+status = "unchecked"
+all = "41 of 41"
+basis = "AdPlug"
+
+["Archimedes Tracker"]
+status = "faults"
+all = "97 of 99"
+basis = "libxmp"
+note = "Two songs are silent."
+
+["Psycle"]
+status = "faults"
+all = "389 of 535"
+basis = "Psycle's own player code and 64 of its plugins; song lengths compared with another player"
+note = "146 songs are refused: they need VST plugins, or plugins whose source was never published. 119 of those that play miss an effect or a minor instrument and say so. The sound was never compared with Psycle itself; 13 songs clip."
+
+["Ad Lib - EdLib Packed"]
+status = "compared"
+all = "92 of 179"
+basis = "converted as the editor converts (the same files as the editor made), by a converter written for this player in a clean room from a description of the format only; played by AdPlug"
+note = "Every song plays. 87 files are damaged on Modland: they hold pieces of an archive and no song."
+nosong = "87 files on Modland hold pieces of an archive, no song"
+
+["Buzz"]
+status = "faults"
+all = "10 of 51"
+basis = "BmxPlay and its five machines"
+note = "41 songs need Buzz machines that exist only as Windows plug-ins."
+
+["GoatTracker"]
+status = "compared"
+all = "90 of 90"
+basis = "the editors' own play routines; compared with the C64 programs of the same songs in HVSC"
+note = "Songs in the newest format: 43 of 62 the same as in HVSC. GoatTracker 1 songs agree with their C64 programs where the same play routine made them (the editor's routine differed from the C64's; it is mended at the build). Other HVSC programs come from other versions of the editor. A file doesn't say its speed or SID model; a table has them for 74 songs."
+
+["GoatTracker 2"]
+status = "faults"
+all = "14 of 14"
+basis = "as GoatTracker"
+note = "Details of the play routines before 2.2 (pulse speed, filter resonance) may differ: their source isn't to be had, and 13 of the 14 songs are in the early format of version 2 (its wavetable values 08-0F are waveforms; delays from 2.18 on), read so now."
+
+["Skale Tracker"]
+status = "faults"
+all = "30 of 30"
+basis = "the effects' mixing checked against Skale's own player (SkalePlayer.dll), level by level"
+note = "A chorus (3 songs) and a multi-tap delay (1 song) are missing, as in Skale without those closed plug-ins. Its other effects (delay, reverb, stereo) play, through rewritten plug-ins, mixed as Skale mixes them; Freeverb2 is played by Freeverb, its settings guessed."
+
+["NoiseTrekker"]
+status = "faults"
+all = "3 of 3"
+note = "One song still clips, 0.13% of the time, though the songs are played 14 dB down, with NoiseTrekker 1's synths at half volume. How loud NoiseTrekker itself played is unknown: its source is lost."
+
+["NoiseTrekker 2"]
+status = "unchecked"
+all = "9 of 9"
+note = "Played 14 dB down, so no song clips. How loud NoiseTrekker 2 itself played is unknown: its source is lost."
+
+["SBStudio"]
+status = "faults"
+all = "5 of 6"
+note = "Plays without the AWE32's effects. One file is for MIDI instruments and has no sound of its own."
+
+["Picatune"]
+status = "verified"
+all = "20 of 20"
+basis = "a replayer written for this player in a clean room, from a description of the format only; sample for sample against the 17 programs BeRo exported from his example songs"
+note = "All 17 the same to the last bit of 16-bit sound (the exported player rounds toward zero, and so does this one now). Plays a semitone lower than 15 of those programs, as the 2007 tracker and his last two exports do."
+
+["Ken's Digital Music"]
+status = "compared"
+all = "13 of 13"
+basis = "a replayer written for this player from a description of the format (clean room); with BBMP_KDM_FLAT=1 it is bit for bit the same as Ken Silverman's own C player on all 13 songs"
+note = "Plays with the vibrato, tremolo and auto-pan of Ken's original DOS player, which the C port the player used before lost (its sine was always 0); 11 of 13 songs use them. A song is cut where it starts again, so its last note doesn't ring out."
+
+# ---- switched off ----
+
+["Sound Club"]
+status = "verified"
+all = "169 of 170"
+basis = "written for this player in a clean room, from a description of the format only; the same sound as before in every song, and that was compared sample by sample with the original program's own rendering: all within 0.2%, most within 0.01%"
+note = "It slides and mixes as the program does (voices mixed in runs, interpolation chosen per block). The last 0.17 seconds differ: the program's export drops its last part-filled buffer. One file is damaged; the original program can't load it either."
+
+["Sound Club 2"]
+status = "verified"
+all = "25 of 25"
+basis = "written for this player in a clean room, from a description of the format only; the same sound as before in every song, and that was compared sample by sample with the original program's own rendering: all within 0.2%"
+
+["Shroom"]
+status = "compared"
+all = "63 of 63"
+basis = "all 63 songs sample for sample the same as Mariopants, another player, set to its timing"
+note = "The files don't say where a song ends; it plays to its last note."
+
+["PiECE music driver"]
+status = "faults"
+all = "36 of 36"
+basis = "a replayer written anew from the P/ECE SDK's format documents and recordings of the original driver"
+note = "The drums are made anew: as long and as loud as the driver's at their start, but brighter and decaying differently. Compared with Aquaplus' driver running in the piemu emulator: Final Fantasy's Prelude within 0.1 dB and alike in sound, SAMPLE BGM1 within 1.7 dB; volumes above 127 and v+/v- now as the driver plays them (Tora-H's BGM02 Yuko from 16 dB off to 2 dB)."
+
+["PMD"]
+status = "compared"
+basis = "a driver written for this player from a description of PMD's behaviour (clean room): the same YM2608 register writes, at the same moments, as PMDWin in all 1,510 songs; the chip by ymfm"
+note = "The sound is ymfm's YM2608, not fmgen's: against the old player, loudness within 0.1 dB on average (-3.2 to +1.4 dB in 40 songs), the same timing. The drums need the YM2608 rhythm ROM (an extra file). None of the PCM files the songs name (P86, PPS, PZI) is on Modland, so ADPCM and PPZ8 parts are silent. Songs under a second long no longer play for three minutes."
+
+# ---- don't play ----
+
+["Renoise Old"]
+status = "no"
+note = "Renoise's effect devices were never published. Of 60 songs looked at, 53 use them and 6 use VST plugins; 1 uses samples only. Possible: old Renoise demos, one for Linux (2.7.2), can still be downloaded to record references; a replayer of the sampler and about ten effects would serve both Renoise formats."
+
+["Synder Tracker"]
+status = "no"
+note = "The tracker for the same Windows synthesizer, with its own synthesizer; no source. The program is on Modland."
+
+["Ace Tracker"]
+status = "no"
+note = "For the Atari Falcon's signal processor. Possible: its makers (New Beat) publish the replay routine Replace (68030 and DSP, no source) and the tracker; it would play in an emulated Falcon (Hatari). Replace knows two of the three kinds of song (41 of 57)."
+
+["Picatune2"]
+status = "no"
+note = "Another, far bigger synthesizer than Picatune's, without published source. Possible: the program (with WAV export) is at its author's site, and much of the synthesizer is in his BR808 (LGPL-3)."
+
+["DreamStation"]
+status = "no"
+note = "Its synthesizer was never published. The freeware program (with WAV export) and a plug-in of it are on archive.org, for a replayer written from what they do."
+
+["AXS"]
+status = "verified"
+all = "26 of 26"
+basis = "written for this player from a description of how AXS's Winamp plug-in sounds (clean room): sample for sample the same as the plug-in's output in all 26 songs, about 126 minutes in all"
+note = "AXS, Resolution Audio's Windows synthesizer and tracker (1998-2001): seven two-oscillator synthesizers, a drum sampler, a delay and a reverb. One song jumps back for ever; it stops at the length AXS itself gives it."
+
+["BeRoTracker"]
+status = "verified"
+all = "19 of 19"
+basis = "written for this player from a description of the tracker's behaviour (clean room): bit for bit the same as BeRoTracker 1.00's own output in all 19 songs, on x86-64"
+note = "BeRo's Impulse-Tracker-like tracker with a floating-point mixer and built-in effects. Its sound depends on the x87 unit's arithmetic; on other processors than x86 the songs sound the same but are not bit for bit the tracker's."
+
+["Aero Studio"]
+status = "no"
+note = "Its synthesizer (about eight machines) was never published. The program's demo is on Modland; its maker, ioneo AB in Linköping, still exists."
+
+["MVX Module"]
+status = "no"
+note = "Only compiled libraries of its player exist (apEx, CC BY-NC 4.0), with all their names in them. Possible: linked into a helper of its own, or a replayer written from them."
+
+["Tunefish"]
+status = "no"
+note = "Tunefish 2; its makers published versions 3 and 4, whose files are different. The Tunefish 2 plug-in, which writes these files, can still be downloaded."
+
+["SVAr Tracker"]
+status = "no"
+note = "A host for Windows plug-ins, without source. Its songs are zip files locked with a password; songs that use other people's plug-ins can't be played."
+
+["AND XSynth"]
+status = "no"
+note = "One song, of a 64k intro. The synthesizer's Buzz machines are closed and the file format undescribed."
+
+["All Sound Tracker"]
+status = "no"
+note = "Drives the AWE32's sampler chip, FM and MIDI together; its source is lost. Possible: its author's description of the format and recordings of songs are on archive.org; songs that use only the FM chip would be quick."
+
+["RamTracker"]
+status = "no"
+note = "A MIDI tracker (General MIDI on an AWE32, GUS or MPU-401). All 9 songs and the program are on archive.org; it needs a General MIDI synthesizer, which the player doesn't have yet."
+
+["GT Game Systems"]
+status = "no"
+note = "The Amiga game Carver (Art Edition, 1991). Its replay routine would have to be taken from the game."
+
+["BP SoundMon 1"]
+status = "unchecked"
+all = "1 of 1"
+basis = "SoundMon 1 is SoundMon 2's layout without synthesizer tables; played as that by UADE's SoundMon 2.0 player, under that label"
+note = "Not compared with SoundMon 1 itself."
+
+["Digital Mugician 3"]
+status = "unchecked"
+all = "1 of 1"
+basis = "the song (Moon Child's title theme) is Digital Mugician 2's layout under another label; played by UADE's Mugician II player"
+note = "Not yet compared with the recording of the game's demo on archive.org."
+
+["DarkWave Studio"]
+status = "compared"
+basis = "DarkWave Studio's own engine, built from its GPL 3 source (4.1.6), compared with the program's own output in Wine"
+note = "Three songs, the program's own sample projects: loops of 2 to 6 seconds, played with its Loop to half a minute. Chemistry 101 and 202 match the program sample by sample (correlation 0.998 and 0.997); in 303 the drums are random in the program too, and the bass follows it in pitch, tempo and brightness but not sample by sample."
+
+["Monotone"]
+status = "verified"
+all = "4 of 4"
+basis = "the PC speaker's timer value on every tick, against the tracker's own disk writer (10 songs, about 48,000 ticks)"
+note = "A port of MONOTONE's own player and PC speaker output (public domain). All the same, tick for tick; only where a song ends is chosen differently (the song is played to where it repeats)."
+
+["Digitrekker"]
+status = "compared"
+all = "2 of 2"
+basis = "DigiTrekker 3.10's own rendering (run in DOSBox): the same length, pitch, tempo and balance"
+note = "Written from the format's document. DigiTrekker's own output is louder and clips; this one doesn't. Effects the two songs don't use are not checked."
+
+["Vic-Tracker"]
+status = "compared"
+all = "11 of 11"
+basis = "against the six recordings on the tracker's home page: tempo, pitch (0 cents) and level per octave"
+note = "VIC-TRACKER's own player (2.0) on an emulated 6502 and VIC-20 sound chip."
+
+["BoyScout"]
+status = "compared"
+all = "11 of 12"
+basis = "against BoyScout's own WAV renders (the tracker run in Wine, no sound out): tempo, pitch, notes"
+note = "Game Boy Advance music. Played as BoyScout's GBA library plays an export. One song on Modland is empty. The tracker mixes its wave and noise channels a little quieter."
+nosong = "1 file on Modland is empty"
+
+["VGM Music Maker"]
+status = "compared"
+basis = "a replayer written after the editor's own VGM export (vgm_mm.exe, observed write for write)"
+note = "Mega Drive music (YM2612 and SN76489). All 9 songs: 99.98% of the chip writes the same as the editor's export, 8 songs entirely; Trinitron Sunset differs in 20 writes (a vibrato after a key-off). Samples within 1 to 3 steps of 8 bits of the editor's resampling. Plays once through the order list."
+
+["Cybertracker"]
+status = "no"
+note = "One song: the demo song of CyberTracker 0.67 for the Amiga (Andreas Öman, 1995), not the C64 tracker. Its layout is known (IFF: the song and 22 samples, 10 channels); how it plays, nothing describes. The program is found, to record a reference in an emulated Amiga."
+
+["Beaver Sweeper"]
+status = "no"
+note = "A Windows synthesizer tracker (2005). Its whole source is on Modland, for non-commercial use."
+
+["Pollytracker"]
+status = "compared"
+all = "5 of 5"
+basis = "Polly Tracker's own C64 player, taken from HVSC's Polly_Rock.sid, with the module behind it, played by libsidplayfp: the tunes made so are byte for byte HVSC's for three songs (Backwoods differs in two bytes of HVSC's copy of the song)"
+note = "The player is downloaded from Modland's HVSC folder the first time a Polly Tracker song is played."
+
+["Compoz"]
+status = "no"
+note = "DOS, 1991: text that the program turns into CMF, with 16 instruments inside the program, which is on Modland."
+
+["Dreamcast Sound Format"]
+status = "unchecked"
+nosong = "62 of Naomi's 1,218 tracks are empty tracks of their rips"
+note = "62 of Naomi's 1,218 songs are empty tracks of their rips: no music, which ZXTune and the Audio Overload SDK agree on; they are marked. Skies of Arcadia's songs name their libraries with \"_\" where Modland has \"-\"; the player allows for it."
+
+["HES"]
+status = "unchecked"
+note = "Bloody Wolf makes no music in any track (Game Music Emu and ZXTune alike). A rip has 256 tracks and its music often starts late (track 43, 128); the player passes the silent ones over in a moment. A rip that names its first track starts there. Game Music Emu is built with a fix of ours: without it, Oboccha Makun's track 199 crashed it."
+
+["AY STRC"]
+status = "compared"
+all = "1 of 1"
+basis = "written for this player in a clean room, from a description of the format only, with Sound Tracker's own note table; the same registers every tick and the same sound as before"
+note = "Sound Tracker 1.1 songs compiled by Raxoft's compiler for DeliAY. Checked against ZXTune's playing of the same song as a Sound Tracker file: the same length and notes (spectral likeness 0.92)."
+
+["Ad Lib - Pixel Painters FMF"]
+status = "verified"
+all = "11 of 11"
+basis = "a replayer written for this player in a clean room, from a description of the formats only: register for register, every tick, as Electranoid's own routines run in an emulated 8086"
+note = "One song has five silent voices where the game leaves default instruments."
+
+["Ad Lib - Pixel Painters FTF"]
+status = "verified"
+all = "8 of 8"
+basis = "a replayer written for this player in a clean room, from a description of the formats only: register for register, every tick, as Xatax's own routines run in an emulated 8086"
+note = "Played as on a Sound Blaster Pro 2, with the songs' own OPL3 panning."
+
+["Ad Lib - EdLib D01"]
+status = "verified"
+all = "3 of 3"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the chip's registers after every tick, and the samples on the same ticks, as JCH's player 1.03 run in an emulated 8086"
+note = "The samples come from the .s01 beside the song; how loud they are mixed is a judgement (DOSBox's level)."
+
+["Ad Lib - Sound Images Generation 2"]
+status = "verified"
+all = "4 of 4"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the chip's registers after every tick as with Tony Williams' driver (from Kwik Snax) run in an emulated 8086"
+note = "Each file holds a theme and two jingles, played as three tracks."
+
+["Ad Lib - Sound Interface System"]
+status = "verified"
+all = "3 of 3"
+basis = "a replayer written for this player in a clean room, from a description of the format only: register for register, every tick, as the Sound Images driver in Xmas Lemmings run in an emulated 8086"
+note = "Played at 70 Hz, the VGA frame rate the game's timer follows. Modland's rip of one song lacks a short rest pattern it shares with another; the player supplies it."
+
+["Ad Lib - Drum Traker"]
+status = "no"
+note = "Drum Blaster's Drum Traker (Larry Tipton, Epic MegaGames). All 15 songs, and the samples they name, are in Drum Blaster 3.0 shareware; a replayer of its sequencer is to be written."
+
+["Ad Lib - FM Tracker"]
+status = "verified"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the same OPL writes as FM Tracker Player 1.26 (FMTP.EXE) in all songs"
+note = "Every write to the chip matches FMTP.EXE, run in an emulated DOS PC, in both songs and the tracker's six example songs. Played once, up to where the song goes back to its start."
+
+["Ad Lib - MUS"]
+status = "verified"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the same OPL writes as the original in all songs"
+note = "The file is First Samurai's whole Ad Lib sound module; only its data is read. 4 tunes, each matching the game's own routine write for write."
+
+["Ad Lib - Shadowlands"]
+status = "verified"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the same OPL writes as the original in all songs"
+note = "The game's TUNE.CAL, unpacked. Every write to the chip matches the game's driver (3 minutes at 50 Hz). The tune loops back to its seventh order; played once."
+
+["Ad Lib - Vibrants"]
+status = "verified"
+basis = "a replayer written for this player in a clean room, from a description of the format only: the chip's registers the same as with the original after every tick, in all songs"
+note = "Unchanged registers are written again each tick. An intro, then a loop of 73 seconds, played once (1:42 at 70 Hz)."
+
+["RealSID"]
+status = "unchecked"
+note = "Tunes written in BASIC need the C64's ROMs (kernal.bin, basic.bin, chargen.bin in the extras folder): with them all 40 tried play (1 October 2026), without them five of the 40 are silent."
+
+["Megadrive CYM"]
+status = "unchecked"
+all = "1 of 1"
+basis = "CYM is a log of a Capcom arcade board's YM2151 (from MAME or Kawaks), not Mega Drive music; made into VGM and played by bbmp-vgm"
+
+["Spectrum - CHIPNSFX"]
+status = "compared"
+all = "145 of 145"
+basis = "played by the tracker's own code (CHIPNSFX.C, GPL-3): the same samples as its WAV export, but for a filter that takes away the steady level its 8-bit sound has"
+note = "Stereo is the tracker's ABC, a quarter of each side mixed into the other. Older catalogs call it Spectrum - CHP."
+
+["HVSC"]
+status = "verified"
+basis = "a tune is its own original player (the composer's 6502 code), so the C64 emulation was checked: every change libsidplayfp's C64 makes to the SID, against VICE's, the reference C64 emulator, running the same tune (tools/verify/sid.py): 956 of 996 random tunes the same, change for change, in order, and in time within 7 cycles at the median (30 s each, 2 October 2026)"
+note = "Of the rest: 21 are RSID programs playing samples through the volume register, whose timing is to the cycle, and part from VICE after a while; 7 read the SID's oscillator 3 for random numbers, which is the chip emulation's own (reSIDfp is not VICE's reSID); 12 differ otherwise. Tunes for two or three SIDs were not compared. HVSC's own three groups, tried from a copy of HVSC: Musicians, Games and Demos 40 of 40 each."
+
+["Spectrum"]
+status = "faults"
+note = "The 22 E-Tracker songs ZX-Art files here (.etc, ESI's tracker, 1992) play in no replayer the player has. Modland's three (Pro Tracker 2, ASC Sound Master) play. ZX-Art files 113 tunes here whose kind it doesn't name; of 5 tried (2 October 2026) the 3 Fuxoft songs (.fxm, 30 of the 113) play by their own replayer once a catalog update files them by their extension, as it now does with .fxm, .fls and .vtx. The 22 E-Tracker songs (.etc, ESI's tracker, 1992) play in no replayer the player has (ZXTune doesn't know them); 4 Beepola songs (.bbsong, the editor's own files) and a few others are not looked into."
+
+["Spectrum - Snapshot"]
+status = "faults"
+all = "18 of 65"
+note = "Tapes, disks, and music that is a program of its own need an emulated Spectrum, which the player doesn't have; a snapshot is a whole Spectrum's memory, tape or disk. ZXTune finds the tracker song in 18 of the 31 snapshots (.sna); tapes, disks, and music that is a program of its own need an emulated Spectrum, which the player doesn't have."
+
+["TIATracker"]
+status = "compared"
+all = "70 of 70"
+basis = "played by the tracker's own song and replay code (GPL-2, a helper of its own) with Stella's TIA sound: the same TIA registers, frame by frame, as the tracker's unmodified code built with Qt, in all 134 songs tried"
+note = "Atari 2600 music made with Kylearan's TIATracker (JSON); older catalogs call it Theta Music Composer. Played once to where its loop starts; not compared with the 2600's own player routine."
+
+["MegaStation"]
+status = "no"
+note = "A Windows sample tracker (DJ Hikari, 2000). Its Delphi source, without a licence, is on Modland, for a replayer written from it."
+
+["MegaStation MIDI"]
+status = "no"
+note = "The MIDI songs of MegaStation (source on Modland); they need a General MIDI synthesizer, which the player doesn't have yet."
+
+["MVS Tracker"]
+status = "no"
+note = "Mega Drive and Neo Geo FM music (2006-07). The source of the tracker and of its Z80 driver is published, without a licence."
+
+["Athtune"]
+status = "no"
+note = "Tunes with synthesizers written in C#, compiled by the program (.NET). The three songs are its examples and small enough to rewrite by hand."
+
+# ---- looked at again on 2 October 2026 (the census's failures, format by format) ----
+
+["Deflemask"]
+status = "unchecked"
+basis = "Furnace"
+note = "About one in five of Modland's files was once sent as text, which damaged it (every CR LF made LF, and every CR CR changed too). Furnace plays most of them anyway, perhaps with a wrong note or a click where the damage is; 21 of 100 tried it can't. Mending them was tried: 1 of 46 came back whole."
+nosong = "about 1 in 5 files on Modland is damaged; 21 of 100 tried don't play"
+
+["Renoise"]
+status = "no"
+note = "No replayer here plays Renoise songs: Renoise's sampler and effects would have to be written, which would serve Renoise Old too. Until 2 October 2026 ZXTune seemed to play them, but what it played were the instruments' samples inside the song's zip, one after the other."
+
+["Hippel ST"]
+status = "faults"
+all = "13 of 21"
+basis = "UADE's Jochen Hippel ST player"
+note = "8 of the 14 .sog files (song data without its replay code) come out as the same quiet opening, not their song: UADE's player misreads them. The 7 .hst songs and 6 .sog songs play."
+
+["IFF-SMUS"]
+basis = "UADE's Sonix player"
+note = "Two of Mark Riley's songs that Modland lists are not on its server. wildman plays without its \"Bpart\" instrument, which Modland lacks, and Gilsons Green Grape's bass is made from its sample (its .instr is missing)."
+nosong = "2 files Modland lists are not on its server"
+
+["Delta Music 2"]
+basis = "UADE's DeltaMusic 2.0 player"
+note = "Its channels loop each on their own, and UADE's player says some songs have ended while the music goes on (12 of the 98, Sanxion's loader after 30 ms): those play on, and the player stops them at 3 minutes with a fade."
+
+["Sam Coupe COP"]
+status = "faults"
+note = "Frantisek Fuka's manic.cop and prince.cop are Z80 player code, not tracker songs: they need an emulated SAM Coupé, which the player doesn't have."
+
+["Sam Coupe SNG"]
+status = "faults"
+note = "8 of the 15 (Fuka's, Ziutek's, tetris) are Z80 player code, not tracker songs: they need an emulated SAM Coupé, which the player doesn't have."
+
+["MoonBlaster (edit mode)"]
+note = "Two songs (Betaroid, and Ace In Space's level 1 big boss) stay silent in libkss, with their sample kits too."
+
+["Composer 670 (CDFM)"]
+note = "Each .670 file is an older layout of the .c67 next to it. The .c67 plays; the .670 files are hidden."
+
+["MusicMaker V8 Old"]
+note = "\"best of guitars\" is a 6-channel song UADE's player won't take; moveback plays with its instruments (.ip)."
+
+["Ad Lib - Reality AdLib Tracker"]
+note = "One song (canon in d) is for MIDI instruments only, and the player has no General MIDI synthesizer."
+
+["Mad Tracker 2"]
+note = "One song (accidental ray of sun, piano mix) needs the commercial VST plug-in The Grand."
+
+["OpenMPT MPTM"]
+note = "One song (synthetic journey) needs the Synth1 VST plug-in."
+
+["Ultra64 Sound Format"]
+note = "The World Is Not Enough (18 songs) is silent: ZXTune's lazyusf2 gives no sound, with its high-level audio and without (tried 2 October 2026)."
+
+["Slight Atari Player"]
+nosong = "a broken rip on ASMA's and Modland's lists (galahad ingame: its start address is data)"
+note = "One file Modland and ASMA have is a broken rip. One whose last block is a few bytes short is played from a mended copy."
+
+["Piston Collage"]
+nosong = "1 file on Modland is cut short"
+
+["Synth Dream"]
+nosong = "1 file on Modland is damaged"
+note = "The songs play with their folder's shared smp.set. sdr.nobuddiesland 8 is damaged on Modland (fill bytes where its tables have zeros) and the replayer stops on it."
+
+["Maximum Effect"]
+note = "Seven songs are damaged on Modland (a fill byte where their tables have zeros) and play from a copy with the zeros put back."
+
+["Peter Verswyvelen"]
+nosong = "4 files on Modland are damaged"
+note = "The four Ziriax files are damaged on Modland: fill bytes (1A) where their tables have zeros, which can't be told from real data."
+
+["SunTronic"]
+nosong = "2 files on Modland are broken rips"
+
+["OctaMED MMDC"]
+nosong = "1 file on Modland is cut short"
+
+["Startrekker AM"]
+nosong = "1 file on Modland has another song's synth file"
+
+["MDX"]
+note = "Metal Sight's 17 songs are encrypted (their data begins \"crypt\") and come out silent."
+
+["Saturn Sound Format"]
+note = "One sound effect of Irem Arcade Classics' rip (tyfsnd-00-27, a second long) is silent."
+
+["Hippel COSO"]
+note = "One song (cryptoburners - pack5) is silent; not looked into."
+
+["SunVox"]
+note = "One song (sunvox digital) sounds harsh throughout and is counted as noise; whether it is meant to is not known."
+
+["MPK"]
+note = "Two songs of Fighters Ragnarok (Prologue, Can you beat me) are counted as noise; they are drum-heavy and probably right, but nobody has listened."
+
+["Mark II"]
+note = "One song (my way to the stars) has a version of the replay code that UADE plays silent."
+
+["Beathoven Synthesizer"]
+note = "One song (katakis loading v1, an early version 1.00) is silent in UADE."
+
+["Jason Brooke"]
+note = "One song (pacland) is near silent in all its 10 subsongs."
+
+["Ron Klaren"]
+note = "One song (electricity) is misread by UADE as 2,418 subsongs, all silent."
+
+["Forgotten Worlds"]
+note = "4 of the 5 are silent: whether UADE's player sounds depends on the file's path and its neighbours, a fault of UADE."
+
+["Ad Lib - Martin Fernandez"]
+note = "One file (Viking Child's loader) opens as 0 seconds long and gives no sound in AdPlug; why is not found."
+
+["Delitracker Custom"]
+note = "Marble Madness (6 files) and Archon I and II crash inside UADE."
+
+["Sonic Arranger"]
+note = "UADE refuses one song (amber moon26) and plays two silent (laserdance-eddiesreturn, sonic-intro-1)."
+
+["Hippel"]
+note = "Two songs (prince, astaroth) have a version of the replay code UADE's player refuses; forced, it plays garbage."
+
+["FredMon"]
+note = "Four files (voodoo, voodoo-2, both fuzzball) have a version of the replay code UADE doesn't know."
+
+["Jason Page"]
+note = "One file (jpn.road) has another layout (it begins \"ROAD\"), which no UADE player opens."
+
+["Silmarils"]
+note = "The 3 Boston Bomb Club files are song data without their samples, which the game keeps in bostonbombclub.mok; UADE can't put the two together."
+
+# ---- checked against the original players, register by register (2 October 2026) ----
+
+["Spectrum - Pro Tracker 3"]
+status = "verified"
+basis = "every write to the AY chip, frame by frame, against Vortex Tracker II's own Z80 player (S.V. Bulba) on an emulated Z80, for all 7,376 of Modland's songs: 7,218 of the 7,297 compared the same in every frame (tools/verify)"
+note = "Of the rest: 88 have a channel that plays before it chooses a sample, which Pro Tracker 3 leaves undefined (played with sample 1, as Vortex Tracker's editor does); 16 start a sample or ornament past its end, where the original plays whatever bytes follow for a frame; 11 files are cut short on Modland; 52 differ, mostly in a few frames of a slide. Two faults of ZXTune were found and mended: a note and its ornament, and the channels' envelope offsets, are added in a byte, as in the original. Turbo Sound songs (two chips, 61) were not compared."
+
+["Spectrum - Pro Tracker 2"]
+status = "verified"
+basis = "every write to the AY chip, frame by frame, against Pro Tracker 2.101's own Z80 player (GDC, from a magazine's listing of it) on an emulated Z80, for all 6,243 of Modland's songs: 5,966 the same in every frame (tools/verify)"
+note = "Four faults of ZXTune were found and mended: the volume table is rounded, a pattern plays to its end however long, a 00 in a row is a noise command, and a note past the 96 notes' table plays what the original player's memory has there (the start of its volume table). Of the rest: 195 differ in a few frames where such a note is involved, 42 have a channel that plays before it chooses a sample (undefined in the original), 4 play as S.V. Bulba's player, which mends faults of the original, 1 file is cut short; 35 differ. The original plays a song's first row after its delay less a frame; the player plays it at once."
+
+
+["Playstation Sound Format"]
+status = "unchecked"
+note = "Played by Highly Experimental, which runs the PlayStation 2's BIOS: hebios.bin in the extras folder, made from a dump of your own console's BIOS (bbmp extras). The player doesn't carry it; without it no song plays. With it 100 of 100 tried play (8 October 2026)."
+
+["Playstation 2 Sound Format"]
+status = "unchecked"
+note = "Played by Highly Experimental, which runs the PlayStation 2's BIOS: hebios.bin in the extras folder, made from a dump of your own console's BIOS (bbmp extras). The player doesn't carry it; without it no song plays. With it 40 of 40 tried play (8 October 2026)."

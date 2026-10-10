@@ -1,0 +1,13 @@
+NerdTracker II's NES replay routine ("replay 22", nt2-22.asm, the version that
+assembles with ca65), by Michel Iwaniec (Bananmos). bbmp-retro's "ned" engine
+assembles it and plays it, with the song, on Game Music Emu.
+
+Its terms, from NerdTracker II's home page (https://www.nesdev.org/nt2/, read
+7 October 2026):
+
+  "Nerdtracker II is Giftware! You're entitled to use NT2 & its replay code freely
+  for any non-commercial usage. All we ask in return is to send Bananmos something
+  nice to show your support & gratitude for his creation."
+
+So this part may only be used non-commercially. The ByteBandit Music Player is free
+of charge and is never sold.

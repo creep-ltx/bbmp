@@ -1,0 +1,25 @@
+bbmp: ZXTune without its VGM and S98 player, which is libvgm: its OPL4 (ymf278b.c) is GPL 2
+only, which ZXTune's LGPL 3 and the GPL 3 can't be combined with, and some of its sound
+chips state no licence (7 Oct 2026). The player plays VGM and S98 with bbmp-vgm, a program
+of its own; libvgm is no longer linked into ZXTune's helpers.
+--- a/src/core/plugins/players/external/vgm_base.cpp	2026-10-07 10:47:43.629263668 +0200
++++ b/src/core/plugins/players/external/vgm_base.cpp	2026-10-07 10:47:43.635451745 +0200
+@@ -52,14 +52,8 @@
+ 
+ namespace ZXTune
+ {
+-  void RegisterVGMPlugins(PlayerPluginsRegistrator& registrator)
+-  {
+-    for (const auto& desc : VGM::PLUGINS)
+-    {
+-      auto decoder = desc.CreateChiptuneDecoder();
+-      auto factory = desc.CreateSingletrackFactory();
+-      auto plugin = CreatePlayerPlugin(desc.Id, desc.ChiptuneCaps, std::move(decoder), std::move(factory));
+-      registrator.RegisterPlugin(std::move(plugin));
+-    }
+-  }
++  // bbmp: no VGM or S98 player here: libvgm's OPL4 (ymf278b.c) is GPL 2 only, which can't
++  // go with ZXTune's LGPL 3 or the GPL 3, and some of its chips state no licence. The player
++  // plays these files with bbmp-vgm, a GPL 2 program of its own built on libvgm.
++  void RegisterVGMPlugins(PlayerPluginsRegistrator& /*registrator*/) {}
+ }  // namespace ZXTune

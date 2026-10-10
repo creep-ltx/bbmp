@@ -1,0 +1,35 @@
+bbmp: ZXTune without UnRAR and vgmstream, whose terms can't go with the GPL (7 Oct 2026).
+RAR archives are not opened by ZXTune (the player opens archives with 7-Zip), and no
+game-stream formats are played through vgmstream.
+diff --color -ru a/src/core/plugins/archives/plugins_archived.cpp b/src/core/plugins/archives/plugins_archived.cpp
+--- a/src/core/plugins/archives/plugins_archived.cpp	2026-10-07 09:02:48.531695483 +0200
++++ b/src/core/plugins/archives/plugins_archived.cpp	2026-10-07 09:02:48.537862225 +0200
+@@ -33,7 +33,7 @@
+   const ContainerPluginDescription UNARCHIVES[] =
+   {
+     {"ZIP"_id,     &CreateZipDecoder,     Capabilities::Container::Type::ARCHIVE | Capabilities::Container::Traits::DIRECTORIES},
+-    {"RAR"_id,     &CreateRarDecoder,     Capabilities::Container::Type::ARCHIVE | Capabilities::Container::Traits::DIRECTORIES},
++    // bbmp: no RAR (UnRAR's licence forbids using its code to remake RAR's compressor)
+     {"LHA"_id,     &CreateLhaDecoder,     Capabilities::Container::Type::ARCHIVE | Capabilities::Container::Traits::DIRECTORIES},
+     {"UMX"_id,     &CreateUMXDecoder,     Capabilities::Container::Type::ARCHIVE | Capabilities::Container::Traits::PLAIN},
+     {"7ZIP"_id,    &Create7zipDecoder,    Capabilities::Container::Type::ARCHIVE | Capabilities::Container::Traits::DIRECTORIES},
+diff --color -ru a/src/core/plugins/players/plugins_list.cpp b/src/core/plugins/players/plugins_list.cpp
+--- a/src/core/plugins/players/plugins_list.cpp	2026-10-07 09:02:48.532097895 +0200
++++ b/src/core/plugins/players/plugins_list.cpp	2026-10-07 09:02:48.537880098 +0200
+@@ -29,7 +29,6 @@
+   void RegisterFLACPlugin(PlayerPluginsRegistrator& players);
+   void RegisterVGMPlugins(PlayerPluginsRegistrator& players);
+   void RegisterMPTPlugins(PlayerPluginsRegistrator& players);
+-  void RegisterVGMStreamPlugins(PlayerPluginsRegistrator& players, ArchivePluginsRegistrator& archives);
+ 
+   void RegisterPlayerPlugins(PlayerPluginsRegistrator& players, ArchivePluginsRegistrator& archives)
+   {
+@@ -49,7 +48,7 @@
+     RegisterSIDPlugins(players, archives);
+     RegisterGMEPlugins(players, archives);
+     RegisterASAPPlugins(players, archives);
+-    RegisterVGMStreamPlugins(players, archives);
++    // bbmp: no vgmstream (its relic_mixfft.c is for non-commercial use only)
+     RegisterWAVPlugin(players);  // wav after VGMStream
+   }
+ }  // namespace ZXTune

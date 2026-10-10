@@ -1,0 +1,148 @@
+bbmp: klystron (Klystrack's engine) read a damaged file's counts and sizes without a check
+(the final audit of 7 October 2026): channels, effects, wavetables, instruments, program
+steps and names past their arrays, a pattern that isn't there, a song rate of 0 (it divides),
+a reverb delay longer than its buffer, the top note's neighbour; and a read past the file's
+end left the old contents of the buffer. Each is checked; real songs play as before.
+diff --git a/src/lib/ksnd.c b/src/lib/ksnd.c
+index a94af4f..c4677d3 100644
+--- a/src/lib/ksnd.c
++++ b/src/lib/ksnd.c
+@@ -46,8 +46,17 @@ KLYSAPI KSong* KSND_LoadSong(KPlayer* player, const char *path)
+ #ifndef USESDL_RWOPS
+ static int RWread(struct RWops *context, void *ptr, int size, int maxnum)
+ {
+-	const int len = my_min(size * maxnum, context->mem.length - context->mem.ptr);
+-	memcpy(ptr, context->mem.base + context->mem.ptr, len);
++	/* bbmp: the size in 64 bits (size * maxnum overflowed), and what a damaged file
++	   asks for past its end reads as zeros, not as what the buffer held before */
++	const long long want = (long long)size * maxnum;
++	if (want <= 0)
++		return 0;
++	const long long left = context->mem.length - context->mem.ptr;
++	const long long len = want < left ? want : (left > 0 ? left : 0);
++	if (len > 0)
++		memcpy(ptr, context->mem.base + context->mem.ptr, len);
++	if (want > len)
++		memset((char *)ptr + len, 0, want - len);
+ 
+ 	context->mem.ptr += len;
+ 
+diff --git a/src/snd/cydrvb.c b/src/snd/cydrvb.c
+index 49a775e..abed589 100644
+--- a/src/snd/cydrvb.c
++++ b/src/snd/cydrvb.c
+@@ -131,7 +131,9 @@ Sint32 cydrvb_output(CydReverb *rvb)
+ void cydrvb_set_tap(CydReverb *rvb, int idx, int delay_ms, int gain_db, int panning)
+ {
+ 	rvb->tap[idx].delay = delay_ms;
+-	rvb->tap[idx].position = (rvb->position - (delay_ms * rvb->rate / 1000) + rvb->size) % rvb->size;
++	/* bbmp: a damaged file's delay may be longer than the buffer, or negative */
++	long long position = (rvb->position - (long long)delay_ms * rvb->rate / 1000) % rvb->size;
++	rvb->tap[idx].position = position < 0 ? position + rvb->size : position;
+ 	
+ 	if (gain_db <= CYDRVB_LOW_LIMIT)
+ 	{
+diff --git a/src/snd/freqs.c b/src/snd/freqs.c
+index 4f1d944..f619b89 100644
+--- a/src/snd/freqs.c
++++ b/src/snd/freqs.c
+@@ -131,7 +131,7 @@ Uint16 get_freq(int note)
+ 	if (note <= 0)
+ 		return frequency_table[0];
+ 		
+-	if (note >= (FREQ_TAB_SIZE << 8))
++	if (note >= ((FREQ_TAB_SIZE - 1) << 8))  /* bbmp: the last note has no next one */
+ 		return frequency_table[FREQ_TAB_SIZE - 1];
+ 
+ 	if ((note & 0xff) == 0)
+diff --git a/src/snd/music.c b/src/snd/music.c
+index d40a028..81481f8 100644
+--- a/src/snd/music.c
++++ b/src/snd/music.c
+@@ -1856,7 +1856,14 @@ int mus_load_instrument_RW(Uint8 version, RWops *ctx, MusInstrument *inst, CydWa
+ 	Uint8 progsteps = 0;
+ 	_VER_READ(&progsteps, 0);
+ 	if (progsteps)
+-		_VER_READ(&inst->program, (int)progsteps*sizeof(inst->program[0]));
++	{
++		/* bbmp: a program has at most MUS_PROG_LEN steps; a damaged file's others are
++		   read aside */
++		Uint16 program[256];
++		_VER_READ(program, (int)progsteps*sizeof(program[0]));
++		if (progsteps > MUS_PROG_LEN) progsteps = MUS_PROG_LEN;
++		memcpy(inst->program, program, progsteps*sizeof(program[0]));
++	}
+ 	_VER_READ(&inst->prog_period, 0);
+ 	_VER_READ(&inst->vibrato_speed, 0);
+ 	_VER_READ(&inst->vibrato_depth, 0);
+@@ -2209,7 +2216,13 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 			my_RWread(ctx, &song->sequence_step, 1, sizeof(song->sequence_step));
+ 		}
+ 
++		/* bbmp: a damaged file names more channels than there are */
++		if (song->num_channels < 1 || song->num_channels > MUS_MAX_CHANNELS)
++			return 0;
++
+ 		my_RWread(ctx, &song->num_instruments, 1, sizeof(song->num_instruments));
++		if (song->num_instruments > 128)  /* bbmp: KSongInfo names 128 */
++			return 0;
+ 		my_RWread(ctx, &song->num_patterns, 1, sizeof(song->num_patterns));
+ 		my_RWread(ctx, song->num_sequences, 1, sizeof(song->num_sequences[0]) * (int)song->num_channels);
+ 		my_RWread(ctx, &song->song_length, 1, sizeof(song->song_length));
+@@ -2223,6 +2236,8 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 		my_RWread(ctx, &song->song_speed2, 1, sizeof(song->song_speed2));
+ 		my_RWread(ctx, &song->song_rate, 1, sizeof(song->song_rate));
+ 
++		if (song->song_rate < 1) song->song_rate = 1;  /* bbmp: it divides */
++
+ 		if (version > 2) my_RWread(ctx, &song->flags, 1, sizeof(song->flags));
+ 		else song->flags = 0;
+ 
+@@ -2271,6 +2286,9 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 		else if (song->flags & MUS_ENABLE_REVERB)
+ 			n_fx = 1;
+ 
++		if (n_fx > CYD_MAX_FX_CHANNELS)  /* bbmp: song->fx holds that many */
++			return 0;
++
+ 		if (n_fx > 0)
+ 		{
+ 			debug("Song has %u effects", n_fx);
+@@ -2359,6 +2377,8 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 				{
+ 					FIX_ENDIAN(song->sequence[i][s].position);
+ 					FIX_ENDIAN(song->sequence[i][s].pattern);
++					if (song->sequence[i][s].pattern >= song->num_patterns)
++						return 0;  /* bbmp: a pattern that isn't there */
+ 				}
+ 			}
+ 		}
+@@ -2470,6 +2490,9 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 			Uint8 max_wt = 0;
+ 			my_RWread(ctx, &max_wt, 1, sizeof(Uint8));
+ 
++			if (max_wt > CYD_WAVE_MAX_ENTRIES)  /* bbmp: wavetable_entries holds that many */
++				return 0;
++
+ 			for (int i = 0 ; i < max_wt ; ++i)
+ 			{
+ 				load_wavetable_entry(version, &wavetable_entries[i], ctx);
+@@ -2486,7 +2509,9 @@ int mus_load_song_RW(RWops *ctx, MusSong *song, CydWavetableEntry *wavetable_ent
+ 					memset(song->wavetable_names[i], 0, MUS_WAVETABLE_NAME_LEN + 1);
+ 
+ 					my_RWread(ctx, &len, 1, 1);
+-					my_RWread(ctx, song->wavetable_names[i], len, sizeof(char));
++					char name[256];  /* bbmp: a name is at most MUS_WAVETABLE_NAME_LEN */
++					my_RWread(ctx, name, len, sizeof(char));
++					memcpy(song->wavetable_names[i], name, my_min(len, MUS_WAVETABLE_NAME_LEN));
+ 				}
+ 			}
+ 			else
+@@ -2618,6 +2643,7 @@ Uint32 mus_get_playtime_at(MusSong *song, int position)
+ 	int seq_pos[MUS_MAX_CHANNELS] = {0}, pattern_pos[MUS_MAX_CHANNELS] = {0};
+ 	MusPattern *pattern[MUS_MAX_CHANNELS] = {0};
+ 	int spd1 = song->song_speed, spd2 = song->song_speed2, rate = song->song_rate;
++	if (rate < 1) rate = 1;  /* bbmp */
+ 
+ 	while (pos < position)
+ 	{

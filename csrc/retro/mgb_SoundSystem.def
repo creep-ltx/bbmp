@@ -1,0 +1,11 @@
+; SPDX-License-Identifier: GPL-3.0-or-later
+; bbmp-retro, Gameboy Tracker engine: how the SoundSystem driver is built.
+; Music only, with MBC5 ROM banking (the song's patterns are spread over banks),
+; no sound effects and no VU meters. Copied to SoundSystem.def in the build folder.
+SOUNDSYSTEM_GBC_COMPATIBLE	EQU	0
+SOUNDSYSTEM_LARGE_ROM		EQU	0
+SOUNDSYSTEM_ROM_BANKING		EQU	1
+SOUNDSYSTEM_CODE_BANK		EQU	0
+SOUNDSYSTEM_WRAM_BANK		EQU	0
+SOUNDSYSTEM_ENABLE_SFX		EQU	0
+SOUNDSYSTEM_ENABLE_VUM		EQU	0

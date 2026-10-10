@@ -1,0 +1,622 @@
+--- a/psycle/src/psycle/host/FileIO.hpp
++++ b/psycle/src/psycle/host/FileIO.hpp
+@@ -31,6 +31,7 @@
+ #include <universalis/stdlib/cstdint.hpp>
+ #include <cstddef>
+ #include <string>
++#include <stdexcept>
+ namespace psycle
+ {
+ 	namespace host
+@@ -75,9 +76,19 @@
+ 			virtual std::size_t FileSize();
+ 			virtual std::size_t GetPos();
+ 			virtual FILE* GetFile() { return 0; }
++			/// modland: whether numBytes more are in the file; and what a damaged file ends in
++			bool Holds(std::size_t numBytes) { const std::size_t pos = GetPos(), size = FileSize(); return pos <= size && numBytes <= size - pos; }
++			static void Damaged(const char * what) { throw std::runtime_error(std::string("the file is damaged: ") + what); }
+ 
+ 		public://private:
+ 			inline bool Read(void * pData, std::size_t numBytes) { return ReadInternal(pData, numBytes); };
++			/// modland: a byte of the file is a bool when it is 0 or 1 only; this one makes it so
++			inline bool Read(bool * pData, std::size_t numBytes) {
++				unsigned char * const p = reinterpret_cast<unsigned char *>(pData);
++				const bool ok = ReadInternal(p, numBytes);
++				for (std::size_t i = 0; i < numBytes; ++i) p[i] = p[i] != 0;
++				return ok;
++			}
+ 			inline bool Write(void const * pData, std::size_t numBytes) { return WriteInternal(pData, numBytes); }
+ 		private:
+ 			template<typename T> void WriteRaw(T const & t) { Write(&t, sizeof t); }
+--- a/psycle/src/psycle/host/Instrument.cpp
++++ b/psycle/src/psycle/host/Instrument.cpp
+@@ -145,7 +145,7 @@
+ 			pFile->Read(ENV_F_EA);
+ 			int val;
+ 			pFile->Read(val);
+-			ENV_F_TP = static_cast<helpers::dsp::FilterType>(val);
++			ENV_F_TP = static_cast<helpers::dsp::FilterType>(val >= 0 && val < helpers::dsp::F_NUMFILTERS ? val : helpers::dsp::F_NONE); // modland: a type there is, or none
+ 
+ 			int pan=128;
+ 			pFile->Read(pan);
+@@ -230,10 +230,14 @@
+ 				
+ 				if ( fullopen )
+ 				{
++					// modland: the sizes are checked, and a sample too short for its length is not played
++					if(!pFile->Holds(packedsize)) RiffFile::Damaged("a sample");
+ 					pData = new byte[packedsize+4];// +4 to avoid any attempt at buffer overflow by the code
+ 					pFile->Read(pData,packedsize);
+-					DataCompression::SoundDesquash(pData,&wave.m_pWaveDataL);
++					std::size_t unpacked = 0;
++					bool ok = DataCompression::SoundDesquash(pData,packedsize,&wave.m_pWaveDataL,&unpacked) ? unpacked >= wave.m_WaveLength : wave.m_WaveLength == 0;
+ 					zapArray(pData);
++					if(!ok) RiffFile::Damaged("a sample");
+ 				}
+ 				else
+ 				{
+@@ -246,10 +250,13 @@
+ 					pFile->Read(&packedsize,sizeof(packedsize));
+ 					if ( fullopen )
+ 					{
++						if(!pFile->Holds(packedsize)) RiffFile::Damaged("a sample"); // modland
+ 						pData = new byte[packedsize+4]; // +4 to avoid any attempt at buffer overflow by the code
+ 						pFile->Read(pData,packedsize);
+-						DataCompression::SoundDesquash(pData,&wave.m_pWaveDataR);
++						std::size_t unpacked = 0;
++						bool ok = DataCompression::SoundDesquash(pData,packedsize,&wave.m_pWaveDataR,&unpacked) ? unpacked >= wave.m_WaveLength : wave.m_WaveLength == 0;
+ 						zapArray(pData);
++						if(!ok) RiffFile::Damaged("a sample");
+ 					}
+ 					else
+ 					{
+--- a/psycle/src/psycle/host/Machine.cpp
++++ b/psycle/src/psycle/host/Machine.cpp
+@@ -948,6 +948,7 @@
+ 			pFile->Read(&size,sizeof(size)); // size of this part params to load
+ 			UINT count;
+ 			pFile->Read(&count,sizeof(count)); // num params to load
++			if (!pFile->Holds(static_cast<std::size_t>(count) * sizeof(int))) RiffFile::Damaged("a machine"); // modland
+ 			for (UINT i = 0; i < count; i++)
+ 			{
+ 				int temp;
+--- a/psycle/src/psycle/host/Plugin.cpp
++++ b/psycle/src/psycle/host/Plugin.cpp
+@@ -414,8 +414,11 @@
+ 			pFile->Read(&size,sizeof(size)); // size of whole structure
+ 			if(size)
+ 			{
++				// modland: the sizes are no more than the file holds, and count is within size
++				if (size < sizeof(UINT) || !pFile->Holds(size)) RiffFile::Damaged("a plugin");
+ 				UINT count;
+ 				pFile->Read(&count,sizeof(count));  // size of vars
++				if (count > (size - sizeof(count)) / sizeof(int)) RiffFile::Damaged("a plugin");
+ 				for (UINT i = 0; i < count; i++)
+ 				{
+ 					int temp;
+@@ -1139,11 +1142,13 @@
+ 			pFile->Read(&_editName,16);
+ 			_editName[15] = 0;
+ 			pFile->Read(&numParameters, sizeof(numParameters));
++			// modland: no more values than the file holds, and none past those the plugin has
++			if (numParameters < 0 || !pFile->Holds(static_cast<std::size_t>(numParameters) * sizeof(int))) RiffFile::Damaged("a plugin");
+ 			int *Vals = new int[numParameters];
+ 			pFile->Read(Vals, numParameters*sizeof(int));
+ 			try
+ 			{
+-				 for (int i=0; i<numParameters; i++)
++				 for (int i=0; i<numParameters && i<_pInfo->numParameters; i++)
+ 				{
+ 					proxy().ParameterTweak(i,Vals[i]);
+ 				}
+--- a/psycle/src/psycle/host/Song.cpp
++++ b/psycle/src/psycle/host/Song.cpp
+@@ -1500,6 +1500,7 @@
+ 
+ 							// # of tracks for whole song
+ 							pFile->Read(&temp, sizeof temp);
++							if(temp < 1 || temp > MAX_TRACKS) RiffFile::Damaged("the number of tracks"); // modland
+ 							SONGTRACKS = temp;
+ 							// bpm
+ 							{///\todo: This was a hack added in 1.9alpha to allow decimal BPM values
+@@ -1535,9 +1536,14 @@
+ 							_trackArmedCount = 0;
+ 							for(int i(0) ; i < SONGTRACKS; ++i)
+ 							{
+-								pFile->Read(&_trackMuted[i],sizeof(_trackMuted[i]));
++								// modland: a byte of the file is a bool when it is 0 or 1 only
++								unsigned char flag = 0;
++								pFile->Read(&flag,sizeof(flag));
++								_trackMuted[i] = flag != 0;
+ 								// remember to count them
+-								pFile->Read(&_trackArmed[i],sizeof(_trackArmed[i]));
++								flag = 0;
++								pFile->Read(&flag,sizeof(flag));
++								_trackArmed[i] = flag != 0;
+ 								if(_trackArmed[i]) ++_trackArmedCount;
+ 							}
+ 							m_TicksPerBeat=24;
+@@ -1562,6 +1568,10 @@
+ 								pFile->Read(&temp, sizeof temp);
+ 								m_ExtraTicksPerLine = temp;
+ 							}
++							// modland: a tempo of nothing divides by zero, or never gets to the next line
++							if(m_BeatsPerMin < 1 || m_BeatsPerMin > 9999 || m_LinesPerBeat < 1 || m_LinesPerBeat > 1024
++								|| m_TicksPerBeat < 1 || m_TicksPerBeat > 1024 || m_ExtraTicksPerLine < 0 || m_ExtraTicksPerLine > 1024)
++								RiffFile::Damaged("the tempo");
+ 							if (fullopen)
+ 							{
+ 								///\todo: Warning! This is done here, because the plugins, when loading, need an up-to-date information.
+@@ -1587,6 +1597,7 @@
+ 								char pTemp[256];
+ 								// play length for this sequence
+ 								pFile->Read(&temp, sizeof temp);
++								if(temp < 0 || temp > MAX_SONG_POSITIONS) RiffFile::Damaged("the length of the sequence"); // modland
+ 								playLength = temp;
+ 								// name, for multipattern, for now unused
+ 								pFile->ReadString(pTemp, sizeof pTemp);
+@@ -1614,6 +1625,7 @@
+ 								unsigned int sizez77 = 0;
+ 								// num lines
+ 								pFile->Read(&temp, sizeof temp );
++								if(temp < 0 || temp > MAX_LINES) RiffFile::Damaged("the lines of a pattern"); // modland
+ 								// clear it out if it already exists
+ 								RemovePattern(index);
+ 								patternLines[index] = temp;
+@@ -1621,10 +1633,17 @@
+ 								pFile->Read(&temp, sizeof temp );
+ 								pFile->ReadString(patternName[index], sizeof *patternName);
+ 								pFile->Read(&sizez77, sizeof sizez77);
++								if(!pFile->Holds(sizez77)) RiffFile::Damaged("a pattern"); // modland
+ 								byte* pSource = new byte[sizez77];
+ 								pFile->Read(pSource, sizez77);
+ 								byte* pDest;
+-								DataCompression::BEERZ77Decomp2(pSource, &pDest);
++								std::size_t unpacked = 0; // modland: the size of what was packed is checked
++								if(!DataCompression::BEERZ77Decomp2(pSource, sizez77, &pDest, &unpacked)
++									|| unpacked < static_cast<std::size_t>(patternLines[index]) * SONGTRACKS * EVENT_SIZE)
++								{
++									zapArray(pSource);
++									RiffFile::Damaged("a pattern");
++								}
+ 								zapArray(pSource,pDest);
+ 								for(int y(0) ; y < patternLines[index] ; ++y)
+ 								{
+@@ -1661,6 +1680,11 @@
+ 							{
+ 								// we had better load it
+ 								_pMachine[index] = Machine::LoadFileChunk(pFile, index, version, fullopen);								
++								// modland: the player takes what is in the master's place for the master
++								if (index == MASTER_INDEX && _pMachine[index]->_type != MACH_MASTER) {
++									zapObject(_pMachine[index]);
++									RiffFile::Damaged("the master is another machine");
++								}
+ 								//Bugfix.
+ 								if (fullopen) {
+ 									if ((_pMachine[index]->_type == MACH_VST || _pMachine[index]->_type == MACH_VSTFX)
+@@ -1887,19 +1911,27 @@
+ 				pFile->Read(name_, 32);
+ 				pFile->Read(author_, 32);
+ 				pFile->Read(comments_,128);
++				name_[32] = author_[32] = comments_[128] = 0; // modland: the file need not end them
+ 				name = name_;
+ 				author = author_;
+ 				comments = comments_;
+ 
+ 				pFile->Read(&m_BeatsPerMin, sizeof m_BeatsPerMin);
+ 				pFile->Read(&sampR, sizeof sampR);
++				// modland: a tempo of nothing divides by zero, or never gets to the next line
++				if(m_BeatsPerMin < 1 || m_BeatsPerMin > 9999) RiffFile::Damaged("the tempo");
+ 				if( sampR <= 0)
+ 				{
+ 					// Shouldn't happen but has happened.
+ 					m_LinesPerBeat= 4;
+ 				}
+ 				// The old format assumes we output at 44100 samples/sec, so...
+-				else m_LinesPerBeat = 44100 * 60 / (sampR * m_BeatsPerMin);
++				else
++				{
++					const long long lpb = 44100LL * 60 / (static_cast<long long>(sampR) * m_BeatsPerMin); // modland: in 64 bits
++					if(lpb < 1 || lpb > 1024) RiffFile::Damaged("the tempo");
++					m_LinesPerBeat = static_cast<int>(lpb);
++				}
+ 				m_TicksPerBeat= 24;
+ 				m_ExtraTicksPerLine= 0;
+ 
+@@ -1915,11 +1947,16 @@
+ 				pFile->Read(playOrder, 128);
+ 				pFile->Read(&playLength, sizeof(int));
+ 				pFile->Read(&SONGTRACKS, sizeof(int));
++				// modland: what the file says is checked
++				if(playLength < 0 || playLength > MAX_SONG_POSITIONS) RiffFile::Damaged("the length of the sequence");
++				if(SONGTRACKS < 1 || SONGTRACKS > MAX_TRACKS) RiffFile::Damaged("the number of tracks");
+ 				// Patterns
+ 				pFile->Read(&num, sizeof num);
++				if(num < 0 || num > MAX_PATTERNS) RiffFile::Damaged("the number of patterns"); // modland
+ 				for(int i =0 ; i < num; ++i)
+ 				{
+ 					pFile->Read(&patternLines[i], sizeof *patternLines);
++					if(patternLines[i] > MAX_LINES) RiffFile::Damaged("the lines of a pattern"); // modland
+ 					pFile->Read(&patternName[i][0], sizeof *patternName);
+ 					if(patternLines[i] > 0)
+ 					{
+@@ -2022,7 +2059,9 @@
+ 				}
+ 				for (int i=0; i<OLD_MAX_INSTRUMENTS; i++)
+ 				{
+-					pFile->Read(&_pInstrument[i]->ENV_F_TP, sizeof(_pInstrument[0]->ENV_F_TP));
++					int32_t type = helpers::dsp::F_NONE; // modland: a type of filter there is, or none
++					pFile->Read(&type, sizeof(type));
++					_pInstrument[i]->ENV_F_TP = static_cast<helpers::dsp::FilterType>(type >= 0 && type < helpers::dsp::F_NUMFILTERS ? type : helpers::dsp::F_NONE);
+ 				}
+ 				for (int i=0; i<OLD_MAX_INSTRUMENTS; i++)
+ 				{
+@@ -2084,6 +2123,8 @@
+ 								pFile->Read(doloop);
+ 								wave.WaveLoopType(doloop?XMInstrument::WaveData<>::LoopType::NORMAL:XMInstrument::WaveData<>::LoopType::DO_NOT);
+ 								pFile->Read(stereo);
++								// modland: a sample is no longer than the file
++								if(!pFile->Holds(static_cast<std::size_t>(wltemp) * sizeof(short) * (stereo ? 2 : 1))) RiffFile::Damaged("a sample");
+ 								wave.AllocWaveData(wltemp,stereo);
+ 								int16_t* data = wave.pWaveDataL();
+ 								pFile->Read(data, wltemp*sizeof(short));
+@@ -2098,7 +2139,7 @@
+ 							{
+ 								bool stereo;
+ 								pFile->Skip(42+sizeof(bool));
+-								pFile->Read(&stereo,sizeof(bool));
++								pFile->Read(stereo); // modland: as a bool, 0 or 1
+ 								pFile->Skip(wltemp);
+ 								if(stereo)pFile->Skip(wltemp);
+ 							}
+@@ -2114,12 +2155,21 @@
+ 				VSTLoader vstL[OLD_MAX_PLUGINS]; 
+ 				for (int i=0; i<OLD_MAX_PLUGINS; i++)
+ 				{
+-					pFile->Read(&vstL[i].valid,sizeof(bool));
++					unsigned char valid = 0; // modland: a byte of the file is a bool when it is 0 or 1 only
++					pFile->Read(&valid,sizeof(valid));
++					vstL[i].valid = valid != 0;
+ 					if( vstL[i].valid )
+ 					{
+ 						pFile->Read(vstL[i].dllName,sizeof(vstL[i].dllName));
++						vstL[i].dllName[sizeof(vstL[i].dllName) - 1] = 0; // modland: the file need not end it
+ 						_strlwr(vstL[i].dllName);
+ 						pFile->Read(&(vstL[i].numpars), sizeof(int32_t));
++						// modland: no more parameters than the file holds
++						if(vstL[i].numpars < 0 || !pFile->Holds(static_cast<std::size_t>(vstL[i].numpars) * sizeof(float)))
++						{
++							vstL[i].valid = false;
++							RiffFile::Damaged("a VST machine");
++						}
+ 						vstL[i].pars = new float[vstL[i].numpars];
+ 
+ 						for (int c=0; c<vstL[i].numpars; c++)
+@@ -2133,7 +2183,11 @@
+ 				::Sleep(1);
+ 				// Machines
+ 				//
+-				pFile->Read(&_machineActive[0], sizeof(_machineActive));
++				{	// modland: a byte of the file is a bool when it is 0 or 1 only
++					unsigned char active[sizeof(_machineActive)] = {0};
++					pFile->Read(active, sizeof(active));
++					for (std::size_t a = 0; a < sizeof(active); ++a) _machineActive[a] = active[a] != 0;
++				}
+ 				Machine* pMac[128];
+ 				memset(pMac,0,sizeof(pMac));
+ 
+@@ -2162,6 +2216,7 @@
+ 						else switch (type)
+ 						{
+ 						case MACH_MASTER:
++							if (i != 0) RiffFile::Damaged("a second master"); // modland: machine 0 is the master, and only it
+ 							pMac[i] = _pMachine[MASTER_INDEX];
+ 							pMac[i]->Init();
+ 							pMac[i]->Load(pFile);
+@@ -2221,6 +2276,7 @@
+ 								// the newly created plugin.
+ 								pTempMac->PreLoad(pFile,program,instance);
+ 								assert(instance < OLD_MAX_PLUGINS);
++								if(instance < 0 || instance >= OLD_MAX_PLUGINS) RiffFile::Damaged("a VST machine"); // modland: the assert is not in a release build
+ 								int32_t shellIdx=0;
+ 								if((!vstL[instance].valid) || (!Global::machineload().lookupDllName(vstL[instance].dllName,temp,MACH_VST,shellIdx)))
+ 								{
+@@ -2334,7 +2390,7 @@
+ 					// is missing, then it is always tagged as a generator.
+ 					for (int i = 0; i < 64; i++)
+ 					{
+-						if (busMachine[i] != 255) invmach[busMachine[i]]=i;
++						if (busMachine[i] < 128) invmach[busMachine[i]]=i; // modland: was "!= 255", past the end
+ 					}
+ 					for ( int i=1;i<128;i++ ) // machine 0 is the Master machine.
+ 					{
+@@ -2386,11 +2442,11 @@
+ 						else if (pMac[busEffect[i]]->_mode == MACHMODE_GENERATOR)
+ 						{
+ 							int k=0;
+-							while (busEffect[k] != 255 && k<MAX_BUSES) 
++							while (k<MAX_BUSES && busEffect[k] != 255) // modland: k is checked first
+ 							{
+ 								k++;
+ 							}
+-							busMachine[k]=busEffect[i];
++							if (k<MAX_BUSES) busMachine[k]=busEffect[i]; // modland: and not written past the end
+ 							busEffect[i]=255;
+ 						}
+ 					}
+@@ -2408,11 +2464,11 @@
+ 						else if ( pMac[busMachine[i]]->_mode != MACHMODE_GENERATOR)
+ 						{
+ 							int j=0;
+-							while (busEffect[j] != 255 && j<MAX_BUSES) 
++							while (j<MAX_BUSES && busEffect[j] != 255) // modland: j is checked first
+ 							{
+ 								j++;
+ 							}
+-							busEffect[j]=busMachine[i];
++							if (j<MAX_BUSES) busEffect[j]=busMachine[i]; // modland: and not written past the end
+ 							busMachine[i]=255;
+ 						}
+ 					}
+@@ -2515,10 +2571,11 @@
+ 					if (busEffect[i] != 255) invmach[busEffect[i]]=i+64;
+ 				}
+ 				invmach[0]=MASTER_INDEX;
++				if (!pMac[0] || pMac[0] != _pMachine[MASTER_INDEX]) RiffFile::Damaged("the master is missing"); // modland: machine 0 is the master
+ 
+ 				for (int i = 0; i < 128; i++)
+ 				{
+-					if (invmach[i] != 255)
++					if (invmach[i] != 255 && pMac[i]) // modland: and there is a machine
+ 					{
+ 						Machine *cMac = _pMachine[invmach[i]] = pMac[i];
+ 						cMac->_macIndex = invmach[i];
+@@ -2533,15 +2590,16 @@
+ 				{
+ 					if (_machineActive[i])
+ 					{
++						// modland: a machine for which there is no room is not put over another, nor over the master
+ 						if ( pMac[i]->_mode == MACHMODE_GENERATOR)
+ 						{
+-							while (_pMachine[j] && j<64) j++;
+-							_pMachine[j]=pMac[i];
++							while (j<64 && _pMachine[j]) j++;
++							if (j<64) _pMachine[j]=pMac[i]; else RiffFile::Damaged("too many machines");
+ 						}
+ 						else
+ 						{
+-							while (_pMachine[k] && k<128) k++;
+-							_pMachine[k]=pMac[i];
++							while (k<128 && _pMachine[k]) k++;
++							if (k<128) _pMachine[k]=pMac[i]; else RiffFile::Damaged("too many machines");
+ 						}
+ 					}
+ 				}
+@@ -2560,7 +2618,7 @@
+ 				{
+ 					if( vstL[i].valid )
+ 					{
+-						zapObject(vstL[i].pars);
++						zapArray(vstL[i].pars); // modland: was zapObject, delete of what new[] made
+ 					}
+ 				}
+ 				_saved=true;
+--- a/psycle/src/psycle/host/XMInstrument.cpp
++++ b/psycle/src/psycle/host/XMInstrument.cpp
+@@ -329,19 +329,25 @@
+ 				else { m_VibratoType = WaveData<>::WaveForms::SINUS; }
+ 			}
+ 
++			// modland: the sizes are checked, and a sample too short for its length is not played
+ 			riffFile.Read(size1);
++			if(!riffFile.Holds(size1)) RiffFile::Damaged("a sample");
+ 			unsigned char * pData = new unsigned char[size1];
+ 			riffFile.Read((void*)pData,size1);
+-			SoundDesquash(pData, &m_pWaveDataL);
++			std::size_t unpacked = 0;
++			bool ok = SoundDesquash(pData, size1, &m_pWaveDataL, &unpacked) ? unpacked >= m_WaveLength : m_WaveLength == 0;
+ 			delete[] pData;
++			if(!ok) RiffFile::Damaged("a sample");
+ 			
+ 			if (m_WaveStereo)
+ 			{
+ 				riffFile.Read(size2);
++				if(!riffFile.Holds(size2)) RiffFile::Damaged("a sample");
+ 				pData = new unsigned char[size2];
+ 				riffFile.Read(pData,size2);
+-				SoundDesquash(pData, &m_pWaveDataR);
++				ok = SoundDesquash(pData, size2, &m_pWaveDataR, &unpacked) ? unpacked >= m_WaveLength : m_WaveLength == 0;
+ 				delete[] pData;
++				if(!ok) RiffFile::Damaged("a sample");
+ 			}
+ 		}
+ 
+@@ -357,6 +363,16 @@
+ 		}
+ 		
+ 		template <class T> 
++		bool XMInstrument::WaveData<T>::SoundDesquash(uint8_t const * pSourcePos, std::size_t sourceSize, int16_t ** pDestination, std::size_t * pDestinationSize) {
++			return DataCompression::SoundDesquash( pSourcePos, sourceSize, pDestination, pDestinationSize);
++		}
++
++		template <class T> 
++		bool XMInstrument::WaveData<T>::SoundDesquash(uint8_t const * pSourcePos, std::size_t sourceSize, float ** pDestination, std::size_t * pDestinationSize) {
++			return false; // not implemented, as the one above
++		}
++
++		template <class T> 
+ 		std::size_t XMInstrument::WaveData<T>::SoundSquash(int16_t const * pSource, uint8_t ** pDestination, std::size_t size) const {
+ 			return DataCompression::SoundSquash( pSource, pDestination, size);
+ 		}
+@@ -971,7 +987,7 @@
+ 			riffFile.Read(m_FilterCutoff);
+ 			riffFile.Read(m_FilterResonance);
+ 			{ uint16_t unused(0); riffFile.Read(unused); }
+-			{ uint32_t i(0); riffFile.Read(i); m_FilterType = static_cast<dsp::FilterType>(i); }
++			{ uint32_t i(0); riffFile.Read(i); m_FilterType = static_cast<dsp::FilterType>(i < dsp::F_NUMFILTERS ? i : dsp::F_NONE); } // modland: a type there is, or none
+ 
+ 			riffFile.Read(m_RandomVolume);
+ 			riffFile.Read(m_RandomPanning);
+--- a/psycle/src/psycle/host/XMInstrument.hpp
++++ b/psycle/src/psycle/host/XMInstrument.hpp
+@@ -254,6 +254,8 @@
+ 
+ 			bool SoundDesquash(uint8_t const * pSourcePos, int16_t ** pDestination);
+ 			bool SoundDesquash(uint8_t const * pSourcePos, float ** pDestination);
++			bool SoundDesquash(uint8_t const * pSourcePos, std::size_t sourceSize, int16_t ** pDestination, std::size_t * pDestinationSize); // modland
++			bool SoundDesquash(uint8_t const * pSourcePos, std::size_t sourceSize, float ** pDestination, std::size_t * pDestinationSize); // modland
+ 			std::size_t SoundSquash(int16_t const * pSource, uint8_t ** pDestination, std::size_t size) const;
+             std::size_t SoundSquash(float const * pSource , uint8_t ** pDestination, std::size_t size) const;
+ 
+--- a/psycle-helpers/src/psycle/helpers/datacompression.cpp
++++ b/psycle-helpers/src/psycle/helpers/datacompression.cpp
+@@ -435,4 +435,74 @@
+ 	return false;
+ }
+ 
++// modland: the decompressors above, for data that may be damaged.
++bool BEERZ77Decomp2(uint8_t const * pSource, std::size_t sourceSize, uint8_t ** pDestination, std::size_t * pDestinationSize) {
++	if(!pSource || sourceSize < 5 || pSource[0] != 0x04) return false;
++	uint32_t const FileSize = ReadLittleEndian32(pSource + 1);
++	// a token of 3 bytes gives at most 255 + MIN_REDUNDANT_BYTES_2 bytes
++	if(FileSize > 0x7fffffff || FileSize / (255 + MIN_REDUNDANT_BYTES_2) > sourceSize / 3 + 1) return false;
++	uint8_t const * pSourcePos = pSource + 5;
++	uint8_t const * const pSourceEnd = pSource + sourceSize;
++	uint8_t * const pDest = new uint8_t[FileSize ? FileSize : 1];
++	uint8_t * pDestPos = pDest;
++	std::size_t left = FileSize;
++	while(left > 0) {
++		if(pSourcePos >= pSourceEnd) { delete[] pDest; return false; }
++		std::size_t Length = *pSourcePos++;
++		if(Length) {
++			if(Length > left || Length > static_cast<std::size_t>(pSourceEnd - pSourcePos)) { delete[] pDest; return false; }
++			std::memcpy(pDestPos, pSourcePos, Length);
++			pSourcePos += Length;
++		} else {
++			if(pSourceEnd - pSourcePos < 2) { delete[] pDest; return false; }
++			Length = static_cast<std::size_t>(*pSourcePos++) + MIN_REDUNDANT_BYTES_2;
++			std::size_t const Offset = *pSourcePos++;
++			if(Length > left || Offset + Length > static_cast<std::size_t>(pDestPos - pDest)) { delete[] pDest; return false; }
++			std::memcpy(pDestPos, pDestPos - Offset - Length, Length);
++		}
++		pDestPos += Length;
++		left -= Length;
++	}
++	*pDestination = pDest;
++	*pDestinationSize = FileSize;
++	return true;
++}
++
++bool SoundDesquash(uint8_t const * pSource, std::size_t sourceSize, int16_t ** pDestination, std::size_t * pDestinationSize) {
++	if(!pSource || sourceSize < 5 || pSource[0] != 0x01) return false;
++	static const int16_t mask[16] = {
++		0x0000, 0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f,
++		0x00ff, 0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff
++	};
++	uint32_t const FileSize = ReadLittleEndian32(pSource + 1);
++	std::size_t const bitsThere = (sourceSize - 5) * 8;
++	// a sample takes 5 bits at least
++	if(FileSize > bitsThere / 5) return false;
++	int16_t * const pDest = new int16_t[FileSize ? FileSize : 1];
++	std::size_t bit = 0;
++	int16_t prevprev = 0;
++	int16_t prev = 0;
++	for(uint32_t n = 0; n < FileSize; ++n) {
++		// the 32 bits from the byte of this sample on, as the original reads them; past the end they are 0
++		std::size_t const at = 5 + bit / 8;
++		uint32_t bits = 0;
++		for(int k = 3; k >= 0; --k) bits = (bits << 8) | (at + k < sourceSize ? pSource[at + k] : 0);
++		bits >>= bit % 8;
++		int const numbits = bits & 0x0f;
++		uint32_t const sign = bits & 0x010;
++		bits >>= 5;
++		if(bit + numbits + 5 > bitsThere) { delete[] pDest; return false; }
++		int16_t error = static_cast<int16_t>(bits & mask[numbits]);
++		if(sign) error |= static_cast<int16_t>((0xffff << numbits) & 0xffff);
++		int16_t const t = ((prev + (prev - prevprev)) + error) & 0xffff;
++		pDest[n] = t;
++		prevprev = prev;
++		prev = t;
++		bit += numbits + 5;
++	}
++	*pDestination = pDest;
++	*pDestinationSize = FileSize;
++	return true;
++}
++
+ }}}
+--- a/psycle-helpers/src/psycle/helpers/datacompression.hpp
++++ b/psycle-helpers/src/psycle/helpers/datacompression.hpp
+@@ -35,4 +35,11 @@
+ /// remember to delete your destination when done!
+ bool SoundDesquash(uint8_t const * source, int16_t ** destination);
+ 
++/// modland: the same two, for data from a file that may be damaged: they read no more
++/// than source_size bytes and write no more than they allocate. On success the size of
++/// the destination (in bytes, in samples) is in *destination_size; on failure false is
++/// returned and nothing is allocated.
++bool BEERZ77Decomp2(uint8_t const * source, std::size_t source_size, uint8_t ** destination, std::size_t * destination_size);
++bool SoundDesquash(uint8_t const * source, std::size_t source_size, int16_t ** destination, std::size_t * destination_size);
++
+ }}}
+--- a/psycle-helpers/src/psycle/helpers/filter.cpp
++++ b/psycle-helpers/src/psycle/helpers/filter.cpp
+@@ -328,7 +328,16 @@
+ 
+ void Filter::Update()
+ {
+-	if (_type == F_NONE) {
++	// modland: the type, cutoff and resonance come from the song file unchecked. Where
++	// they point outside the table of coefficients, the filter lets the sound through;
++	// inside it they read what they always read (a cutoff over 127 gives the next
++	// type's coefficients, as it did).
++	int type = static_cast<int>(_type);
++	if (type > F_NONE) type--;
++	const long flat = (static_cast<long>(type) * 128 + _cutoff) * 128 + _q;
++	const long entries = sizeof FilterCoeff::singleton._coeffs / sizeof FilterCoeff::singleton._coeffs[0][0][0];
++	if (_type == F_NONE || static_cast<int>(_type) < 0 || static_cast<int>(_type) >= F_NUMFILTERS
++		|| flat < 0 || flat >= entries) {
+ 		_coeff0 =  1;
+ 		_coeff1 =  0;
+ 		_coeff2 =  0;
+@@ -337,13 +346,12 @@
+ 		return;
+ 	}
+ 	else {
+-		int type = _type;
+-		if (type > F_NONE) type--;
+-		_coeff0 = FilterCoeff::singleton._coeffs[type][_cutoff][_q][0];
+-		_coeff1 = FilterCoeff::singleton._coeffs[type][_cutoff][_q][1];
+-		_coeff2 = FilterCoeff::singleton._coeffs[type][_cutoff][_q][2];
+-		_coeff3 = FilterCoeff::singleton._coeffs[type][_cutoff][_q][3];
+-		_coeff4 = FilterCoeff::singleton._coeffs[type][_cutoff][_q][4];
++		const float * const c = &FilterCoeff::singleton._coeffs[0][0][0][0] + flat * 5;
++		_coeff0 = c[0];
++		_coeff1 = c[1];
++		_coeff2 = c[2];
++		_coeff3 = c[3];
++		_coeff4 = c[4];
+ 	}
+ }
+ 
+--- a/psycle-plugins/src/psycle/plugins/alk_muter/alk_muter.cpp
++++ b/psycle-plugins/src/psycle/plugins/alk_muter/alk_muter.cpp
+@@ -96,13 +96,15 @@
+ 		while(sample_count--) *left_samples++ = *right_samples++ = 0;
+ 	} else if (Vals[0]){
+ 		// mute enabled
+-		while(volume>0.01f && sample_count--) {
++		// modland: was "volume>0.01f && sample_count--" and then "sample_count++", which,
++		// when the volume ended the loop, zeroed one sample past the end of the block
++		while(sample_count > 0 && volume>0.01f) {
+ 			(*left_samples)*=volume; (*right_samples)*=volume;
+ 			left_samples++; right_samples++;
+ 			volume-=slope;
++			--sample_count;
+ 		}
+-		sample_count++;
+-		while(sample_count--) *left_samples++ = *right_samples++ = 0;
++		while(sample_count-- > 0) *left_samples++ = *right_samples++ = 0;
+ 		if (volume<=0.01f) {
+ 			change=false;
+ 		}

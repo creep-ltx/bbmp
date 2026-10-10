@@ -1,0 +1,18 @@
+Mariopants 1.1, by Brad Smith (rainwarrior), http://rainwarrior.ca, released
+17 December 2013.
+
+bbmp-retro's "shroom" engine takes the Mario Paint song format and the way of
+playing it from Mariopants' files.cpp and player.cpp, written again for the player
+(songs end at their last note); its note recordings are made at build time from
+Mariopants' data/notes.wav. Its terms (source.txt):
+
+  This source code is released without any standardized license.
+  The user is permitted to modify, reuse and redistribute it as needed,
+  but please try to attribute its original author and mark changes,
+  so that it is not misrepresented.
+  
+  The included data files are presumed fair to use, but they are, for the most part,
+  extracted from the original Mario Paint game. This author does not claim copyright
+  or ownership of these data files.
+
+This is that credit; the changes are marked in csrc/retro/shroom_engine.cpp.

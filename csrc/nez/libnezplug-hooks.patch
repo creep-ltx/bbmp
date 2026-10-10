@@ -1,0 +1,247 @@
+diff --git a/src/format/m_gbr.c b/src/format/m_gbr.c
+--- a/src/format/m_gbr.c
++++ b/src/format/m_gbr.c
+@@ -278,9 +278,10 @@ static void gbr_write_E000(GBRDMG *THIS_
+ 		THIS_->highram[a & 0x7f] = (uint8_t)v;
+ 	else if (a < 0xfe00)
+ 		THIS_->ram[a & 0x1fff] = (uint8_t)v;
+-	else if (0xff10 <= a &&  a <= 0xff3f)
++	else if (0xff10 <= a &&  a <= 0xff3f) {
++		if (nez_hook_write) nez_hook_write(a, v);
+ 		THIS_->dmgsnd->write(THIS_->dmgsnd->ctx, a, v);
+-	else {
++	} else {
+ 		THIS_->io[a & 0x1ff] = (uint8_t)v;
+ 		switch (a)
+ 		{
+@@ -536,7 +537,16 @@ static uint32_t gbr_read_event(void *ctx
+ 	if (THIS_->readproc[page])
+ 		return THIS_->readproc[page](THIS_, a);
+ 	else
+-		return THIS_->readmap[page][a];
++	{
++		uint8_t *p = THIS_->readmap[page] + a;
++		if (nez_hook_seen && p >= THIS_->bankrom && (size_t)(p - THIS_->bankrom) < nez_hook_seen_size
++			&& !nez_hook_seen[p - THIS_->bankrom])
++		{
++			nez_hook_seen[p - THIS_->bankrom] = 1;
++			nez_hook_fresh++;
++		}
++		return *p;
++	}
+ }
+ 
+ static void gbr_write_event(void *ctx, uint32_t a, uint32_t v)
+@@ -555,6 +565,7 @@ static void gbr_vsync_event(KMEVENT *eve
+     (void)curid;
+ 
+ 	gbr_vsync_setup(THIS_);
++	if (nez_hook_frame) nez_hook_frame();
+ 	THIS_->gb_IF |= 1;
+ 	THIS_->ctx.regs8[REGID_INTREQ] |= 1;
+ 	//---+ [changes_rough.txt]
+@@ -572,6 +583,7 @@ static void gbr_timer_event(KMEVENT *eve
+     (void)curid;
+ 	THIS_->gb_TIMA = THIS_->gb_TMA;
+ 	gbr_timer_setup(THIS_);
++	if (nez_hook_frame) nez_hook_frame();
+ 	THIS_->gb_IF |= 4;
+ 	THIS_->ctx.regs8[REGID_INTREQ] |= 4;
+ 	//---+ [changes_rough.txt]
+diff --git a/src/format/m_sgc.c b/src/format/m_sgc.c
+--- a/src/format/m_sgc.c
++++ b/src/format/m_sgc.c
+@@ -17,6 +17,7 @@
+ 
+ #define SHIFT_CPS 15
+ #define BASECYCLES       (3579545)
++#define SGC_CLOCK(t)     (((t)->clockmode & 1) ? 3546893 : BASECYCLES)
+ 
+ #define EXTDEVICE_SNG		(1 << 1)
+ 
+@@ -179,6 +180,7 @@ static uint32_t sgc_busread_event(void *
+ static uint32_t sgc_read_event(void *ctx, uint32_t a)
+ {
+ 	SGCSEQ *THIS_ = ctx;
++	if(a<0x2000 && a>=8 && THIS_->systype == SGC_SYNTHMODE_CV) nez_hook_bios++;
+ 	if(a<0x400)
+ 	{
+ 		return THIS_->bios[a];
+@@ -189,12 +191,26 @@ static uint32_t sgc_read_event(void *ctx
+ 	}
+ 	else if (THIS_->readmap[a >> 13])
+ 	{
+-		return THIS_->readmap[a >> 13][a&0x1fff];
++		uint8_t *p = THIS_->readmap[a >> 13] + (a&0x1fff);
++		if (nez_hook_seen && p >= THIS_->data && (size_t)(p - THIS_->data) < nez_hook_seen_size
++			&& !nez_hook_seen[p - THIS_->data])
++		{
++			nez_hook_seen[p - THIS_->data] = 1;
++			nez_hook_fresh++;
++		}
++		return *p;
+ 	}
+ 	return 0x00;
+ }
+ 
+ 
++/* modland: the offset of a ROM bank. A bank the file doesn't have wraps round, as
++ * the mapper's address lines do, instead of pointing past the data. */
++static uint32_t sgc_bank(SGCSEQ *THIS_, uint32_t n)
++{
++	return (n % THIS_->banknum) * 0x4000;
++}
++
+ static void sgc_write_event(void *ctx, uint32_t a, uint32_t v)
+ {
+ 	SGCSEQ *THIS_ = ctx;
+@@ -203,9 +219,9 @@ static void sgc_write_event(void *ctx, u
+ 	{
+ 		uint8_t b = (a & 0x3);
+ 		THIS_->mappernum[b] = v;
+-		if(THIS_->readmap[4]==THIS_->ram && a==0xffff)return;
+-		THIS_->readmap[b*2-2] = THIS_->data + THIS_->mappernum[b] * 0x4000;
+-		THIS_->readmap[b*2-1] = THIS_->data + THIS_->mappernum[b] * 0x4000 + 0x2000;
++		if(THIS_->readmap[4]==THIS_->ram+0x2000 && a==0xffff)return;
++		THIS_->readmap[b*2-2] = THIS_->data + sgc_bank(THIS_, THIS_->mappernum[b]);
++		THIS_->readmap[b*2-1] = THIS_->data + sgc_bank(THIS_, THIS_->mappernum[b]) + 0x2000;
+ 		THIS_->writemap[b*2-2] = 0;
+ 		THIS_->writemap[b*2-1] = 0;
+ 
+@@ -214,15 +230,15 @@ static void sgc_write_event(void *ctx, u
+ 	{
+ 		if(v&0x8){
+ 			//RAM
+-			THIS_->readmap [4] = THIS_->ram;
+-			THIS_->writemap[4] = THIS_->ram;
+-			THIS_->readmap [5] = THIS_->ram;
+-			THIS_->writemap[5] = THIS_->ram;
++			THIS_->readmap [4] = THIS_->ram+0x2000;
++			THIS_->writemap[4] = THIS_->ram+0x2000;
++			THIS_->readmap [5] = THIS_->ram+0x4000;
++			THIS_->writemap[5] = THIS_->ram+0x4000;
+ 		}else{
+ 			//ROM
+-			THIS_->readmap [4] = THIS_->data + THIS_->mappernum[3] * 0x4000;
++			THIS_->readmap [4] = THIS_->data + sgc_bank(THIS_, THIS_->mappernum[3]);
+ 			THIS_->writemap[4] = 0;
+-			THIS_->readmap [5] = THIS_->data + THIS_->mappernum[3] * 0x4000 + 0x2000;
++			THIS_->readmap [5] = THIS_->data + sgc_bank(THIS_, THIS_->mappernum[3]) + 0x2000;
+ 			THIS_->writemap[5] = 0;
+ 		}
+ 
+@@ -244,6 +260,7 @@ static void sgc_iowrite_eventSMS(void *c
+ {
+ 	SGCSEQ *THIS_ = ctx;
+ 	a &= 0xff;
++	if (nez_hook_write && ((a & 0xfe) == 0x7e || a == 0x06 || (a & 0xfe) == 0xf0)) nez_hook_write(a, v);
+ 	if ((a & 0xfe) == 0x7e)
+ 		THIS_->sndp[SND_SNG]->write(THIS_->sndp[SND_SNG]->ctx, 0, v);
+ 	else if (a == 0x06)
+@@ -264,6 +281,7 @@ static void sgc_iowrite_eventCV(void *ct
+ {
+ 	SGCSEQ *THIS_ = ctx;
+ 	a &= 0xff;
++	if (nez_hook_write && (a & 0xe0) == 0xe0) nez_hook_write(a, v);
+ 	if ((a & 0xe0) == 0xe0)
+ 		THIS_->sndp[SND_SNG]->write(THIS_->sndp[SND_SNG]->ctx, a & 1, v);
+ }
+@@ -273,6 +291,7 @@ static void sgc_vsync_event(KMEVENT *eve
+     (void)event;
+     (void)curid;
+ 	sgc_vsync_setup(THIS_);
++	if (nez_hook_frame) nez_hook_frame();
+ 	if (THIS_->ctx.regs8[REGID_HALTED]) sgc_play_setup(THIS_, THIS_->playaddr);
+ }
+ 
+@@ -290,7 +309,7 @@ static void sgc_reset(NEZ_PLAY *pNezPlay
+ 	/* sound reset */
+ 	for (i = 0; i < SND_MAX; i++)
+ 	{
+-		if (THIS_->sndp[i]) THIS_->sndp[i]->reset(THIS_->sndp[i]->ctx, BASECYCLES, freq);
++		if (THIS_->sndp[i]) THIS_->sndp[i]->reset(THIS_->sndp[i]->ctx, SGC_CLOCK(THIS_), freq);
+ 	}
+ 
+ 	/* memory reset */
+@@ -314,6 +333,13 @@ static void sgc_reset(NEZ_PLAY *pNezPlay
+ 		THIS_->writemap[4] = 0;
+ 		THIS_->readmap [5] = THIS_->data + THIS_->mappernum[3] * 0x4000 + 0x2000;
+ 		THIS_->writemap[5] = 0;
++		if (THIS_->mappernum[0] & 0x8)
++		{
++			THIS_->readmap [4] = THIS_->ram+0x2000;
++			THIS_->writemap[4] = THIS_->ram+0x2000;
++			THIS_->readmap [5] = THIS_->ram+0x4000;
++			THIS_->writemap[5] = THIS_->ram+0x4000;
++		}
+ 		//C000-FFFF : RAM
+ 		THIS_->readmap [6] = THIS_->ram;
+ 		THIS_->writemap[6] = THIS_->ram;
+@@ -405,7 +431,7 @@ static void sgc_reset(NEZ_PLAY *pNezPlay
+ 	kmevent_setevent(&THIS_->kme, THIS_->vsync_id, sgc_vsync_event, THIS_);
+ 	THIS_->cpsgap = THIS_->cpsrem  = 0;
+ 	THIS_->cpfrem  = 0;
+-	THIS_->cps = DivFix(BASECYCLES, freq, SHIFT_CPS);
++	THIS_->cps = DivFix(SGC_CLOCK(THIS_), freq, SHIFT_CPS);
+ 	if (THIS_->clockmode&0x1)
+ 		THIS_->cpf = (4 * 342 * 313 / 6) << SHIFT_CPS;
+ 	else
+@@ -612,6 +638,10 @@ RAM Bank      (8000-BFFF): %d\r\n\
+ 		THIS_->datasize = uSize - headersize;
+ 		if (THIS_->datasize > 0x8000)
+ 			THIS_->datasize = 0x10000 - THIS_->loadaddr;
++		/* modland: the data goes to 8000-FFFF, and no further */
++		if (THIS_->loadaddr < 0x8000) return NEZ_NESERR_PARAMETER;
++		if (THIS_->loadaddr + THIS_->datasize > 0x10000)
++			THIS_->datasize = 0x10000 - THIS_->loadaddr;
+ 		THIS_->data = XMALLOC(THIS_->banksize * THIS_->banknum + 8);
+ 		if (!THIS_->data) return NEZ_NESERR_SHORTOFMEMORY;
+ 
+@@ -714,6 +744,7 @@ PROTECTED uint32_t SGCLoad(NEZ_PLAY *pNe
+ }
+ #undef SHIFT_CPS
+ #undef BASECYCLES
++#undef SGC_CLOCK
+ #undef EXTDEVICE_SNG
+ #undef EXTDEVICE_FMUNIT
+ #undef EXTDEVICE_GGSTEREO
+diff --git a/src/format/nezplug.c b/src/format/nezplug.c
+--- a/src/format/nezplug.c
++++ b/src/format/nezplug.c
+@@ -15,6 +15,13 @@
+ #include "m_sgc.h"
+ #include "../common/util.h"
+ 
++void (*nez_hook_write)(uint32_t addr, uint32_t value) = 0;
++void (*nez_hook_frame)(void) = 0;
++uint8_t *nez_hook_seen = 0;
++uint32_t nez_hook_seen_size = 0;
++uint32_t nez_hook_fresh = 0;
++uint32_t nez_hook_bios = 0;
++
+ static Inline uint32_t fix_track(NEZ_PLAY *pNezPlay, uint32_t track)
+ {
+     if(track < 1) track = 1;
+diff --git a/src/include/nezplug/nezplug.h b/src/include/nezplug/nezplug.h
+--- a/src/include/nezplug/nezplug.h
++++ b/src/include/nezplug/nezplug.h
+@@ -230,6 +230,19 @@ struct NEZ_PLAY_ {
+ 	void *nsdp;
+ };
+ 
++/* modland: the caller is told of every write to a sound chip and of every
++ * interrupt that calls the song's play routine (both may be NULL) */
++extern void (*nez_hook_write)(uint32_t addr, uint32_t value);
++extern void (*nez_hook_frame)(void);
++/* modland: one byte per byte of the song's ROM, set when the program reads it;
++ * nez_hook_fresh counts the bytes read for the first time */
++extern uint8_t *nez_hook_seen;
++extern uint32_t nez_hook_seen_size;
++extern uint32_t nez_hook_fresh;
++/* modland: how often a ColecoVision song read the BIOS ROM (past the first bytes,
++ * where the player's own code is) */
++extern uint32_t nez_hook_bios;
++
+ /* NEZ player */
+ NEZ_PLAY* NEZNew();
+ void NEZDelete(NEZ_PLAY*);

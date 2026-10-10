@@ -1,0 +1,10 @@
+Ay_Emul (AY-3-8910/12 Emulator), by Sergey Vladimirovich Bulba, (c) 1999-2025.
+http://ay.strangled.net/
+
+bbmp-ay's Flash Tracker (fls) and Fuxoft AY Language (fxm, amad) engines are ports
+of its players (Players.pas: FLS_Get_Registers, FXM_Get_Registers). Its terms
+(README.md and readme.txt of its source):
+
+  "You can use this source code freely, only do references to author (Sergey Bulba)."
+
+This is that reference; the two engines' source files say it too.

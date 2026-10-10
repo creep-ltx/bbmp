@@ -1,0 +1,21 @@
+StoneTracker's replay routine (StonePlayer_Hard.Bin, version 1.98), Emmanuel Marty and
+Michael Lavaire, from the free edition of StoneTracker 1.26 on Aminet
+(https://aminet.net/mus/edit/stonefree2.lha). bbmp-amiga assembles it into UADE's
+StoneTracker player and carries the archive and its readme whole, in share/stonetracker/.
+
+Its terms, from that readme (stonefree2.readme, 12 February 2001):
+
+  Today is february 2001. By popular demand, and as a tribute to the still active Amiga
+  communauty, the full program is re-released for free, where the demo always was, on
+  Aminet. Michael has been contacted and also agreed to this release.
+
+  - Full developer documentation for player and file format, with examples in Assembler
+    and C, link library for SAS; you can use the player library or include the player in
+    your programs ("system friendly" and "no operating system" (for games and demos)
+    versions provided)
+
+  We hope this full release will be appreciated by the undying Amiga enthusiasts. Feel
+  free to provide these archives for download on your own site, as long as you retain
+  this document.
+
+It is not open source: the routine is passed on as the archive gives it, with the readme.

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Run ByteBandit Music Player from the source tree. Symlink this into your PATH if you like:
+#   ln -s "$PWD/bbmp" ~/.local/bin/bbmp
+DIR="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
+# the clone's own Python environment (.venv, see README) if there is one
+PY=python3
+[ -x "$DIR/.venv/bin/python3" ] && PY="$DIR/.venv/bin/python3"
+PYTHONPATH="$DIR/src${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m bbmp "$@"

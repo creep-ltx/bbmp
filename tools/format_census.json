@@ -1,0 +1,8385 @@
+{
+ "AHX": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1390,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "AM Composer": {
+  "backends": {
+   "uade": 5
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "AND XSynth": {
+  "backends": {},
+  "best": null,
+  "failed": 1,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {}
+ },
+ "AProSys": {
+  "backends": {
+   "uade": 28
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 28,
+  "silent": 0,
+  "songs": 28,
+  "tried": 28,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "AXS": {
+  "backends": {
+   "axs": 26
+  },
+  "best": "axs",
+  "failed": 0,
+  "noise": 0,
+  "plays": 26,
+  "silent": 0,
+  "songs": 26,
+  "tried": 26,
+  "trouble": [],
+  "wins": {
+   "axs": 6
+  }
+ },
+ "AY Amadeus": {
+  "backends": {
+   "fxm": 33
+  },
+  "best": "fxm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 33,
+  "silent": 0,
+  "songs": 33,
+  "tried": 33,
+  "trouble": [],
+  "wins": {
+   "amad": 8,
+   "fxm": 8
+  }
+ },
+ "AY Emul": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1202,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3
+  }
+ },
+ "AY STRC": {
+  "backends": {
+   "strc": 1
+  },
+  "best": "strc",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ace Tracker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 57,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Actionamics": {
+  "backends": {
+   "uade": 1
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "Activision Pro": {
+  "backends": {
+   "uade": 25
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - ADL": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 43,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 3
+  }
+ },
+ "Ad Lib - AMusic": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 143,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - AMusic XMS": {
+  "backends": {
+   "adplug": 6
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - AdLib Tracker": {
+  "backends": {
+   "adplug": 1
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "adplug": 1
+  }
+ },
+ "Ad Lib - AdLib Tracker 2": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 278,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Apogee": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 201,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Beni Tracker": {
+  "backends": {
+   "adplug": 28
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 28,
+  "silent": 0,
+  "songs": 28,
+  "tried": 28,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Bob's AdLib Music": {
+  "backends": {
+   "adplug": 29
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 29,
+  "silent": 0,
+  "songs": 29,
+  "tried": 29,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Boom Tracker": {
+  "backends": {
+   "adplug": 6
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Creative Music File": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 459,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - DOSBox": {
+  "backends": {
+   "adplug": 2
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "adplug": 2
+  }
+ },
+ "Ad Lib - DeFy AdLib Tracker": {
+  "backends": {
+   "adplug": 3
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "adplug": 3
+  }
+ },
+ "Ad Lib - Digital FM": {
+  "backends": {
+   "adplug": 21
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 21,
+  "silent": 0,
+  "songs": 21,
+  "tried": 21,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Drum Traker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 15,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - EdLib D00": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 122,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - EdLib D01": {
+  "backends": {
+   "d01": 3
+  },
+  "best": "d01",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - EdLib Packed": {
+  "backends": {
+   "edlib": 17
+  },
+  "best": "edlib",
+  "failed": 23,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 179,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - getred1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - title3.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - icesub1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - lollys 4.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - conguru1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - icesub2.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - title9.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - conguru5.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - lolly3.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - candy1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - anotend1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - canhill2.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - dream1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - complet1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - momend1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - undi2.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - polly2.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - candlol1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - conguru2.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - gameov1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - dream9.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - sublev1.edl",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "not an EdLib song: it isn't packed the way EdLib packs",
+    "song": "Ad Lib/EdLib Packed/Drax/coop-Metal/lollypop - toysub2.edl",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "edlib": 2
+  }
+ },
+ "Ad Lib - Exotic AdLib": {
+  "backends": {
+   "adplug": 9
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Extra Simple Music": {
+  "backends": {
+   "adplug": 4
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "adplug": 4
+  }
+ },
+ "Ad Lib - FM Tracker": {
+  "backends": {
+   "fmtracker": 2
+  },
+  "best": "fmtracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "fmtracker": 2
+  }
+ },
+ "Ad Lib - FM-Kingtracker": {
+  "backends": {
+   "adplug": 7
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Faust Music Creator": {
+  "backends": {
+   "adplug": 7
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - HSC AdLib Composer": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 236,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Herad Music System": {
+  "backends": {
+   "adplug": 15
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 15,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Johannes Bjerregard Module": {
+  "backends": {
+   "adplug": 9
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Ken's AdLib Music": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 41,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Loudness Sound System": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 184,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - LucasArts": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 284,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - MK-Jamz": {
+  "backends": {
+   "adplug": 17
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - MPU-401 Trakker": {
+  "backends": {
+   "adplug": 2
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "adplug": 2
+  }
+ },
+ "Ad Lib - MUS": {
+  "backends": {
+   "samurai": 1
+  },
+  "best": "samurai",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "samurai": 1
+  }
+ },
+ "Ad Lib - Martin Fernandez": {
+  "backends": {
+   "adplug": 39
+  },
+  "best": "adplug",
+  "failed": 1,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 39,
+  "tried": 39,
+  "trouble": [
+   {
+    "backend": "adplug",
+    "note": "opens and gives no sound",
+    "song": "Ad Lib/Martin Fernandez/- unknown/Prophecy - Viking Child/loader.adlib",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Master Tracker": {
+  "backends": {
+   "adplug": 19
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 19,
+  "silent": 0,
+  "songs": 19,
+  "tried": 19,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Mlat Adlib Tracker": {
+  "backends": {
+   "adplug": 26
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 26,
+  "silent": 0,
+  "songs": 26,
+  "tried": 26,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Palladix": {
+  "backends": {
+   "adplug": 15
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 15,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Pixel Painters FMF": {
+  "backends": {
+   "pixelpainters": 11
+  },
+  "best": "pixelpainters",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - Pixel Painters FTF": {
+  "backends": {
+   "pixelpainters": 8
+  },
+  "best": "pixelpainters",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - Raw OPL Capture": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 316,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Reality AdLib Tracker": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 127,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "adplug",
+    "note": "",
+    "song": "Ad Lib/Reality AdLib Tracker/Shayde/canon in d.rad",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - SNG Player": {
+  "backends": {
+   "adplug": 2
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "adplug": 2
+  }
+ },
+ "Ad Lib - Screamtracker 3 AdLib": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 42,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 3,
+   "openmpt": 3,
+   "zxtune": 3
+  }
+ },
+ "Ad Lib - Shadowlands": {
+  "backends": {
+   "shadowlands": 1
+  },
+  "best": "shadowlands",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "shadowlands": 1
+  }
+ },
+ "Ad Lib - Sierra": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 104,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Sound Images Generation 2": {
+  "backends": {
+   "sig": 4
+  },
+  "best": "sig",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - Sound Interface System": {
+  "backends": {
+   "lem": 3
+  },
+  "best": "lem",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ad Lib - SoundFX Macs Opera": {
+  "backends": {
+   "adplug": 10
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Surprise! AdLib Tracker": {
+  "backends": {
+   "adplug": 28
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 28,
+  "silent": 0,
+  "songs": 28,
+  "tried": 28,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Surprise! AdLib Tracker 2.0": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 75,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Twin TrackPlayer": {
+  "backends": {
+   "adplug": 26
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 26,
+  "silent": 0,
+  "songs": 26,
+  "tried": 26,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Ultima 6": {
+  "backends": {
+   "adplug": 12
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 12,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Ad Lib - Vibrants": {
+  "backends": {
+   "vibrants": 1
+  },
+  "best": "vibrants",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "vibrants": 1
+  }
+ },
+ "Ad Lib - Visual Composer": {
+  "backends": {
+   "adplug": 40
+  },
+  "best": "adplug",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 247,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "adplug": 6
+  }
+ },
+ "Aero Studio": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 16,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "All Sound Tracker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 20,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Anders Oland": {
+  "backends": {
+   "uade": 17
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Archimedes Tracker": {
+  "backends": {
+   "xmp": 40
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 99,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "xmp": 5
+  }
+ },
+ "ArkosTracker": {
+  "backends": {
+   "aks": 2
+  },
+  "best": "aks",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "aks": 2
+  }
+ },
+ "Arpeggiator": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Art And Magic": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Art Of Noise": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 211,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Ashley Hogg": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {}
+ },
+ "Astroidea XMF": {
+  "backends": {
+   "openmpt": 9
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Asylum": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 42,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Atari Digi-Mix": {
+  "backends": {
+   "ym": 15
+  },
+  "best": "ym",
+  "failed": 0,
+  "noise": 0,
+  "plays": 15,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [],
+  "wins": {
+   "ym": 6
+  }
+ },
+ "Athtune": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Audio Sculpture": {
+  "backends": {
+   "xmp": 5
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "BP SoundMon 1": {
+  "backends": {
+   "uade": 1
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "BP SoundMon 2": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 214,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "BP SoundMon 3": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 121,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "BeRoTracker": {
+  "backends": {
+   "berotracker": 19
+  },
+  "best": "berotracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 19,
+  "silent": 0,
+  "songs": 19,
+  "tried": 19,
+  "trouble": [],
+  "wins": {
+   "berotracker": 6
+  }
+ },
+ "Beathoven Synthesizer": {
+  "backends": {
+   "uade": 32
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 31,
+  "silent": 1,
+  "songs": 32,
+  "tried": 32,
+  "trouble": [
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Beathoven Synthesizer/Thomas Lopatic/katakis loading v1.bss",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Beaver Sweeper": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 4,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Beepola": {
+  "backends": {
+   "beepola": 40
+  },
+  "best": "beepola",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 105,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "beepola": 5
+  }
+ },
+ "Ben Daglish": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 44,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Ben Daglish SID": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "BoyScout": {
+  "backends": {
+   "boyscout": 11
+  },
+  "best": "boyscout",
+  "failed": 1,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "the song is empty",
+    "song": "BoyScout/Aegis/inspiration (purple motion).bsf",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Buzz": {
+  "backends": {
+   "buzz": 10
+  },
+  "best": "buzz",
+  "failed": 30,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 51,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"ErsKick\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/high malaja.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"ErsKick\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/docking station.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Argüelles TB3003\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genosha/my first buzz song.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"WhiteNoise's Square\", a Windows plug-in that can't be played here",
+    "song": "Buzz/PS/tin coil (yoyo pull version).bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Matilde Tracker\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Mori/ss.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Bass 2\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Zephyr/chasing the dragon.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"And XGEN\", a Windows plug-in that can't be played here",
+    "song": "Buzz/And/outside of the dream.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"ErsKick\", a Windows plug-in that can't be played here",
+    "song": "Buzz/PS/(un)stuk anxiety.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"FSM PhatMan\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Fast Shadow/kaleidoscope.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"KBP's Reversor\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Hunz/sarah's song.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"M4\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/oscillators.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Tracker\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Xtra/f a i r n e s s.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 909\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/pinguins everywhere.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Tracker\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Yamauchi/cume hirby.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Tracker\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Mori/harusame.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Matilde Tracker (Mono)\", a Windows plug-in that can't be played here",
+    "song": "Buzz/X-Soul/testdrive.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 808\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/6 and a half orbits before.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Bass 2\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Knos/un et deux et trois font cinq.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Freeverb\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Opiate/opikriilatingroove1.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 909\", a Windows plug-in that can't be played here",
+    "song": "Buzz/PS/parsed siren.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Tracker\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Zephyr/nonfat milk.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"ErsSnare\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/substral projection.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Argüelles Pro2\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/mindstorm.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 808\", a Windows plug-in that can't be played here",
+    "song": "Buzz/GSO/via direkt.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Matilde Tracker (Mono)\", a Windows plug-in that can't be played here",
+    "song": "Buzz/X-Soul/synth fantasy.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"FSM Infector\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Hunz/you're still here.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 808\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Genox/like a kite.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola EQ-3\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Youp/angel dream.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Rout 808\", a Windows plug-in that can't be played here",
+    "song": "Buzz/Xanah/sunlight.bmx",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs the Buzz machine \"Jeskola Trilok\", a Windows plug-in that can't be played here",
+    "song": "Buzz/PS/warp core filters.bmx",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "buzz": 2
+  }
+ },
+ "Buzzic": {
+  "backends": {
+   "buz": 4
+  },
+  "best": "buz",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "buz": 4
+  }
+ },
+ "Buzzic 2": {
+  "backends": {
+   "buz": 12
+  },
+  "best": "buz",
+  "failed": 0,
+  "noise": 0,
+  "plays": 12,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [],
+  "wins": {
+   "buz": 6
+  }
+ },
+ "CBA": {
+  "backends": {
+   "openmpt": 11
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Capcom Q-Sound Format": {
+  "backends": {
+   "qsf": 40
+  },
+  "best": "qsf",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 298,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "qsf": 6
+  }
+ },
+ "Chiptracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 45,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Coconizer": {
+  "backends": {
+   "xmp": 40
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 57,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Composer 667": {
+  "backends": {
+   "openmpt": 1
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "openmpt": 1
+  }
+ },
+ "Composer 669": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 172,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Composer 670 (CDFM)": {
+  "backends": {
+   "openmpt": 36
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 36,
+  "silent": 0,
+  "songs": 36,
+  "tried": 36,
+  "trouble": [],
+  "wins": {}
+ },
+ "Compoz": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 4,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Core Design": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Cubic Tiny XM": {
+  "backends": {
+   "mxm": 2
+  },
+  "best": "mxm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "mxm": 2
+  }
+ },
+ "CustomMade": {
+  "backends": {
+   "uade": 10
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Cybertracker": {
+  "backends": {},
+  "best": null,
+  "failed": 1,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {}
+ },
+ "Cybertracker C64": {
+  "backends": {
+   "cybertracker": 32
+  },
+  "best": "cybertracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 32,
+  "silent": 0,
+  "songs": 32,
+  "tried": 32,
+  "trouble": [],
+  "wins": {
+   "cybertracker": 6
+  }
+ },
+ "DSMI Compact": {
+  "backends": {
+   "openmpt": 13
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Darius Zendeh": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "DarkWave Studio": {
+  "backends": {
+   "darkwave": 3
+  },
+  "best": "darkwave",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "darkwave": 3
+  }
+ },
+ "Dave Lowe": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 45,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Dave Lowe New": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 41,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "David Hanney": {
+  "backends": {
+   "uade": 8
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "David Whittaker": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 115,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Deflemask": {
+  "backends": {
+   "furnace": 78,
+   "zxtune": 1
+  },
+  "best": "furnace",
+  "failed": 21,
+  "noise": 0,
+  "plays": 79,
+  "silent": 0,
+  "songs": 1813,
+  "tried": 100,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Wolfteam_Template.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune",
+    "song": "Deflemask/Curriculum Crasher/Wolfteam_Template.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open EarnestEvans_Stg01.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tun",
+    "song": "Deflemask/Curriculum Crasher/EarnestEvans_Stg01.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Terranigma - Dark Side Field g (2).dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayf",
+    "song": "Deflemask/Alianger/Terranigma - Dark Side Field g (2).dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Alex E. - Ice Cap Zone.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID",
+    "song": "Deflemask/AlexE/Alex E. - Ice Cap Zone.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open I Want You WIP.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune li",
+    "song": "Deflemask/CordellCox/I Want You WIP.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Castlevania IV - Treasury Room ARC e.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidpla",
+    "song": "Deflemask/Alianger/Castlevania IV - Treasury Room ARC e.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open shooting stars.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune li",
+    "song": "Deflemask/punkofthedeath/shooting stars.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open NinjaSpiritForestWEDOINIT.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a ",
+    "song": "Deflemask/NARFNra/NinjaSpiritForestWEDOINIT.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Blaster Master - Area 4 (PCE Cover)-DownsampledDrums.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this ",
+    "song": "Deflemask/JetStar1997/Blaster Master - Area 4 (PCE Cover)-DownsampledDrums.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Hopes and Dreams.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune ",
+    "song": "Deflemask/SpoonyBard/Hopes and Dreams.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Falconite Lab Area.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tun",
+    "song": "Deflemask/Tobikomi/Falconite Lab Area.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Super Metroid - Brinstar Green MD e (2).dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sid",
+    "song": "Deflemask/Alianger/Super Metroid - Brinstar Green MD e (2).dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open magical chase ripple theme genesis.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayf",
+    "song": "Deflemask/bca759577/magical chase ripple theme genesis.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open MP Creative Exercise.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID t",
+    "song": "Deflemask/85NESplayer/MP Creative Exercise.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open alternative startup jingle (2).dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: n",
+    "song": "Deflemask/mihaelkyeah/alternative startup jingle (2).dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Theme of Solid Snake V2.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SI",
+    "song": "Deflemask/Speedy/Theme of Solid Snake V2.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open TFIV_LSA01j.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsi",
+    "song": "Deflemask/Fragmare/TFIV_LSA01j.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Rainbow Island title.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID t",
+    "song": "Deflemask/96N64player/Rainbow Island title.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open Tempest 2000 - Mind's Eye demo - quick edit.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator;",
+    "song": "Deflemask/Alianger/Tempest 2000 - Mind's Eye demo - quick edit.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open solomon_-_night_light.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID ",
+    "song": "Deflemask/Solomonster/solomon_-_night_light.dmf",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (furnace: the file on Modland is damaged: it was once sent as text, which turned every CR LF in it into LF; openmpt: libopenmpt can't open MM3 Wily 2.dmf; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsid",
+    "song": "Deflemask/MegaBytez/MM3 Wily 2.dmf",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Delitracker Custom": {
+  "backends": {
+   "uade": 38
+  },
+  "best": "uade",
+  "failed": 2,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 477,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open Marble Madness - Ultimate.cus; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load th",
+    "song": "Delitracker Custom/Larry Reed/Marble Madness - Ultimate.cus",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open Archon.cus; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "Delitracker Custom/Jon Freeman/Archon.cus",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Delta Music": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Delta Music 2": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 98,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Delta Packer": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Desire": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Digibooster": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 168,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Digibooster Pro": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 845,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digital Mugician": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 86,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Digital Mugician 2": {
+  "backends": {
+   "uade": 7
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Digital Mugician 3": {
+  "backends": {
+   "uade": 1
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "Digital Sonix And Chrome": {
+  "backends": {
+   "uade": 11
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {}
+ },
+ "Digital Sound And Music Interface": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 139,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digital Sound Interface Kit": {
+  "backends": {
+   "dsm": 7
+  },
+  "best": "dsm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "dsm": 7
+  }
+ },
+ "Digital Sound Interface Kit RIFF": {
+  "backends": {
+   "openmpt": 24
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 24,
+  "silent": 0,
+  "songs": 24,
+  "tried": 24,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digital Sound Studio": {
+  "backends": {
+   "uade": 30
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 30,
+  "silent": 0,
+  "songs": 30,
+  "tried": 30,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Digital Symphony": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 168,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digital Tracker DTM": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 114,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Digital Tracker MOD": {
+  "backends": {
+   "openmpt": 6
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digitrakker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 61,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Digitrekker": {
+  "backends": {
+   "digitrekker": 2
+  },
+  "best": "digitrekker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {}
+ },
+ "Dirk Bialluch": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Disorder Tracker 2": {
+  "backends": {
+   "openmpt": 9
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "DreamStation": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 28,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Dreamcast Sound Format": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 37,
+  "silent": 3,
+  "songs": 4534,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "zxtune",
+    "by": "hand",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-07.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "hand",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-07.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "hand",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-00.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/F355 Challenge - Passione Rossa (Naomi)/f355-003-00-00-00.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Power Stone (Naomi)/pstone-001-00-00-30.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Power Stone (Naomi)/pstone-001-00-00-39.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-01.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-01.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-02.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spawn - In The Demon's Hand (Naomi)/spawn-00-25.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-02.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-03.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-04.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-05.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-06.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-07.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-08.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-09.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-10.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-11.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-12.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-13.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-14.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-15.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-16.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-17.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-18.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-19.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Major League (Naomi)/super major league-007-03-01-13.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Major League (Naomi)/super major league-007-03-01-14.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-00.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-01.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-02.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-03.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-04.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-05.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-06.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-01.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-02.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-03.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-04.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-05.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-06.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-08.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-09.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-10.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-11.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-12.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-13.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-14.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-15.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-16.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-17.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-18.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-19.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-20.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-21.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-22.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-23.dsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Virtua NBA (Naomi)/virnba-03-00-25.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Virtua NBA (Naomi)/virnba-03-00-33.minidsf",
+    "state": "silent"
+   },
+   {
+    "backend": "zxtune",
+    "by": "find_silent",
+    "note": "an empty track of the rip: no music (two emulators agree)",
+    "song": "Dreamcast Sound Format/- unknown/Virtua Striker 3 (Naomi 2)/vs3-001-1c-00-12.minidsf",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Dynamic Studio Professional": {
+  "backends": {
+   "openmpt": 8
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Dynamic Synthesizer": {
+  "backends": {
+   "uade": 5
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "EarAche": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "EasyTrax": {
+  "backends": {
+   "openmpt": 8
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Electronic Music System": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Electronic Music System v6": {
+  "backends": {
+   "uade": 10
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Epic Megagames MASI": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 90,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Euphony": {
+  "backends": {
+   "eup": 40
+  },
+  "best": "eup",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1499,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "eup": 6
+  }
+ },
+ "Extreme Tracker": {
+  "backends": {
+   "openmpt": 3
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "FAC SoundTracker": {
+  "backends": {
+   "fac": 40
+  },
+  "best": "fac",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 644,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "fac": 6
+  }
+ },
+ "FM Tracker": {
+  "backends": {
+   "openmpt": 8
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "FM sound driver (FMP)": {
+  "backends": {
+   "fmp": 40
+  },
+  "best": "fmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 11527,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "fmp": 6
+  }
+ },
+ "Face The Music": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 95,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "FamiTracker": {
+  "backends": {
+   "furnace": 40
+  },
+  "best": "furnace",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1784,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "furnace": 3
+  }
+ },
+ "Farandole Composer": {
+  "backends": {
+   "openmpt": 37
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 37,
+  "silent": 0,
+  "songs": 37,
+  "tried": 37,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Fashion Tracker": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Fasttracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 2036,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Fasttracker 2": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 44283,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Follin Player II": {
+  "backends": {
+   "uade": 13
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Forgotten Worlds": {
+  "backends": {
+   "uade": 5
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 4,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Forgotten Worlds/Mark Cooksey/forgotten worlds level1&3.fw",
+    "state": "silent"
+   },
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Forgotten Worlds/Mark Cooksey/forgotten worlds intro.fw",
+    "state": "silent"
+   },
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Forgotten Worlds/Mark Cooksey/forgotten worlds intro2.fw",
+    "state": "silent"
+   },
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Forgotten Worlds/Mark Cooksey/forgotten worlds level2&4.fw",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Fred Gray": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "FredMon": {
+  "backends": {
+   "uade": 36
+  },
+  "best": "uade",
+  "failed": 4,
+  "noise": 0,
+  "plays": 36,
+  "silent": 0,
+  "songs": 59,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open voodoo-2.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "FredMon/- unknown/voodoo-2.fred",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open fuzzball-title.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "FredMon/Ziphoid/fuzzball-title.fred",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open fuzzball-ingame.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "FredMon/Ziphoid/fuzzball-ingame.fred",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open voodoo.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "FredMon/- unknown/voodoo.fred",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "FuchsTracker": {
+  "backends": {
+   "xmp": 2
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "xmp": 2
+  }
+ },
+ "Funktracker": {
+  "backends": {
+   "zxtune": 7
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "xmp": 6,
+   "zxtune": 6
+  }
+ },
+ "Future Composer 1.3": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 175,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Future Composer 1.4": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 152,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Future Composer BSI": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Future Player": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "GT Game Systems": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 7,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Game Music Creator": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 59,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Gameboy Sound Format": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 23072,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Gameboy Sound System": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 918,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3
+  }
+ },
+ "Gameboy Sound System GBR": {
+  "backends": {
+   "gbr": 31
+  },
+  "best": "gbr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 31,
+  "silent": 0,
+  "songs": 31,
+  "tried": 31,
+  "trouble": [],
+  "wins": {
+   "gbr": 8
+  }
+ },
+ "Gameboy Tracker": {
+  "backends": {
+   "mgb": 25
+  },
+  "best": "mgb",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {
+   "mgb": 6
+  }
+ },
+ "General DigiMusic": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 64,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "GlueMon": {
+  "backends": {
+   "uade": 16
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 16,
+  "silent": 0,
+  "songs": 16,
+  "tried": 16,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "GoatTracker": {
+  "backends": {
+   "goattracker": 40
+  },
+  "best": "goattracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 90,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "goattracker": 8
+  }
+ },
+ "GoatTracker 2": {
+  "backends": {
+   "goattracker": 14
+  },
+  "best": "goattracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "goattracker": 8
+  }
+ },
+ "Graoumf Tracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 52,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Graoumf Tracker 2": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 61,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "HES": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 421,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "gme",
+    "note": "no track makes music (Game Music Emu): all 256 click and stop",
+    "song": "HES/Azusa Hara/bloody wolf.hes",
+    "state": "silent"
+   }
+  ],
+  "wins": {}
+ },
+ "HVSC": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 61157,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 3
+  }
+ },
+ "HVSC - Demos": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "from": {
+   "hvsc": 3058
+  },
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 3058,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 6,
+   "zxtune": 6
+  }
+ },
+ "HVSC - Games": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "from": {
+   "hvsc": 1531
+  },
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1531,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 6,
+   "zxtune": 6
+  }
+ },
+ "HVSC - Musicians": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "from": {
+   "hvsc": 56568
+  },
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 56568,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 6,
+   "zxtune": 6
+  }
+ },
+ "Hippel": {
+  "backends": {
+   "uade": 38
+  },
+  "best": "uade",
+  "failed": 2,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 63,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open prince.hip; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "Hippel/Jochen Hippel/prince.hip",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open astaroth.hip; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "Hippel/Jochen Hippel/astaroth.hip",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Hippel 7V": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Hippel COSO": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 92,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Hippel COSO/Jochen Hippel/cryptoburners - pack5.hipc",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Hippel ST": {
+  "backends": {
+   "uade": 21
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 21,
+  "silent": 0,
+  "songs": 21,
+  "tried": 21,
+  "trouble": [
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/astaroth.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/atomino ongame.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/chambers of shaolin remix.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/demo music9.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/demo music10.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/endmus j.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/jambala ongame.sog",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "UADE's Hippel ST player misreads it: a quiet opening, the same for other songs, and not this song",
+    "song": "Hippel ST/Jochen Hippel/lsx mai2.sog",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Hippel ST COSO": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 97,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "His Master's Noise": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 104,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "HivelyTracker": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 44,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "vibrants": 1,
+   "zxtune": 6
+  }
+ },
+ "Howie Davies": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "IFF-SMUS": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 756,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "the file is not on the server",
+    "song": "IFF-SMUS/Mark Riley/Prelude #10-J.S.Bach.smus",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "the file is not on the server",
+    "song": "IFF-SMUS/Mark Riley/Prelude #4-J.S.Bach.smus",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Images Music System": {
+  "backends": {
+   "openmpt": 13
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Imago Orpheus": {
+  "backends": {
+   "openmpt": 9
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Impulsetracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 25570,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "InStereo!": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "InStereo! 2.0": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Infogrames": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 60,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ixalance": {
+  "backends": {
+   "ixalance": 24
+  },
+  "best": "ixalance",
+  "failed": 0,
+  "noise": 0,
+  "plays": 24,
+  "silent": 0,
+  "songs": 24,
+  "tried": 24,
+  "trouble": [],
+  "wins": {
+   "ixalance": 6
+  }
+ },
+ "JamCracker": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 48,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Janko Mrsic-Flogel": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Jason Brooke": {
+  "backends": {
+   "uade": 18
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 18,
+  "silent": 0,
+  "songs": 18,
+  "tried": 18,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Jason Page": {
+  "backends": {
+   "uade": 31
+  },
+  "best": "uade",
+  "failed": 1,
+  "noise": 0,
+  "plays": 31,
+  "silent": 0,
+  "songs": 32,
+  "tried": 32,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open jpn.road; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "Jason Page/Jason Page/jpn.road",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Jason Page Old": {
+  "backends": {
+   "uade": 7
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "JayTrax": {
+  "backends": {
+   "jxs": 35
+  },
+  "best": "jxs",
+  "failed": 0,
+  "noise": 0,
+  "plays": 35,
+  "silent": 0,
+  "songs": 35,
+  "tried": 35,
+  "trouble": [],
+  "wins": {
+   "jxs": 6
+  }
+ },
+ "Jeroen Tel": {
+  "backends": {
+   "uade": 8
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Jesper Olsen": {
+  "backends": {
+   "jesperolsen": 37
+  },
+  "best": "jesperolsen",
+  "failed": 0,
+  "noise": 0,
+  "plays": 37,
+  "silent": 0,
+  "songs": 37,
+  "tried": 37,
+  "trouble": [],
+  "wins": {
+   "jesperolsen": 6
+  }
+ },
+ "KSS": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 1,
+  "plays": 39,
+  "silent": 0,
+  "songs": 393,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "kss",
+    "note": "crossings 0.46, clipped 0%",
+    "song": "KSS/- unknown/ultraman.kss",
+    "state": "noise"
+   }
+  ],
+  "wins": {}
+ },
+ "Ken's Digital Music": {
+  "backends": {
+   "kdm": 13
+  },
+  "best": "kdm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {
+   "kdm": 6
+  }
+ },
+ "Klystrack": {
+  "backends": {
+   "klystrack": 17
+  },
+  "best": "klystrack",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {}
+ },
+ "Kris Hatlelid": {
+  "backends": {
+   "uade": 12
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 12,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [],
+  "wins": {}
+ },
+ "Leggless Music Editor": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Lionheart": {
+  "backends": {
+   "uade": 10
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Liquid Tracker": {
+  "backends": {
+   "xmp": 13
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {}
+ },
+ "MCMD": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "MDX": {
+  "backends": {
+   "mdx": 40
+  },
+  "best": "mdx",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 7137,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "mdx",
+    "note": "",
+    "song": "MDX/- unknown/Metal Sight/metal05.mdx",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "mdx": 6
+  }
+ },
+ "MGSDRV": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1388,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "kss": 6
+  }
+ },
+ "MIDI-Loriciel": {
+  "backends": {
+   "uade": 22
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 22,
+  "silent": 0,
+  "songs": 22,
+  "tried": 22,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "MO3": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 89,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "MPK": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 2,
+  "plays": 38,
+  "silent": 0,
+  "songs": 51,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "kss",
+    "note": "crossings 0.36, clipped 0%",
+    "song": "MPK/Hakase/Fighters Ragnarok/Prologue.MPK",
+    "state": "noise"
+   },
+   {
+    "backend": "kss",
+    "note": "crossings 0.41, clipped 0%",
+    "song": "MPK/Hakase/Fighters Ragnarok/Can you beat me.MPK",
+    "state": "noise"
+   }
+  ],
+  "wins": {
+   "kss": 6
+  }
+ },
+ "MVS Tracker": {
+  "backends": {},
+  "best": null,
+  "failed": 2,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {}
+ },
+ "MVX Module": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 12,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Mad Tracker 2": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 106,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "openmpt",
+    "note": "",
+    "song": "Mad Tracker 2/El Blanco/accidental ray of sun (piano mix).mt2",
+    "state": "silent"
+   }
+  ],
+  "wins": {}
+ },
+ "Magnetic Fields Packer": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Maniacs Of Noise": {
+  "backends": {
+   "uade": 28
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 28,
+  "silent": 0,
+  "songs": 28,
+  "tried": 28,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Mark Cooksey": {
+  "backends": {
+   "uade": 8
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Mark Cooksey Old": {
+  "backends": {
+   "uade": 5
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Mark II": {
+  "backends": {
+   "uade": 35
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 34,
+  "silent": 1,
+  "songs": 35,
+  "tried": 35,
+  "trouble": [
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Mark II/Andreas Starr/my way to the stars.mk2",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "MaxTrax": {
+  "backends": {
+   "maxtrax": 40
+  },
+  "best": "maxtrax",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 79,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "maxtrax": 7
+  }
+ },
+ "Maximum Effect": {
+  "backends": {
+   "uade": 23
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 23,
+  "silent": 0,
+  "songs": 23,
+  "tried": 23,
+  "trouble": [],
+  "wins": {}
+ },
+ "Medley": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "MegaStation": {
+  "backends": {},
+  "best": null,
+  "failed": 2,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {}
+ },
+ "MegaStation MIDI": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 5,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Megadrive CYM": {
+  "backends": {
+   "cym": 1
+  },
+  "best": "cym",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {}
+ },
+ "Megadrive GYM": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 265,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Megatracker": {
+  "backends": {
+   "xmp": 6
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "xmp": 6
+  }
+ },
+ "MikMod UNITRK": {
+  "backends": {
+   "unitrk": 25
+  },
+  "best": "unitrk",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {
+   "unitrk": 8
+  }
+ },
+ "Mike Davies": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Monotone": {
+  "backends": {
+   "monotone": 4
+  },
+  "best": "monotone",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {}
+ },
+ "MoonBlaster": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1999,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "kss": 6
+  }
+ },
+ "MoonBlaster (edit mode)": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 2,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 129,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "kss",
+    "note": "opens and gives no sound",
+    "song": "MoonBlaster (edit mode)/Meits (Jelle Jelsma)/Near Dark/Betaroid (obvious titleS) [50Hz].MBM",
+    "state": "failed"
+   },
+   {
+    "backend": "kss",
+    "note": "opens and gives no sound",
+    "song": "MoonBlaster (edit mode)/A.C.E (J.A. Koets)/Ace In Space/level 1 BIG BOSS.MBM",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "kss": 5
+  }
+ },
+ "MuSICA": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 808,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "kss": 6
+  }
+ },
+ "MultiMedia Sound": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 43,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Multitracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 790,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Music Assembler": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Music Editor": {
+  "backends": {
+   "xmp": 40
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 132,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "MusicMaker V8": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 69,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "MusicMaker V8 Old": {
+  "backends": {
+   "uade": 1
+  },
+  "best": "uade",
+  "failed": 1,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open best of guitars.sdata; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "MusicMaker V8 Old/- unknown/best of guitars.sdata",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Musicline Editor": {
+  "backends": {
+   "musicline": 40
+  },
+  "best": "musicline",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 817,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "musicline": 8,
+   "uade": 8
+  }
+ },
+ "NerdTracker 2": {
+  "backends": {
+   "ned": 40
+  },
+  "best": "ned",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 54,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "ned": 8
+  }
+ },
+ "Nintendo DS Sound Format": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 30095,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Nintendo SPC": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 36903,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3
+  }
+ },
+ "Nintendo Sound Format": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 5015,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3
+  }
+ },
+ "Noise Tracker GS 1": {
+  "backends": {
+   "noisetracker": 40
+  },
+  "best": "noisetracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 71,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "noisetracker": 6
+  }
+ },
+ "NoiseTrekker": {
+  "backends": {
+   "protrekkr": 3
+  },
+  "best": "protrekkr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "protrekkr": 3
+  }
+ },
+ "NoiseTrekker 2": {
+  "backends": {
+   "protrekkr": 9
+  },
+  "best": "protrekkr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "protrekkr": 8
+  }
+ },
+ "NovoTrade Packer": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "OPLLDRV": {
+  "backends": {
+   "kss": 40
+  },
+  "best": "kss",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 373,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "kss": 6
+  }
+ },
+ "OctaMED MMD0": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1441,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "OctaMED MMD1": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 2728,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "OctaMED MMD2": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 305,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "OctaMED MMD3": {
+  "backends": {
+   "openmpt": 39,
+   "uade": 1
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 660,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "OctaMED MMDC": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 1,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "cut short on Modland: 180 bytes shorter than its header says",
+    "song": "OctaMED MMDC/Ratt/captain planet and the planeteers - 6.mmdc",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Octalyser": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 111,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Oktalyzer": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 449,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Onyx Music File": {
+  "backends": {
+   "onyx": 24
+  },
+  "best": "onyx",
+  "failed": 0,
+  "noise": 0,
+  "plays": 24,
+  "silent": 0,
+  "songs": 24,
+  "tried": 24,
+  "trouble": [],
+  "wins": {
+   "onyx": 6
+  }
+ },
+ "OpenMPT MPTM": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 68,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "openmpt",
+    "note": "",
+    "song": "OpenMPT MPTM/Saga Musix/synthetic journey.mptm",
+    "state": "silent"
+   }
+  ],
+  "wins": {}
+ },
+ "Organya": {
+  "backends": {
+   "organya": 40
+  },
+  "best": "organya",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 338,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "organya": 6
+  }
+ },
+ "Organya 2": {
+  "backends": {
+   "organya": 39
+  },
+  "best": "organya",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 0,
+  "songs": 39,
+  "tried": 39,
+  "trouble": [],
+  "wins": {
+   "organya": 6
+  }
+ },
+ "PMD": {
+  "backends": {
+   "pmdc": 40
+  },
+  "best": "pmdc",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1510,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "fmp": 6,
+   "pmdc": 6
+  }
+ },
+ "Paul Robotham": {
+  "backends": {
+   "uade": 13
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {}
+ },
+ "Paul Shields": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Paul Summers": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Peter Verswyvelen": {
+  "backends": {
+   "uade": 8
+  },
+  "best": "uade",
+  "failed": 4,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "damaged on Modland: fill bytes (1A) where its tables have zeros",
+    "song": "Peter Verswyvelen/Uncle Tom/ziriax ingame.pvp",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "damaged on Modland: fill bytes (1A) where its tables have zeros",
+    "song": "Peter Verswyvelen/Uncle Tom/ziriax level 2.pvp",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "damaged on Modland: fill bytes (1A) where its tables have zeros",
+    "song": "Peter Verswyvelen/Uncle Tom/ziriax level 1.pvp",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "damaged on Modland: fill bytes (1A) where its tables have zeros",
+    "song": "Peter Verswyvelen/Uncle Tom/ziriax jingle.pvp",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "PiECE music driver": {
+  "backends": {
+   "piece": 36
+  },
+  "best": "piece",
+  "failed": 0,
+  "noise": 0,
+  "plays": 36,
+  "silent": 0,
+  "songs": 36,
+  "tried": 36,
+  "trouble": [],
+  "wins": {
+   "piece": 6
+  }
+ },
+ "Picatune": {
+  "backends": {
+   "picatune": 20
+  },
+  "best": "picatune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 20,
+  "silent": 0,
+  "songs": 20,
+  "tried": 20,
+  "trouble": [],
+  "wins": {
+   "picatune": 6
+  }
+ },
+ "Picatune2": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 39,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Pierre Adane Packer": {
+  "backends": {
+   "uade": 22
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 22,
+  "silent": 0,
+  "songs": 22,
+  "tried": 22,
+  "trouble": [],
+  "wins": {
+   "uade": 8
+  }
+ },
+ "Piston Collage": {
+  "backends": {
+   "pxtone": 39
+  },
+  "best": "pxtone",
+  "failed": 1,
+  "noise": 0,
+  "plays": 39,
+  "silent": 0,
+  "songs": 1783,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "cut short on Modland: a 93 KB sample in a 138 KB file that ends early",
+    "song": "Piston Collage/Jun/obj0995-4.ptcop",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "pxtone": 6
+  }
+ },
+ "Piston Collage Protected": {
+  "backends": {
+   "pxtone": 40
+  },
+  "best": "pxtone",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 315,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "pxtone": 6
+  }
+ },
+ "PlayerPro": {
+  "backends": {
+   "playerpro": 9
+  },
+  "best": "playerpro",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "playerpro": 8
+  }
+ },
+ "Playstation 2 Sound Format": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 6911,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Playstation Sound Format": {
+  "backends": {
+   "zxtune": 100
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 100,
+  "silent": 0,
+  "songs": 16057,
+  "tried": 100,
+  "trouble": [],
+  "wins": {}
+ },
+ "PokeyNoise": {
+  "backends": {
+   "uade": 17
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {
+   "uade": 8
+  }
+ },
+ "Pollytracker": {
+  "backends": {
+   "polly": 5
+  },
+  "best": "polly",
+  "failed": 0,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Polytracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 101,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Powertracker": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Pretracker": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 64,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "ProTrekkr": {
+  "backends": {
+   "protrekkr": 14
+  },
+  "best": "protrekkr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "protrekkr": 8
+  }
+ },
+ "ProTrekkr 2.0": {
+  "backends": {
+   "protrekkr": 40
+  },
+  "best": "protrekkr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 41,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "protrekkr": 8
+  }
+ },
+ "Professional Sound Artists": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Protracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 80728,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Protracker IFF": {
+  "backends": {
+   "openmpt": 11
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Psycle": {
+  "backends": {
+   "psycle": 31
+  },
+  "best": "psycle",
+  "failed": 9,
+  "noise": 0,
+  "plays": 31,
+  "silent": 0,
+  "songs": 535,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: cyanphase_vibrasynth_1p (23% of its notes); and the effects s_phaser",
+    "song": "Psycle/Lord Galvar/tromp with leaches.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: drumatic_ve (VST) (35% of its notes)",
+    "song": "Psycle/Maxstack/nes blobsy adventures.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: ppd Tritium (VST), vbox-x (VST) (37% of its notes)",
+    "song": "Psycle/Franky Boy/afterburner.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: sfz (VST), rock (VST), slayer (VST) (93% of its notes); and the effects toolsone (VST), ultrafunk fxmultiband r3 (VST), freeverbtoo15 (VST)",
+    "song": "Psycle/Sampler/creacion y destruccion sampled.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: synth1 vst (VST), freealpha (VST), dmiflute (VST), mda piano (VST), triangle ii (VST) (51% of its notes); and the effects classic eq (VST), classic compressor (VST), classic chorus (VST), s_vld, classic flanger (VST), classic reverb (VST), mda roundpan (VS",
+    "song": "Psycle/MfM/waiting for a dream.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: freealpha (VST), dmiflute (VST) (85% of its notes); and the effects ambience (VST), classic reverb (VST)",
+    "song": "Psycle/Miza R/compo8 tune 002.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: Albino (VST), mda piano (VST) (94% of its notes); and the effects Ultrafunk fxReverb R3 (VST), SupaPhaser (VST)",
+    "song": "Psycle/Sampler/cristal liquido.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: Slayer (VST), sfz (VST), ZR3 (VST) (67% of its notes); and the effects FreeverbToo15 (VST), QuadComp (VST)",
+    "song": "Psycle/Sampler/analogico metalico.psy",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "the song needs machines that are not there: crystal (VST) (34% of its notes)",
+    "song": "Psycle/Emm Schall/das ist meine welt.psy",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "psycle": 6
+  }
+ },
+ "Pumatracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 43,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Quadra Composer": {
+  "backends": {
+   "uade": 17
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Quartet PSG": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Quartet ST": {
+  "backends": {
+   "uade": 100
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 100,
+  "silent": 0,
+  "songs": 568,
+  "tried": 100,
+  "trouble": [],
+  "wins": {}
+ },
+ "RamTracker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 9,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Real Tracker": {
+  "backends": {
+   "openmpt": 3
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "RealSID": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 3540,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "Renoise": {
+  "backends": {},
+  "best": null,
+  "failed": 6,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 151,
+  "tried": 6,
+  "trouble": [],
+  "wins": {}
+ },
+ "Renoise Old": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 120,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Richard Joseph": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 76,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 1
+  }
+ },
+ "Riff Raff": {
+  "backends": {
+   "uade": 4
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 4,
+  "silent": 0,
+  "songs": 4,
+  "tried": 4,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Rob Hubbard": {
+  "backends": {
+   "uade": 12
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 12,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [],
+  "wins": {}
+ },
+ "Rob Hubbard ST": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Ron Klaren": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "S98": {
+  "backends": {
+   "vgm": 40
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 5111,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "vgm": 6
+  }
+ },
+ "SBStudio": {
+  "backends": {
+   "sbstudio": 5
+  },
+  "best": "sbstudio",
+  "failed": 1,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "the song has no samples (it is written for MIDI instruments)",
+    "song": "SBStudio/Henning Hellstrom/midi out demo.pac",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "sbstudio": 5
+  }
+ },
+ "SC68": {
+  "backends": {
+   "sc68": 73,
+   "uade": 27
+  },
+  "best": "sc68",
+  "failed": 0,
+  "noise": 0,
+  "plays": 100,
+  "silent": 0,
+  "songs": 1775,
+  "tried": 100,
+  "trouble": [],
+  "wins": {}
+ },
+ "SCC-Musixx": {
+  "backends": {
+   "sccmusixx": 40
+  },
+  "best": "sccmusixx",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 97,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sccmusixx": 6
+  }
+ },
+ "SCUMM": {
+  "backends": {
+   "uade": 10
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "SGC": {
+  "backends": {
+   "sgc": 40
+  },
+  "best": "sgc",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 386,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sgc": 8
+  }
+ },
+ "SNDH": {
+  "backends": {
+   "sndh": 40
+  },
+  "best": "sndh",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 5484,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sc68": 3,
+   "sndh": 6
+  }
+ },
+ "SPU": {
+  "backends": {
+   "spu": 39
+  },
+  "best": "spu",
+  "failed": 1,
+  "noise": 0,
+  "plays": 39,
+  "silent": 0,
+  "songs": 164,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "not an SPU log: entry 24 makes no sense",
+    "song": "SPU/- unknown/Raiden DX/raidendxnr-01.spu",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "spu": 8
+  }
+ },
+ "SVAr Tracker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Sam Coupe COP": {
+  "backends": {
+   "zxtune": 38
+  },
+  "best": "zxtune",
+  "failed": 2,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 191,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open manic.cop; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe COP/Frantisek Fuka/manic.cop",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open prince.cop; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe COP/Frantisek Fuka/prince.cop",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Sam Coupe SNG": {
+  "backends": {
+   "zxtune": 7
+  },
+  "best": "zxtune",
+  "failed": 8,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open shanghai.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Frantisek Fuka/shanghai.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open music2.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Frantisek Fuka/music2.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open tetris.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/- unknown/tetris.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open music1.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Frantisek Fuka/music1.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open ofc2.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Ziutek/ofc2.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open ofc1.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Ziutek/ofc1.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open ofc4.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Ziutek/ofc4.sng",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open ofc3.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "Sam Coupe SNG/Ziutek/ofc3.sng",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "zxtune": 4
+  }
+ },
+ "Saturn Sound Format": {
+  "backends": {
+   "zxtune": 100
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 99,
+  "silent": 1,
+  "songs": 4387,
+  "tried": 100,
+  "trouble": [
+   {
+    "backend": "zxtune",
+    "note": "",
+    "song": "Saturn Sound Format/- unknown/Irem Arcade Classics/tyfsnd-00-27.minissf",
+    "state": "silent"
+   }
+  ],
+  "wins": {}
+ },
+ "Screamtracker 2": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 234,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Screamtracker 3": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 11186,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Sean Connolly": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sean Conran": {
+  "backends": {
+   "uade": 14
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Shroom": {
+  "backends": {
+   "shroom": 40
+  },
+  "best": "shroom",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 63,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "SidMon 1": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 61,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "SidMon 2": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 107,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sidplayer": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 5032,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 3
+  }
+ },
+ "Silmarils": {
+  "backends": {
+   "uade": 11
+  },
+  "best": "uade",
+  "failed": 3,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open bostonbombclub ingame 0.mok; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this",
+    "song": "Silmarils/Fabrice Hautecloque/bostonbombclub ingame 0.mok",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open bostonbombclub ingame 1.mok; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this",
+    "song": "Silmarils/Fabrice Hautecloque/bostonbombclub ingame 1.mok",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open bostonbombclub title.mok; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this fi",
+    "song": "Silmarils/Fabrice Hautecloque/bostonbombclub title.mok",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Skale Tracker": {
+  "backends": {
+   "skale": 30
+  },
+  "best": "skale",
+  "failed": 0,
+  "noise": 0,
+  "plays": 30,
+  "silent": 0,
+  "songs": 30,
+  "tried": 30,
+  "trouble": [],
+  "wins": {
+   "skale": 8
+  }
+ },
+ "Slight Atari Player": {
+  "backends": {
+   "gme": 1,
+   "zxtune": 39
+  },
+  "best": "zxtune",
+  "failed": 1,
+  "noise": 0,
+  "plays": 39,
+  "silent": 0,
+  "songs": 3230,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "gme",
+    "by": "hand",
+    "note": "a broken rip: its INIT address points at data, not code",
+    "song": "Slight Atari Player/Top Odin/galahad ingame.sap",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Sonic Arranger": {
+  "backends": {
+   "uade": 39
+  },
+  "best": "uade",
+  "failed": 1,
+  "noise": 0,
+  "plays": 37,
+  "silent": 2,
+  "songs": 251,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open amber moon26.sa; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
+    "song": "Sonic Arranger/Matthias Steinwachs/amber moon26.sa",
+    "state": "failed"
+   },
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Sonic Arranger/Dr. Mastermind/laserdance-eddiesreturn.sa",
+    "state": "silent"
+   },
+   {
+    "backend": "uade",
+    "note": "",
+    "song": "Sonic Arranger/- unknown/sonic-intro-1.sa",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sound Club": {
+  "backends": {
+   "soundclub": 40
+  },
+  "best": "soundclub",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 170,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "soundclub": 6
+  }
+ },
+ "Sound Club 2": {
+  "backends": {
+   "soundclub": 25
+  },
+  "best": "soundclub",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {
+   "soundclub": 6
+  }
+ },
+ "Sound Images": {
+  "backends": {
+   "uade": 33
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 33,
+  "silent": 0,
+  "songs": 33,
+  "tried": 33,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Sound Master": {
+  "backends": {
+   "uade": 16
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 16,
+  "silent": 0,
+  "songs": 16,
+  "tried": 16,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sound Master II v1": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sound Master II v3": {
+  "backends": {
+   "uade": 19
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 19,
+  "silent": 0,
+  "songs": 19,
+  "tried": 19,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Sound Programming Language": {
+  "backends": {
+   "uade": 9
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "SoundControl": {
+  "backends": {
+   "uade": 18
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 18,
+  "silent": 0,
+  "songs": 18,
+  "tried": 18,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "SoundFX": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 358,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "SoundFactory": {
+  "backends": {
+   "uade": 11
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "SoundPlayer": {
+  "backends": {
+   "uade": 31
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 31,
+  "silent": 0,
+  "songs": 31,
+  "tried": 31,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "SoundSmith": {
+  "backends": {
+   "soundsmith": 40
+  },
+  "best": "soundsmith",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 243,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "soundsmith": 6
+  }
+ },
+ "Soundtracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1936,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "Soundtracker 2.6": {
+  "backends": {
+   "openmpt": 19
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 19,
+  "silent": 0,
+  "songs": 19,
+  "tried": 19,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 2
+  }
+ },
+ "Soundtracker Pro II": {
+  "backends": {
+   "openmpt": 3
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Special FX": {
+  "backends": {
+   "uade": 31
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 31,
+  "silent": 0,
+  "songs": 31,
+  "tried": 31,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Special FX ST": {
+  "backends": {
+   "uade": 36
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 36,
+  "silent": 0,
+  "songs": 36,
+  "tried": 36,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Spectrum": {
+  "backends": {
+   "zxtune": 3
+  },
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": []
+ },
+ "Spectrum - ASC Sound Master": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1705,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - ASC Sound Master 0": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 6
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 6,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - CHIPNSFX": {
+  "backends": {
+   "chipnsfx": 5
+  },
+  "best": "chipnsfx",
+  "failed": 0,
+  "from": {
+   "zxart": 145
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 145,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Spectrum - Chip Tracker": {
+  "backends": {
+   "zxtune": 21
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 21,
+  "silent": 0,
+  "songs": 21,
+  "tried": 21,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Digital Music Maker": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 107
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 107,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Digital Studio": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 471
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 471,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Extreme Tracker": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 34
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 34,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Spectrum - Fast Tracker": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 51,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Flash Tracker": {
+  "backends": {
+   "fls": 40
+  },
+  "best": "fls",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 66,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "fls": 8
+  }
+ },
+ "Spectrum - Furnace": {
+  "backends": {
+   "furnace": 5
+  },
+  "best": "furnace",
+  "failed": 0,
+  "from": {
+   "zxart": 11
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 11,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Spectrum - Fuxoft AY Language": {
+  "backends": {
+   "fxm": 39
+  },
+  "best": "fxm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 0,
+  "songs": 39,
+  "tried": 39,
+  "trouble": [],
+  "wins": {
+   "amad": 8,
+   "fxm": 8
+  }
+ },
+ "Spectrum - General Sound": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 19
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 19,
+  "tried": 5,
+  "trouble": [],
+  "wins": {}
+ },
+ "Spectrum - Global Tracker": {
+  "backends": {
+   "zxtune": 38
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 38,
+  "silent": 0,
+  "songs": 38,
+  "tried": 38,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Multitrack": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 29
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 29,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - PSG": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 26
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 26,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Pro Sound Creator": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 239,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Pro Sound Maker": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 51,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Pro Tracker 1": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 87,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Pro Tracker 2": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 6243,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Pro Tracker 3": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 7376,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - ProDigiTracker": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 9
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 9,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "zxtune": 3
+  }
+ },
+ "Spectrum - SQ Digital Tracker": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 12
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 12,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "fmp": 1,
+   "zxtune": 5
+  }
+ },
+ "Spectrum - SQ Tracker": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 880,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - ST Song Compiler": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 3639,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Sample Tracker": {
+  "backends": {
+   "zxtune": 5
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "from": {
+   "zxart": 5
+  },
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 5,
+  "tried": 5,
+  "trouble": [],
+  "wins": {
+   "vibrants": 1,
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Snapshot": {
+  "backends": {
+   "zxtune": 3
+  },
+  "best": "zxtune",
+  "failed": 2,
+  "from": {
+   "zxart": 65
+  },
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 65,
+  "tried": 5,
+  "trouble": [
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open Tufty_-_March_Of_The_BioMech_(2022)_(DiHalt_2022,_3).tap; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load thi",
+    "song": "zxart:370378/Tufty_-_March_Of_The_BioMech_(2022)_(DiHalt_2022,_3).tap",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open AER_-_Tno2_(2015).trd; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
+    "song": "zxart:359483/AER_-_Tno2_(2015).trd",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "zxtune": 2
+  }
+ },
+ "Spectrum - Sound Tracker 1.1": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 59,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 5
+  }
+ },
+ "Spectrum - Sound Tracker 1.3": {
+  "backends": {
+   "zxtune": 3
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "zxtune": 3
+  }
+ },
+ "Spectrum - Sound Tracker Pro": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 629,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Sound Tracker Pro 2": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 632,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - VGM": {
+  "backends": {
+   "vgm": 3
+  },
+  "best": "vgm",
+  "failed": 0,
+  "from": {
+   "zxart": 3
+  },
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "vgm": 3
+  }
+ },
+ "Spectrum - Vortex": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 879,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Spectrum - Vortex Tracker II": {
+  "backends": {
+   "vt2": 12
+  },
+  "best": "vt2",
+  "failed": 0,
+  "noise": 0,
+  "plays": 12,
+  "silent": 0,
+  "songs": 12,
+  "tried": 12,
+  "trouble": [],
+  "wins": {
+   "vt2": 6
+  }
+ },
+ "Spectrum - ZXS": {
+  "backends": {
+   "zxtune": 35
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 35,
+  "silent": 0,
+  "songs": 35,
+  "tried": 35,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Speedy A1 System": {
+  "backends": {
+   "uade": 3
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 3,
+  "silent": 0,
+  "songs": 3,
+  "tried": 3,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Speedy System": {
+  "backends": {
+   "uade": 15
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 15,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Starkos": {
+  "backends": {
+   "sks": 40
+  },
+  "best": "sks",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 65,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sks": 8
+  }
+ },
+ "Startrekker AM": {
+  "backends": {
+   "xmp": 40
+  },
+  "best": "xmp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 47,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "xmp",
+    "by": "hand",
+    "note": "damaged on Modland: its synth file (.nt) is a copy of dizzy-gameover's, without the instruments it uses",
+    "song": "Startrekker AM/Darren Ithell/dizzy-secret.mod",
+    "state": "silent"
+   }
+  ],
+  "wins": {}
+ },
+ "Startrekker FLT8": {
+  "backends": {
+   "openmpt": 1
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "openmpt": 1
+  }
+ },
+ "Stereo Sidplayer": {
+  "backends": {
+   "sidplayfp": 40
+  },
+  "best": "sidplayfp",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 1447,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "sidplayfp": 3
+  }
+ },
+ "Steve Barrett": {
+  "backends": {
+   "uade": 6
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 6,
+  "silent": 0,
+  "songs": 6,
+  "tried": 6,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Stonetracker": {
+  "backends": {
+   "stonetracker": 32
+  },
+  "best": "stonetracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 32,
+  "silent": 0,
+  "songs": 32,
+  "tried": 32,
+  "trouble": [],
+  "wins": {
+   "stonetracker": 6
+  }
+ },
+ "SunTronic": {
+  "backends": {
+   "uade": 5
+  },
+  "best": "uade",
+  "failed": 2,
+  "noise": 0,
+  "plays": 5,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "a broken rip: cut from a bigger dump, its code reads data from before the file's start",
+    "song": "SunTronic/TSM/unknown.sun",
+    "state": "failed"
+   },
+   {
+    "backend": "",
+    "by": "hand",
+    "note": "a broken rip: cut from a bigger dump, its code reads data from before the file's start",
+    "song": "SunTronic/TSM/pseudo oops.sun",
+    "state": "failed"
+   }
+  ],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "SunVox": {
+  "backends": {
+   "sunvox": 60
+  },
+  "best": "sunvox",
+  "failed": 0,
+  "noise": 1,
+  "plays": 59,
+  "silent": 0,
+  "songs": 246,
+  "tried": 60,
+  "trouble": [
+   {
+    "backend": "sunvox",
+    "note": "crossings 0.49, clipped 0%",
+    "song": "SunVox/Kiberaver/sunvox digital.sunvox",
+    "state": "noise"
+   }
+  ],
+  "wins": {}
+ },
+ "Super Nintendo Sound Format": {
+  "backends": {
+   "snsf": 40
+  },
+  "best": "snsf",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 608,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "snsf": 6
+  }
+ },
+ "Symphonie": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 174,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "SynTracker": {
+  "backends": {
+   "uade": 16
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 16,
+  "silent": 0,
+  "songs": 16,
+  "tried": 16,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Synder SNG-Player": {
+  "backends": {
+   "synder": 40
+  },
+  "best": "synder",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 66,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "synder": 6
+  }
+ },
+ "Synder SNG-Player Stereo": {
+  "backends": {
+   "synder": 40
+  },
+  "best": "synder",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 67,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "synder": 6
+  }
+ },
+ "Synder Tracker": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 24,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Synth Dream": {
+  "backends": {
+   "uade": 22
+  },
+  "best": "uade",
+  "failed": 1,
+  "noise": 0,
+  "plays": 21,
+  "silent": 0,
+  "songs": 22,
+  "tried": 22,
+  "trouble": [
+   {
+    "backend": "uade",
+    "by": "hand",
+    "note": "damaged on Modland: fill bytes where its tables have zeros, and the replayer stops on it",
+    "song": "Synth Dream/Laurens Tummers/sdr.nobuddiesland 8",
+    "state": "failed"
+   }
+  ],
+  "wins": {}
+ },
+ "Synth Pack": {
+  "backends": {
+   "uade": 17
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 17,
+  "silent": 0,
+  "songs": 17,
+  "tried": 17,
+  "trouble": [],
+  "wins": {
+   "uade": 8
+  }
+ },
+ "Synthesis": {
+  "backends": {
+   "uade": 36
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 36,
+  "silent": 0,
+  "songs": 36,
+  "tried": 36,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "TCB Tracker": {
+  "backends": {
+   "openmpt": 24
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 24,
+  "silent": 0,
+  "songs": 24,
+  "tried": 24,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3,
+   "uade": 3
+  }
+ },
+ "TFM Music Maker": {
+  "backends": {
+   "furnace": 40
+  },
+  "best": "furnace",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 77,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "TFMX": {
+  "backends": {
+   "uade": 40
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 368,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "TFMX ST": {
+  "backends": {
+   "uade": 13
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 13,
+  "silent": 0,
+  "songs": 13,
+  "tried": 13,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "TIATracker": {
+  "backends": {
+   "tiatracker": 40
+  },
+  "best": "tiatracker",
+  "failed": 0,
+  "from": {
+   "asma": 70
+  },
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 70,
+  "tried": 40,
+  "trouble": [],
+  "wins": {}
+ },
+ "TSS": {
+  "backends": {
+   "tss": 14
+  },
+  "best": "tss",
+  "failed": 0,
+  "noise": 0,
+  "plays": 14,
+  "silent": 0,
+  "songs": 14,
+  "tried": 14,
+  "trouble": [],
+  "wins": {
+   "tss": 8
+  }
+ },
+ "The 0ok Amazing Synth Tracker": {
+  "backends": {
+   "t0ast": 8
+  },
+  "best": "t0ast",
+  "failed": 0,
+  "noise": 0,
+  "plays": 8,
+  "silent": 0,
+  "songs": 8,
+  "tried": 8,
+  "trouble": [],
+  "wins": {
+   "t0ast": 6
+  }
+ },
+ "The Musical Enlightenment": {
+  "backends": {
+   "uade": 15
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 15,
+  "silent": 0,
+  "songs": 15,
+  "tried": 15,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Thomas Hermann": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Tomy Tracker": {
+  "backends": {
+   "uade": 2
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "uade": 2
+  }
+ },
+ "Tunefish": {
+  "backends": {},
+  "best": null,
+  "failed": 3,
+  "noise": 0,
+  "plays": 0,
+  "silent": 0,
+  "songs": 8,
+  "tried": 3,
+  "trouble": [],
+  "wins": {}
+ },
+ "Ultra64 Sound Format": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 39,
+  "silent": 1,
+  "songs": 6325,
+  "tried": 40,
+  "trouble": [
+   {
+    "backend": "zxtune",
+    "note": "",
+    "song": "Ultra64 Sound Format/- unknown/The World Is Not Enough/sparse0a.miniusf",
+    "state": "silent"
+   }
+  ],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "Ultratracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 91,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Unique Development": {
+  "backends": {
+   "uade": 25
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Unis 669": {
+  "backends": {
+   "openmpt": 2
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 2,
+  "silent": 0,
+  "songs": 2,
+  "tried": 2,
+  "trouble": [],
+  "wins": {
+   "openmpt": 2
+  }
+ },
+ "V2": {
+  "backends": {
+   "zxtune": 40
+  },
+  "best": "zxtune",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 367,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "zxtune": 6
+  }
+ },
+ "VGM Music Maker": {
+  "backends": {
+   "vgemm": 9
+  },
+  "best": "vgemm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "vgemm": 6
+  }
+ },
+ "Velvet Studio": {
+  "backends": {
+   "openmpt": 25
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 25,
+  "silent": 0,
+  "songs": 25,
+  "tried": 25,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "Vic-Tracker": {
+  "backends": {
+   "victracker": 11
+  },
+  "best": "victracker",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {}
+ },
+ "Video Game Music - BBC Micro": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 71,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Colecovision": {
+  "backends": {
+   "vgm": 11
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {
+   "gme": 4,
+   "vgm": 6
+  }
+ },
+ "Video Game Music - MSX1": {
+  "backends": {
+   "vgm": 40
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 54,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "vgm": 6
+  }
+ },
+ "Video Game Music - MSX2": {
+  "backends": {
+   "vgm": 40
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 44,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "vgm": 6
+  }
+ },
+ "Video Game Music - Nintendo Virtual Boy": {
+  "backends": {
+   "vgm": 9
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 9,
+  "silent": 0,
+  "songs": 9,
+  "tried": 9,
+  "trouble": [],
+  "wins": {
+   "vgm": 6
+  }
+ },
+ "Video Game Music - Sega 32X": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 136,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega Game Gear": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 652,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega Master System": {
+  "backends": {
+   "gme": 36,
+   "vgm": 4
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 2102,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega Mega CD": {
+  "backends": {
+   "gme": 22
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 22,
+  "silent": 0,
+  "songs": 22,
+  "tried": 22,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega Megadrive": {
+  "backends": {
+   "gme": 40
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 10961,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega SC-3000": {
+  "backends": {
+   "gme": 11
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 11,
+  "silent": 0,
+  "songs": 11,
+  "tried": 11,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sega SG-1000": {
+  "backends": {
+   "gme": 36,
+   "vgm": 4
+  },
+  "best": "gme",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 74,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "gme": 3,
+   "zxtune": 3
+  }
+ },
+ "Video Game Music - Sharp X68000": {
+  "backends": {
+   "vgm": 1
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 1,
+  "silent": 0,
+  "songs": 1,
+  "tried": 1,
+  "trouble": [],
+  "wins": {
+   "vgm": 1
+  }
+ },
+ "Video Game Music - Vectrex": {
+  "backends": {
+   "vgm": 20
+  },
+  "best": "vgm",
+  "failed": 0,
+  "noise": 0,
+  "plays": 20,
+  "silent": 0,
+  "songs": 20,
+  "tried": 20,
+  "trouble": [],
+  "wins": {
+   "vgm": 6
+  }
+ },
+ "Voodoo Supreme Synthesizer": {
+  "backends": {
+   "uade": 7
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 7,
+  "silent": 0,
+  "songs": 7,
+  "tried": 7,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Wally Beben": {
+  "backends": {
+   "uade": 24
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 24,
+  "silent": 0,
+  "songs": 24,
+  "tried": 24,
+  "trouble": [],
+  "wins": {
+   "uade": 3
+  }
+ },
+ "Westwood SND": {
+  "backends": {
+   "wwsnd": 22
+  },
+  "best": "wwsnd",
+  "failed": 0,
+  "noise": 0,
+  "plays": 22,
+  "silent": 0,
+  "songs": 22,
+  "tried": 22,
+  "trouble": [],
+  "wins": {
+   "wwsnd": 2
+  }
+ },
+ "WonderSwan": {
+  "backends": {
+   "wsr": 40
+  },
+  "best": "wsr",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 168,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "wsr": 8
+  }
+ },
+ "X-Tracker": {
+  "backends": {
+   "openmpt": 40
+  },
+  "best": "openmpt",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 366,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "openmpt": 3
+  }
+ },
+ "YM": {
+  "backends": {
+   "ym": 40
+  },
+  "best": "ym",
+  "failed": 0,
+  "noise": 0,
+  "plays": 40,
+  "silent": 0,
+  "songs": 4962,
+  "tried": 40,
+  "trouble": [],
+  "wins": {
+   "ym": 6
+  }
+ },
+ "YMST": {
+  "backends": {
+   "uade": 100
+  },
+  "best": "uade",
+  "failed": 0,
+  "noise": 0,
+  "plays": 100,
+  "silent": 0,
+  "songs": 1339,
+  "tried": 100,
+  "trouble": [],
+  "wins": {}
+ },
+ "Zoundmonitor": {
+  "backends": {
+   "zoundmonitor": 10
+  },
+  "best": "zoundmonitor",
+  "failed": 0,
+  "noise": 0,
+  "plays": 10,
+  "silent": 0,
+  "songs": 10,
+  "tried": 10,
+  "trouble": [],
+  "wins": {
+   "zoundmonitor": 8
+  }
+ }
+}
