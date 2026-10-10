@@ -5,10 +5,17 @@
 replayer, helper and library in it is built **inside the Flatpak SDK**
 (org.freedesktop.Sdk 26.08), **for any x86-64** (`-O2 -march=x86-64 -mtune=generic`),
 **from bbmp-sources**, an archive of the exact source tarballs the build uses
-(git@github.com:creep-ltx/bbmp-sources.git). Nothing comes from the machine that builds
+(https://github.com/creep-ltx/bbmp-sources). Nothing comes from the machine that builds
 it, and nothing is downloaded while it builds: flatpak-builder gives the build no network.
 
-    BBMP_SOURCES=/path/to/bbmp-sources packaging/flatpak/make.sh
+    git clone https://github.com/creep-ltx/bbmp-sources
+    BBMP_SOURCES=$PWD/bbmp-sources packaging/flatpak/make.sh
+
+bbmp-sources holds only what the packages are built from, so it is also where the source
+of everything in a package can be had. Where its archive of a source differs from the
+upstream one (a few have files taken out: songs a build does not need, and parts that may
+not be passed on, which the player downloads from their upstream when asked), its
+`SOURCES.md` says what and why.
 
 ## How it is built
 

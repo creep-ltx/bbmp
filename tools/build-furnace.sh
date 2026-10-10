@@ -16,6 +16,12 @@ fi
 # plays 48000). no-unlicensed-cores.patch: QSound's and Supervision's sound cores state no
 # licence, so they are not built and those two chips are silent.
 apply_patches "$SRC" "$(dirname "$0")"/../csrc/furnace/*.patch
+# The YM2608's rhythm ROM (its six drum sounds, Yamaha's) is not built in: both of Furnace's
+# YM2608 cores read it from the file the user puts in the extras folder (BBMP_YM2608_ROM,
+# csrc/furnace/bbmp_ym2608_rom.h); without it the drums are silent. Their copies are replaced.
+FUR="$(cd "$(dirname "$0")/.." && pwd)/csrc/furnace"
+install -m644 "$FUR/bbmp_ym2608_rom.h" "$FUR/rss.h" "$SRC/src/engine/platform/sound/"
+install -m644 "$FUR/bbmp_ym2608_rom.h" "$FUR/fmopna_rom.h" "$SRC/extern/YM2608-LLE/"
 # GCC 15+ no longer pulls these headers in implicitly
 cmake -S "$SRC" -B "$SRC/build" -DCMAKE_BUILD_TYPE=Release -DBUILD_GUI=OFF -DUSE_SDL2=OFF \
   -DUSE_RTMIDI=OFF -DWITH_JACK=OFF -DWITH_PORTAUDIO=OFF -DUSE_BACKWARD=OFF -DUSE_FREETYPE=OFF \
@@ -26,6 +32,10 @@ cmake --install "$SRC/build"
 # neither core without a licence may be in it (an object of an older build could be)
 if nm "$PREFIX/bin/furnace" 2>/dev/null | grep -qE ' [TtDd] _?(qsound_update|supervision_sound_)'; then
   echo "Furnace still has QSound's or Supervision's core built in" >&2; exit 1
+fi
+
+if nm "$PREFIX/bin/furnace" 2>/dev/null | grep -qE ' [RrDd] _?YM2608_ADPCM_ROM$'; then
+  echo "Furnace still has the YM2608's rhythm ROM built in" >&2; exit 1
 fi
 
 # Furnace's own config (sample rate) lives here, not in ~/.config

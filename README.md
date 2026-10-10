@@ -439,7 +439,7 @@ extras folder under the name given here, and the player finds it:
 
 | File | Size | Used by | Without it |
 |---|---|---|---|
-| `ym2608_adpcm_rom.bin` | 8,192 bytes | PMD, FMP (NEC PC-98) | songs that use the chip's built-in drums play without them |
+| `ym2608_adpcm_rom.bin` | 8,192 bytes | PMD, FMP, S98 and VGM files, Furnace songs (the YM2608: NEC PC-98 and others) | songs that use the chip's built-in drums play without them |
 | `coleco.rom` | 8,192 bytes | SGC | the ColecoVision songs that call the BIOS are refused (2 of 386); Master System and Game Gear songs don't need it |
 | `mario-paint-notes.wav` (or `notes.wav`) | 26,936,466 bytes | Shroom | Shroom's songs can't be played |
 | `kernal.bin` | 8,192 bytes | C64 tunes (HVSC, RealSID) | tunes written in BASIC are silent, and some that call the C64's system |
@@ -738,8 +738,8 @@ C interface. `bbmp-rv` is a host for that interface, so other plugins of
 Retrovert's can be added by building them. Its iXalance plugin is for non-commercial
 use only (CC BY-NC-SA 4.0).
 
-PC-98 FMP and PMD songs that use the sound chip's built-in drums need a dump of the
-YM2608 rhythm ROM, `ym2608_adpcm_rom.bin` (8192 bytes), in
+PC-98 FMP, PMD, S98 and VGM songs and Furnace songs that use the YM2608 sound chip's
+built-in drums need a dump of the YM2608 rhythm ROM, `ym2608_adpcm_rom.bin` (8192 bytes), in
 the extras folder (see "Extra files" above; `~/.local/share/98fmplayer/` is looked in
 too). Without it those songs play without drums. The SID backend
 compiles a small C++ shim (`csrc/sidshim.cpp`) with g++ the first time it is needed.

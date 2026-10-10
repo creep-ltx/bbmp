@@ -635,6 +635,19 @@ def test_the_playstation_bios_is_known_by_its_contents(monkeypatch):
     assert "BBMP_PS2_BIOS" not in extras.env("openmpt", [])
 
 
+def test_the_ym2608_rom_goes_to_every_helper_that_plays_the_chip():
+    """The YM2608's drums are not built into bbmp-vgm or Furnace: they read the user's ROM."""
+    from bbmp import extras
+    folder = extras.folder()
+    folder.mkdir()
+    (folder / "ym2608_adpcm_rom.bin").write_bytes(bytes(8192))
+    for backend in ("pmdc", "fmp", "vgm", "furnace"):
+        assert extras.env(backend, [])["BBMP_YM2608_ROM"] == str(folder / "ym2608_adpcm_rom.bin")
+    assert "BBMP_YM2608_ROM" not in extras.env("openmpt", [])
+    assert [e.id for e in extras.for_format("S98")] == ["ym2608"]
+    assert [e.id for e in extras.for_format("Furnace")] == ["ym2608"]
+
+
 def test_a_format_that_needs_a_file_says_so(monkeypatch):
     from bbmp import extras, formats_info
     monkeypatch.setattr(formats_info, "NOTES", {"Shroom": ("fine", "63 of 63", "Compared.")})

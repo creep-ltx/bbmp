@@ -23,7 +23,7 @@ fi
 SOURCES="${BBMP_SOURCES:-$(cd ../../.. && pwd)/bbmp-sources}"
 WORK="${WORK:-$HOME/.cache/bbmp-flatpak}"
 [ -f "$SOURCES/sha256sums.txt" ] || {
-  echo "no bbmp-sources in $SOURCES (git clone git@github.com:creep-ltx/bbmp-sources.git, then BBMP_SOURCES=...)" >&2
+  echo "no bbmp-sources in $SOURCES (git clone https://github.com/creep-ltx/bbmp-sources, then BBMP_SOURCES=...)" >&2
   exit 1; }
 ln -sfn "$(cd "$SOURCES" && pwd)" sources      # the manifest's archives are sources/archives/...
 MANIFEST=io.github.bytebandit.bbmp.yml

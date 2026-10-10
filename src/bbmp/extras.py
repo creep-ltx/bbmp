@@ -40,7 +40,7 @@ class Extra:
 EXTRAS = (
     Extra("ym2608", ("ym2608_adpcm_rom.bin",), 8192,
           "the rhythm ROM of the YM2608 sound chip: its six built-in drum sounds",
-          ("PMD", "FM sound driver (FMP)"), False,
+          ("PMD", "FM sound driver (FMP)", "S98", "Furnace"), False,
           "songs that use the chip's drums play without them",
           "a dump of the chip's ROM from a PC-9801-86 or compatible sound board; emulators of "
           "the PC-98 use the same file under the same name",
@@ -202,7 +202,7 @@ def shroom_notes(tool: Path) -> Path | None:
 def env(backend: str, helper: list[str]) -> dict[str, str]:
     """The environment a helper is started in: where the extra files are."""
     out = dict(os.environ)
-    if backend in ("pmdc", "fmp"):          # they read the YM2608's rhythm ROM themselves
+    if backend in ("pmdc", "fmp", "vgm", "furnace"):   # they read the YM2608's rhythm ROM themselves
         if rom := find("ym2608"):
             out["BBMP_YM2608_ROM"] = str(rom)
     elif backend == "sgc":

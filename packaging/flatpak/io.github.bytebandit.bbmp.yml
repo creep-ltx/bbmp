@@ -214,7 +214,7 @@
         {
           "type": "file",
           "path": "sources/archives/uade-8d77cd7.tar.xz",
-          "sha256": "6ade4fa2bbf59748ccdf902df56209b05b4a66e35bd41cfea099393ed547c2ca",
+          "sha256": "d1ebd5e6c48e8748a330e9863e36242f7769b5478d1833dfb8ed540f93589b87",
           "dest": "sources/archives"
         },
         {
@@ -281,7 +281,7 @@
         {
           "type": "file",
           "path": "sources/archives/zxtune-e36902f.tar.xz",
-          "sha256": "fe73db61bf4d434e53d231ecc5fbba51d68494c5fe5d0118fa22c0ede35a2a26",
+          "sha256": "312bc4b33351cd15bae2182f40c18709199bc0a37ef73d3ccc27bfc5b040d04f",
           "dest": "sources/archives"
         },
         {
@@ -348,7 +348,7 @@
         {
           "type": "file",
           "path": "sources/archives/StSound-a27c293.tar.xz",
-          "sha256": "b3d7a1c274ad51e8c7be0a1ae5610f0e77cd720a73775825fe5a8aae70ea04a1",
+          "sha256": "a3aa75481243f81b7145029d0e9e710e70d64a3eebba1e7e8e0ffdda8d7d716f",
           "dest": "sources/archives"
         },
         {
@@ -366,7 +366,7 @@
         {
           "type": "file",
           "path": "sources/archives/adplug-1e6133f.tar.xz",
-          "sha256": "10c449fd395ffc35f8aa6be26698bc25f229c03249015baedd2ef3efbda9d810",
+          "sha256": "fc6195b1491816eb0b80b187a717f6d4e85f5552cdcd64c828653a9441f9071f",
           "dest": "sources/archives"
         },
         {
@@ -378,7 +378,7 @@
         {
           "type": "file",
           "path": "sources/archives/libkss-15fb77f.tar.xz",
-          "sha256": "0026b42a7b324c25e8dcfb2d4a9cf3e7ddb2e54ecd12db44555196093bd252ab",
+          "sha256": "b943e96eb5a6de92c797dbd2cd11ad7d8e6b8d35ed1e371d83c1d132d0c02bd8",
           "dest": "sources/archives"
         },
         {
@@ -390,7 +390,7 @@
         {
           "type": "file",
           "path": "sources/archives/organya.h-f7a086f.tar.xz",
-          "sha256": "c27f4720aa56c16be01b15ac994d039dfffe853137eac627ad67a3efaebe97e5",
+          "sha256": "b0e6b8c3e672c61de4c5e7c455a6f87b6ef73aefaeef415d5e1635df309a9e80",
           "dest": "sources/archives"
         },
         {
@@ -408,7 +408,7 @@
         {
           "type": "file",
           "path": "sources/archives/sc68-2.2.1.tar.gz",
-          "sha256": "d7371f0f406dc925debf50f64df1f0700e1d29a8502bb170883fc41cc733265f",
+          "sha256": "9c84f7f838651def746cc14a8f712ff67ed8b9548f4feffc3acef574659cd675",
           "dest": "sources/archives"
         },
         {
@@ -525,7 +525,7 @@
         {
           "type": "file",
           "path": "sources/archives/furnace-fa9541d.tar.xz",
-          "sha256": "4b6cc194ce62cdbe64d25a7fd646c4638b7293494174987a3227db5ab2a4e15f",
+          "sha256": "b30dbefa5511c4b0508b081b4245e6cf051909ef540db13cec16891bf370b611",
           "dest": "sources/archives"
         }
       ],
@@ -590,7 +590,7 @@
         {
           "type": "file",
           "path": "sources/archives/libxmp-1e08121.tar.xz",
-          "sha256": "8b794cdca912cd0902db58f02d86450f73716bf983fea3d85f4777418dbb6bb3",
+          "sha256": "c7b12c63670f4dc2b9531a38b80a2d63fafcc237b327f90172ab28767bcabcd5",
           "dest": "sources/archives"
         }
       ],
@@ -835,13 +835,13 @@
         {
           "type": "file",
           "path": "sources/archives/rePlayer-e3bf02c.tar.xz",
-          "sha256": "8208ea7ed01a3a567af1a7fc63eccb81971ca3f28f21bace9c9466cef48361a2",
+          "sha256": "8b5701e337f2515cbdf4560702cd289fdea282f3e7f1a2920c22d3d1565d9d81",
           "dest": "sources/archives"
         },
         {
           "type": "file",
           "path": "sources/archives/aosdk-e359a6e.tar.xz",
-          "sha256": "5cdea6d538162b15ef4935a7479ad9da7d12ce7b1e1031e16444cd8059e34143",
+          "sha256": "7e21d987c9878af27610565c3bdc245eaba65e30f8ec4bccd952212124cb39e3",
           "dest": "sources/archives"
         }
       ],
@@ -1000,7 +1000,7 @@
         {
           "type": "file",
           "path": "sources/archives/rePlayer-e3bf02c.tar.xz",
-          "sha256": "8208ea7ed01a3a567af1a7fc63eccb81971ca3f28f21bace9c9466cef48361a2",
+          "sha256": "8b5701e337f2515cbdf4560702cd289fdea282f3e7f1a2920c22d3d1565d9d81",
           "dest": "sources/archives"
         },
         {
@@ -1047,7 +1047,7 @@
         {
           "type": "file",
           "path": "sources/archives/uade-8d77cd7.tar.xz",
-          "sha256": "6ade4fa2bbf59748ccdf902df56209b05b4a66e35bd41cfea099393ed547c2ca",
+          "sha256": "d1ebd5e6c48e8748a330e9863e36242f7769b5478d1833dfb8ed540f93589b87",
           "dest": "sources/archives"
         },
         {

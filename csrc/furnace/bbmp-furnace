@@ -153,6 +153,11 @@ def stream(furnace, wav: Path, meta: dict, track: int, start_ms: int, damaged: s
     head = {"tracks": max(1, meta.get("subsongs", 1)), "track": track,
             "title": meta.get("name", ""), "author": meta.get("author", ""),
             "type": "Furnace " + meta.get("system", ""), "duration_ms": duration}
+    system = meta.get("system", "")
+    if (("2608" in system or "OPNA" in system or "9801-86" in system)
+            and not os.path.isfile(os.environ.get("BBMP_YM2608_ROM", ""))):
+        head["comment"] = ("The YM2608's drums are silent: its rhythm ROM "
+                           "(ym2608_adpcm_rom.bin) is not in the extras folder.")
     sys.stdout.write(json.dumps(head) + "\n")
     sys.stdout.flush()
     skip = start_ms * rate // 1000 * 4

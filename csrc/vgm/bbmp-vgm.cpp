@@ -8,6 +8,7 @@
 // endian) follows. The song is played round and round, 20 ms at a time, until 10 seconds
 // past its length (30 minutes when it has none).
 #include "vgmplay.h"
+#include "ym2608_rom.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -97,6 +98,11 @@ int main(int argc, char** argv)
         return 1;
     }
 
+    if (bbmp_ym2608_rom_missing()) {
+        const char* note = "The YM2608's drums are silent: its rhythm ROM (ym2608_adpcm_rom.bin) "
+                           "is not in the extras folder.";
+        song->comment = song->comment.empty() ? note : song->comment + "\n\n" + note;
+    }
     // the player reads at most 64 KB of this line: very long tags are cut
     for (std::string* t : {&song->title, &song->author, &song->program, &song->computer, &song->date})
         cutText(*t, 4000);

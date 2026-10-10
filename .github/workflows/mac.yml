@@ -6,7 +6,7 @@ on:
   push:
     branches: [mac]
   workflow_dispatch:
-# no pull_request trigger: a fork's code must never run where the BBMP_SOURCES_KEY secret is
+# no pull_request trigger: a fork's code is not run here
 
 # the job only reads: the token it gets cannot push or change anything
 permissions:
@@ -20,7 +20,6 @@ jobs:
       JOBS: 4
       DYLD_FALLBACK_LIBRARY_PATH: /opt/homebrew/lib
       BBMP_AUDIO: silent         # no speakers here
-      HAS_SOURCES_KEY: ${{ secrets.BBMP_SOURCES_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,19 +27,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      # every source at the version used, from bbmp-sources (an archive of the exact source
-      # tarballs the build uses), when its read-only key is given (the secret
-      # BBMP_SOURCES_KEY); else the scripts download them
+      # every source at the version used, from bbmp-sources (a public archive of the exact
+      # source tarballs the build uses): nothing is downloaded from the sources' own sites
       - name: bbmp-sources
-        if: ${{ env.HAS_SOURCES_KEY == 'true' }}
         uses: actions/checkout@v4
         with:
           repository: creep-ltx/bbmp-sources
-          ssh-key: ${{ secrets.BBMP_SOURCES_KEY }}
           path: bbmp-sources
-          persist-credentials: false   # the key is not left on the machine for later steps
+          persist-credentials: false
       - name: Use bbmp-sources
-        if: ${{ env.HAS_SOURCES_KEY == 'true' }}
         run: echo "BBMP_SOURCES=$GITHUB_WORKSPACE/bbmp-sources" >> "$GITHUB_ENV"
       - name: Tools and libraries
         run: |

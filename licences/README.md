@@ -109,7 +109,10 @@ PlayStation 2 BIOS, which ZXTune builds into its PSF and PSF2 player (Highly
 Experimental) as a trimmed image: `csrc/zxtune/no-ps2-bios.patch` leaves it out of
 `bbmp-zxtune` and `bbmp-ay-vt2` (since 8 October 2026), and no package or download of
 the player carries it; who has a PlayStation 2 provides the image made from their own
-console's BIOS in the extras folder (`bbmp extras`). Nor Z80~Ex (GPL 2 only), which only ZXTune's AY Emul player used
+console's BIOS in the extras folder (`bbmp extras`). Nor the YM2608's rhythm ROM (its six
+drum sounds, Yamaha's), which libvgm and Furnace build in: `bbmp-vgm` and Furnace read
+the copy the user puts in the extras folder, as the PMD player does (since 10 October
+2026). Nor Z80~Ex (GPL 2 only), which only ZXTune's AY Emul player used
 (`csrc/zxtune/no-z80ex.patch`; Game Music Emu plays AY Emul songs), nor libvgm
 (`csrc/zxtune/no-libvgm.patch`): its OPL4 is GPL 2 only and some of its chips state no
 licence, so VGM and S98 are played by `bbmp-vgm`, a program of its own under the GPL 2

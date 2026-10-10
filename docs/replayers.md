@@ -1345,6 +1345,23 @@ Not replayers of the player's own, but helpers whose build changed for their lic
   census: every VGM and S98 format plays as before (S98 40 of 40, MSX1 and MSX2 40, Vectrex
   20, ColecoVision 11, Virtual Boy 9, Spectrum VGM 3, X68000 1, CYM 1, Master System and
   SG-1000 40). Built from bbmp-sources, `bbmp-vgm` is the same bytes as built from the clone.
+- **The YM2608's rhythm ROM is the user's (10 October 2026):** its six drum sounds,
+  8,192 bytes of Yamaha's, were built into `bbmp-vgm` (libvgm's `fmopn_2608rom.h`, MAME's
+  copy "derived from the chip's output") and Furnace (`src/engine/platform/sound/rss.h` for
+  its ymfm core, and YM2608-LLE's `fmopna_rom.h`, a copy read off the chip, nibbles swapped,
+  4 bytes different). Now both read the file the PMD player reads,
+  `ym2608_adpcm_rom.bin` in the extras folder (BBMP_YM2608_ROM): `csrc/vgm/ym2608_rom.h`
+  and `.c` (build-vgm.sh points fmopn.c at it; with no ROM libvgm maps none and the drums
+  are silent), `csrc/furnace/bbmp_ym2608_rom.h` with `rss.h` and `fmopna_rom.h` put over
+  Furnace's (build-furnace.sh; with no ROM the cores get bytes that decode to silence).
+  Both builds fail if the ROM's symbol is still in them, and both say in the song's notes
+  when the drums are silent for want of the file. **Checked:** with the user's dump (the
+  same bytes as libvgm's copy), 60 s of three S98 songs with hundreds of drum hits (Valna
+  13, Farland Story 4 fsg06, Ryoki no Ori ryoki-02) and the whole of Furnace's three YM2608
+  demos (Blue Nebula, CT main theme, Counterattack) byte for byte as before; without it
+  the drums are gone and nothing else changes in level. No 32-byte piece of the ROM, in
+  either nibble order, is left in any built program or in the public bbmp-sources (which
+  also drops ZXTune's copy in Game Music Emu's `fm.c`, a file ZXTune doesn't build).
 - **ZXTune without Sony's PlayStation 2 BIOS (8 October 2026):** Highly Experimental,
   ZXTune's PSF and PSF2 player, runs a trimmed image of Sony's SCPH-10000 BIOS (its own
   `mkhebios` makes it: the BIOS's sound and PlayStation 1 modules, with newer IOP

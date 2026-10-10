@@ -59,6 +59,10 @@ fi
 # final audit of 7 October 2026).
 apply_patches "$SRC" "$HERE"/csrc/zxtune/*.patch
 rm -f "$SRC/src/module/players/xsf/scph10000_he.inc"
+# ZXTune's small wrappers around UnRAR, vgmstream and libvgm are not built either: nothing
+# registers them, and the public copy of bbmp-sources holds none of what they include
+rm -f "$SRC/src/formats/archived/generic/rar.cpp" "$SRC/src/module/players/external/vgmstream.cpp" \
+  "$SRC/src/module/players/external/libvgm.cpp"
 # an object built before still names it as a dependency: built again
 grep -rl --include='*.d' scph10000_he.inc "$SRC/obj" 2>/dev/null | while read -r D; do rm -f "$D" "${D%.d}.o"; done || true
 

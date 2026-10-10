@@ -163,6 +163,9 @@ if [ "${SKIP_VT2:-0}" != 1 ]; then
     fi
   done
   rm -f "$ZXTUNE/src/module/players/xsf/scph10000_he.inc"
+  # nor ZXTune's wrappers around UnRAR, vgmstream and libvgm (as tools/build-zxtune.sh)
+  rm -f "$ZXTUNE/src/formats/archived/generic/rar.cpp" "$ZXTUNE/src/module/players/external/vgmstream.cpp" \
+    "$ZXTUNE/src/module/players/external/libvgm.cpp"
   # an object built before still names it as a dependency: built again
   grep -rl --include='*.d' scph10000_he.inc "$ZXTUNE/obj" 2>/dev/null | while read -r D; do rm -f "$D" "${D%.d}.o"; done || true
   mkdir -p "$ZXTUNE/apps/bbmp-ay-vt2"

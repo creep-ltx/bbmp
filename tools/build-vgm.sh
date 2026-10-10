@@ -56,6 +56,13 @@ done
 grep -q 'license:GPL-2.0' "$VGM/emu/cores/ymf278b.c" || {
   echo "libvgm's ymf278b.c is not the one this build was checked against" >&2; exit 1; }
 
+# The YM2608's rhythm ROM (its six drum sounds, Yamaha's) is not built in: fmopn.c reads it
+# through csrc/vgm/ym2608_rom.h from the file the user puts in the extras folder
+# (BBMP_YM2608_ROM), and without it the drums are silent. libvgm's copy is not used.
+sed -i 's|#include "fmopn_2608rom.h"|#include "ym2608_rom.h"|' "$VGM/emu/cores/fmopn.c"
+grep -q '#include "ym2608_rom.h"' "$VGM/emu/cores/fmopn.c" && ! grep -q 'fmopn_2608rom' "$VGM/emu/cores/fmopn.c" || {
+  echo "libvgm's fmopn.c does not take the rhythm ROM from ym2608_rom.h" >&2; exit 1; }
+
 # the chips the cores are built for (fmopn and fmopl build only what is asked for)
 DEVS="SN76496 YM2413 YM2612 YM2151 SEGAPCM RF5C68 YM2203 YM2608 YM2610 YM3812 YM3526 Y8950
   YMF262 YMF278B YMZ280B YMF271 AY8910 32X_PWM GAMEBOY NES_APU YMW258 UPD7759 MSM6258 MSM6295
@@ -74,11 +81,11 @@ compile() {
   local f="$1" o="$BUILD/$(basename "${1%.*}").o"
   case "$f" in
     *.cpp) g++ -std=c++20 "${FLAGS[@]}" "${DEFS[@]}" -I"$VGM" -c "$f" -o "$o" ;;
-    *) gcc "${FLAGS[@]}" "${DEFS[@]}" -I"$VGM" ${CORE_W:-} -c "$f" -o "$o" ;;
+    *) gcc "${FLAGS[@]}" "${DEFS[@]}" -I"$VGM" -I"$MINE" ${CORE_W:-} -c "$f" -o "$o" ;;
   esac
 }
 export -f compile
-export BUILD VGM
+export BUILD VGM MINE
 export FLAGS_S="${FLAGS[*]}" DEFS_S="${DEFS[*]}"
 UNITS=()
 for c in $CORES; do UNITS+=("$VGM/emu/cores/$c.c"); done
@@ -87,6 +94,9 @@ printf '%s\n' "${UNITS[@]}" | CORE_W=-w xargs -P "$JOBS" -I{} bash -c \
 printf '%s\n' "$MINE"/*.cpp "$MINE"/*.c | xargs -P "$JOBS" -I{} bash -c \
   'FLAGS=($FLAGS_S); DEFS=($DEFS_S); compile "$1"' _ {}
 g++ "${FLAGS[@]}" -o "$PREFIX/bin/bbmp-vgm" "$BUILD"/*.o -lz -lm $ICONV
+if nm "$BUILD/fmopn.o" | grep -q 'YM2608_ADPCM_ROM$'; then
+  echo "bbmp-vgm still has the YM2608's rhythm ROM built in" >&2; exit 1
+fi
 
 # the licences and where each part comes from go with the program
 cp "$MINE/README.txt" "$MINE/NOTICES.txt" "$MINE/GPL-2.0.txt" "$MINE/LGPL-2.1.txt" "$PREFIX/share/bbmp-vgm/"
