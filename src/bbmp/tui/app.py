@@ -940,8 +940,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             self._play_id = None
 
     def _terminal_behind(self) -> bool:
-        """Has the terminal not yet taken what was drawn before? A slow terminal (macOS's
-        own) takes a visualiser's 100-400 KB a second slower than it comes: Textual queues
+        """Has the terminal not yet taken what was drawn before? A slow terminal takes a visualiser's 100-400 KB a second slower than it comes: Textual queues
         up to 30 screens for it, and a key's answer waited behind them, seconds at 150 KB/s
         (measured 11 October 2026). Then this tick's frame is left out. Textual's writer
         thread is private (8.2): check it on an upgrade."""
