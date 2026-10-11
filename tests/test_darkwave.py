@@ -5,6 +5,7 @@ import array
 import json
 import os
 import struct
+import shutil
 import subprocess
 
 import pytest
@@ -46,7 +47,9 @@ def _run(path, passes=None, idle="0"):
     env = {**os.environ, "BBMP_DARKWAVE_IDLE": idle}
     if passes:
         env["BBMP_DARKWAVE_PASSES"] = str(passes)
-    p = subprocess.run(["prlimit", f"--data={2 << 30}", "--", exe, str(path), "0", "48000"],
+    # at most 2 GB of memory where prlimit is (Linux); macOS has none
+    cap = ["prlimit", f"--data={2 << 30}", "--"] if shutil.which("prlimit") else []
+    p = subprocess.run([*cap, exe, str(path), "0", "48000"],
                        capture_output=True, env=env, timeout=60)
     head, _, pcm = p.stdout.partition(b"\n")
     a = array.array("h")

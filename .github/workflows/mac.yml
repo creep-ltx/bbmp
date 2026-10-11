@@ -79,8 +79,9 @@ jobs:
       - name: The package makes sound
         run: tools/mac/sound-check.sh "$RUNNER_TEMP/bbmp-mac" "$RUNNER_TEMP/sound" 2>&1 | tee mac-logs/sound.txt
         continue-on-error: true
-      # kept one day: anyone can download a public repository's artifacts, so a package is
-      # checked before it stays longer
+      # anyone can download a public repository's artifacts: the logs are kept one day, the
+      # package 30 (the first public one, 11 October 2026, was checked: nothing in it that
+      # may not be passed on)
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -91,4 +92,4 @@ jobs:
         with:
           name: bbmp-mac
           path: dist/bbmp-mac-*.tar.gz
-          retention-days: 1
+          retention-days: 30

@@ -199,7 +199,7 @@ for f in "$RETRO"/*_engine.cpp; do
 done
 # -ffp-contract=off: SCC-Musixx's resampling is checked bit for bit; no fused multiply-add
 g++ -O2 -ffp-contract=off -std=gnu++17 -o "$PREFIX/bin/bbmp-retro" -I"$RETRO" "${INCLUDES[@]}" \
-  "$RETRO/bbmp-retro.cpp" "${ENGINES[@]}" "${OBJECTS[@]}" "${LIBS[@]}" -lm
+  "$RETRO/bbmp-retro.cpp" "${ENGINES[@]}" "${OBJECTS[@]}" "${LIBS[@]}" -lm $ICONV
 # TSS's BSD licence asks that its notice go with the program
 mkdir -p "$PREFIX/share/licenses"
 install -m644 "$RETRO/LICENSE.tss" "$PREFIX/share/licenses/"
