@@ -44,7 +44,7 @@ fetch() {
 }
 
 # pyinstall <package...>: into the venv that runs StoneTracker's unpacker; from
-# bbmp-sources, without the internet, when it is set (Cython and setuptools are the SDK's)
+# bbmp-sources, without the internet, when it is set (Cython and setuptools: the SDK's, else its wheels)
 VENV="$SRC/amitools-venv"
 pyinstall() {
   if kept; then
@@ -148,9 +148,12 @@ PY
     if [ ! -x "$VENV/bin/vamos" ]; then
       if kept; then         # checked, and what building them needs (setuptools-scm)
         for f in "amitools-$AMITOOLS.tar.gz" machine68k-0.3.0.tar.gz setuptools_scm-10.3.4-py3-none-any.whl \
-                 vcs_versioning-2.5.0-py3-none-any.whl packaging-26.3-py3-none-any.whl; do
+                 vcs_versioning-2.5.0-py3-none-any.whl packaging-26.3-py3-none-any.whl \
+                 setuptools-84.0.0-py3-none-any.whl cython-3.3.0-py3-none-any.whl; do
           kept_file "$f" >/dev/null
         done
+        # setuptools and Cython: the Flatpak SDK's (pip leaves them), else (macOS) bbmp-sources'
+        pyinstall setuptools cython
         pyinstall setuptools-scm==10.3.4
       fi
       pyinstall "machine68k==0.3.0"
