@@ -36,7 +36,7 @@ from .activity import Activity
 from .dialogs import Busy, ChooseCollections, Confirm, Pick
 from .guard import guarded
 from .help import HELP
-from .widgets import FilesTree, KeysFooter, Note, NowPlaying, OneLineList, SearchBox, SongTable, Visualizer
+from .widgets import LIST_KEYS, FilesTree, KeysFooter, Note, NowPlaying, OneLineList, SearchBox, SongTable, Visualizer
 from .playing import PlayingPart
 from .browse import BrowsePart
 from .lists import ListsPart
@@ -143,7 +143,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         Binding("shift+down,J", "move_song(1)", show=False, id="move_down"),
         Binding("v", "visual", "Visuals", id="visuals"),
         Binding("right", "copies(True)", show=False, id="open_copies"),
-        Binding("left", "copies(False)", show=False, id="close_copies"),
+        Binding("left,escape", "copies(False)", show=False, id="close_copies"),
         Binding("t", "activity", "Activity", show=False, id="activity"),
         *(Binding(str((n + 1) % 10), f"tab('{tab}')", show=False, id=f"tab_{tab}")
           for n, tab in enumerate(("browse", "search", "queue", "favorites", "files",
@@ -315,7 +315,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
 
     def _use_keys(self, keys: dict) -> None:
         """The user's own keys, by the bindings' ids. One that is not known is told."""
-        known = {b.id for b in self.BINDINGS if b.id}
+        known = {b.id for b in self.BINDINGS if b.id} | LIST_KEYS
         wrong = sorted(k for k in keys if k not in known)
         self.set_keymap({k: str(v) for k, v in keys.items() if k in known})
         if wrong:

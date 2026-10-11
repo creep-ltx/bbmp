@@ -120,7 +120,8 @@ file calls the key (see below).
 | v | visualiser, in turn: spectrum analyser, gradient spectrum (smooth bars shaded bottom to top), mirrored spectrum, spectrogram (frequency over time), oscilloscope, channel scopes (one small scope per tracker channel; their shapes are guessed from the notes, as the replayers give each channel's loudness but not its sound), channel bars, tracker pattern, off; the demo effects (copper bars, starfield, plasma and a sine scroller with the song's name, twenty seconds each, moving with the music) too when "Demo effects with v" is on in Settings. A song without channels or a pattern skips those (`visuals`) |
 | / | search: words, and `artist:jester`, `format:ahx`, `title:`, `album:`, `platform:amiga`, `chip:sid`, `"two words"`, `-leave-out`; Enter, Down or Esc leave the box for the results (with none, for the tab bar) (`search`) |
 | 1–0 | Browse, Search, Queue, Playlists, Files, History, Info, Artist, Stats, Settings (`tab_browse` … `tab_settings`) |
-| → / ← | in Browse: into the entry under the cursor (Enter too), and back (`open_copies`, `close_copies`) |
+| → / ← | in Browse: into the entry under the cursor (Enter too), and back (Esc too) (`open_copies`, `close_copies`) |
+| Page Up / Page Down | a page up or down in a list (`page_up`, `page_down`) |
 | c | in Browse: the first list, All and the collections; in Search: search the next collection, or all (`collection`) |
 | b | in Browse: the platforms (Amiga, C64, Mega Drive...); again: the sound chips (SID, Paula, YM2612...) (`view`) |
 | g | go to the song that plays, in Browse (`go_to_playing`) |
@@ -151,6 +152,12 @@ brackets. Several keys for one thing are separated by commas:
 
 ```json
 "keys": {"save": "d", "move_up": "shift+up,k", "move_down": "shift+down,j"}
+```
+
+To page with ← and → instead, going in with Enter and back with Esc:
+
+```json
+"keys": {"page_up": "left", "page_down": "right"}
 ```
 
 ### Playlists

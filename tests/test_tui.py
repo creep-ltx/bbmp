@@ -174,6 +174,33 @@ def test_browse_goes_in_and_out_as_ranger_does(catalog, fetcher, tmp_path):
     run(go())
 
 
+def test_left_and_right_can_page_while_enter_and_esc_go_in_and_out(catalog, fetcher, tmp_path):
+    """With "page_up": "left" and "page_down": "right" in settings.json, ← and → page
+    through Browse's lists and songs; Enter goes in and Esc back out."""
+    async def go():
+        settings = Settings(resume=False, keys={"page_up": "left", "page_down": "right"})
+        app = make_app(catalog, fetcher, tmp_path, settings=settings)
+        async with app.run_test(size=(140, 44)) as pilot:
+            formats = await browse_ready(pilot, app)
+            assert formats.option_count > 1
+            formats.highlighted = 0
+            await pilot.press("right")                           # a page down, not in
+            assert formats.highlighted == formats.option_count - 1 and app.focused is formats
+            await pilot.press("left")
+            assert formats.highlighted == 0
+            put(formats, ("format", "TFMX"))
+            await pilot.pause(0.2)
+            await pilot.press("enter", "enter")                  # into TFMX, into Tester
+            table = app.query_one("#browse-songs")
+            assert await settle(pilot, lambda: app.focused is table and table.row_count)
+            await pilot.press("escape")                          # back to the artists
+            assert await settle(pilot, lambda: app.focused is not table)
+            assert app._path[-1] == ("format", "TFMX")
+            await pilot.press("escape")
+            assert app.focused is formats
+    run(go())
+
+
 def test_left_goes_back_from_songs_too_wide_to_show(catalog, fetcher, tmp_path):
     """← among Browse's songs goes back even when the table is wider than its place
     (a long title), where a table's own ← would scroll it sideways."""

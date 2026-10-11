@@ -18,7 +18,8 @@ HELP = """\
              channel scopes, channels, pattern, off (demo effects: Settings)
 
 [b]Finding music[/b]
-  → / ←      in Browse: into the entry under the cursor (Enter too), and back.
+  → / ←      in Browse: into the entry under the cursor (Enter too), and back
+             (Esc too).
              First All or a collection, then formats, platforms, chips, artists
              or what is new
   /          search             1-0  switch tabs (5 Files, 7 Info, 0 Settings)
