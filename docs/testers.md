@@ -55,7 +55,7 @@ The first time it asks:
 
 | Key | Does |
 |---|---|
-| arrows, Enter | move around. In Browse, → or Enter goes into a collection, a format or an artist, ← goes back; Enter on a song plays it |
+| arrows, Enter | move around. In Browse, → or Enter goes into a collection, a format or an artist, ← or Esc goes back; Enter on a song plays it |
 | `1`–`0` | the tabs: Browse, Search, Queue, Playlists, Files, History, Info, Artist, Stats, Settings |
 | `/` | search: a name, an artist, `format:ahx`, `platform:c64` |
 | `r` | radio: random songs from the format, artist, platform, chip or collection you are on |

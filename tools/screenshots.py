@@ -238,6 +238,10 @@ CELL_WIDTH = 0.61                     # Textual's (Rich's export_svg font_aspect
 
 def box_font(svg: str) -> str:
     svg = svg.replace("Fira Code, monospace", f"{BOX_FONT}, monospace")
+    # rsvg-convert drops a text's leading spaces ("Modland  493,396" became "Modland493,396")
+    # unless whitespace is preserved, as record_demo.py does
+    if 'xml:space="preserve"' not in svg:
+        svg = svg.replace("<svg ", '<svg xml:space="preserve" ', 1)
 
     def spaced(m: re.Match) -> str:
         size = float(m.group(1))

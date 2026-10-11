@@ -33,6 +33,18 @@ def mmss(t: float | None) -> str:
     return f"{t // 60:02d}:{t % 60:02d}"
 
 
+# The keys of the lists, with the ids by which settings.json changes them as it changes the
+# app's (a list's own key comes first, so it must carry the same id). → and ← go in and out
+# of Browse's columns and a song's copies: a scrolling widget's own → and ← (scroll
+# sideways) would come first. Esc goes out too, so that someone who gives ← and → to
+# paging ("page_up": "left", "page_down": "right") goes in with Enter and out with Esc.
+IN_AND_OUT = [Binding("right", "app.copies(True)", show=False, id="open_copies"),
+              Binding("left,escape", "app.copies(False)", show=False, id="close_copies")]
+PAGES = [Binding("pageup", "page_up", show=False, id="page_up"),
+         Binding("pagedown", "page_down", show=False, id="page_down")]
+LIST_KEYS = {"page_up", "page_down"}     # ids only the lists have
+
+
 class SearchBox(Input):
     """The search box. It takes every key as text; Esc leaves it for the results."""
 
@@ -54,10 +66,7 @@ class OneLineList(OptionList):
 
     DEFAULT_CSS = "OneLineList { text-wrap: nowrap; text-overflow: ellipsis; }"
     node: list = []          # in Browse: the path of steps whose entries it lists
-    # → and ← go in and out of Browse's columns: a scrolling widget's own → and ←
-    # (scroll sideways) would come first
-    BINDINGS = [Binding("right", "app.copies(True)", show=False),
-                Binding("left", "app.copies(False)", show=False)]
+    BINDINGS = IN_AND_OUT + PAGES
 
     def _update_lines(self) -> None:
         if not self.scrollable_content_region:
@@ -81,10 +90,8 @@ class OneLineList(OptionList):
 class SongTable(DataTable):
     """A list of songs. Enter plays from the selected row onwards."""
 
-    # → and ← open and close a song's copies, and ← goes back out of Browse's songs: a
-    # table's own → and ← (scroll sideways, when a long title makes it wide) would come first
-    BINDINGS = [Binding("right", "app.copies(True)", show=False),
-                Binding("left", "app.copies(False)", show=False)]
+    # → and ← open and close a song's copies, and ← goes back out of Browse's songs
+    BINDINGS = IN_AND_OUT + PAGES
 
     COLUMNS = {"title": "Title", "artist": "Artist", "album": "Album", "format": "Format",
                "size": "Size"}
@@ -548,8 +555,8 @@ class FilesTree(DirectoryTree):
     → opens a folder (on an open one, goes to what is in it), ← closes it (on a file or
     a closed folder, goes to the folder it is in); Enter opens and closes, and plays."""
 
-    BINDINGS = [Binding("right", "open_or_in", show=False),
-                Binding("left", "close_or_out", show=False)]
+    BINDINGS = [Binding("right", "open_or_in", show=False, id="open_copies"),
+                Binding("left,escape", "close_or_out", show=False, id="close_copies"), *PAGES]
 
     accept = staticmethod(lambda path: True)   # set by the app once the catalog is open
 
