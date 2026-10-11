@@ -5,8 +5,17 @@ ByteBandit Music Player (`bbmp`) browses, searches and plays music from
 computer/console music, and from HVSC (C64), Keygen Music, ASMA (Atari 8-bit), ZX-Art
 (ZX Spectrum) and SNDH (Atari ST), straight from the terminal: about 540,000 songs. Songs are downloaded when you play them and cached, so it feels like streaming.
 
-Trying it from a Flatpak or AppImage package? [docs/testers.md](docs/testers.md) is
-the short guide: installing it, the keys you need, and reporting what sounds wrong.
+![Browsing the Amiga's TFMX songs while Chris Huelsbeck's Turrican 2 plays](docs/screenshots/amiga-tfmx.png)
+
+| | |
+|---|---|
+| ![All the collections](docs/screenshots/browse-collections.png) | ![A C64 tune, with what was checked about its player](docs/screenshots/c64-sid.png) |
+| ![Keygen Music, one bar per channel](docs/screenshots/keygen-music.png) | ![Searching by sound chip](docs/screenshots/search-by-chip.png) |
+
+Ready-made packages for Linux (Flatpak, AppImage) and macOS (Apple Silicon) are on the
+[Releases](https://github.com/creep-ltx/bbmp/releases) page. Trying one?
+[docs/testers.md](docs/testers.md) is the short guide: installing it, the keys you need,
+and reporting what sounds wrong.
 
 ## Setting it up
 
