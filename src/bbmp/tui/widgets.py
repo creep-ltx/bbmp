@@ -287,7 +287,7 @@ def _drawn_key(content):
 def draw_if_changed(widget: Static, content) -> None:
     """Update a Static twelve times a second only when what it shows changed: an unchanged
     visualiser and Now playing were sent to the terminal again and again (85 KB a second
-    with nothing playing, 11 October 2026), which a slow terminal (macOS's) spends its time
+    with nothing playing, 11 October 2026), which a slow terminal spends its time
     on while the keys wait."""
     key = _drawn_key(content)
     if getattr(widget, "_drawn", None) == key:
