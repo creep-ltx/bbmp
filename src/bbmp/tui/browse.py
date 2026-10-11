@@ -12,6 +12,8 @@ was in the look again. Nothing is filled anew either way."""
 
 from __future__ import annotations
 
+import time
+
 from rich.text import Text
 from textual import on, work
 from textual.app import App
@@ -52,6 +54,17 @@ def step_id(step: Step) -> str:
 def id_step(id_: str) -> Step:
     kind, _, value = id_.partition(SEP)
     return kind, value
+
+
+class Waiting(Option):
+    """What a list shows while what it lists is asked of the catalog in the background."""
+
+    def __init__(self):
+        super().__init__(Text("…", style="dim"), disabled=True)
+
+
+def _waits(options: list) -> bool:
+    return bool(options) and isinstance(options[0], Waiting)
 
 
 def holds_songs(path: list[Step]) -> bool:
@@ -108,19 +121,98 @@ class BrowsePart(metaclass=type(App)):
             cache[key] = self.index.change_days(collection)
         return cache[key]
 
-    def _view_counts(self, kind: str, collection: str = "") -> dict[str, int]:
+    def _view_counts(self, kind: str, collection: str = "",
+                     wait: bool = True) -> dict[str, int] | None:
         """Songs on each platform, or on each chip, in a collection or all of them."""
-        cache = self.__dict__.setdefault("_view_cache", {})
+        own = [c for c, _ in self._own]
+
+        def count(index) -> dict[str, int]:
+            out: dict[str, int] = {}
+            for c in ([collection] if collection else own):
+                for id_, songs in index.view_counts(c, kind).items():
+                    out[id_] = out.get(id_, 0) + songs
+            return out
+        return self._asked(("counts", kind, collection), count, wait)
+
+    def _all_artists(self, collection: str, wait: bool = True) -> list | None:
+        return self._asked(("artists", collection),
+                           lambda index: index.all_artists(collection), wait)
+
+    # The first look at Platforms (720 ms), Chips (335 ms) and every artist (320 ms, 2.6 s
+    # with the catalog not yet read from the disk) froze the screen while the catalog
+    # was asked (11 October 2026). Where only the look ahead waits for them, they are
+    # asked in the background, the list says "…" meanwhile and is filled when they come.
+
+    def _asked(self, key: tuple, ask, wait: bool = True):
+        """A slow answer of the catalog, kept until the catalog changes. With `wait`
+        False, one not yet known is asked in the background and None is given: the lists
+        waiting for it are filled when it comes (_answered)."""
+        cache = self.__dict__.setdefault("_answers", {})
         if any(k[0] != id(self.index) for k in cache):
             cache.clear()
-        key = (id(self.index), kind, collection)
-        if key not in cache:
-            out: dict[str, int] = {}
-            for c in ([collection] if collection else [c for c, _ in self._own]):
-                for id_, songs in self.index.view_counts(c, kind).items():
-                    out[id_] = out.get(id_, 0) + songs
-            cache[key] = out
-        return cache[key]
+        full = (id(self.index), *key)
+        if full in cache:
+            return cache[full]
+        if wait:
+            cache[full] = ask(self.index)
+            return cache[full]
+        asking = self.__dict__.setdefault("_asking", set())
+        if full not in asking:
+            asking.add(full)
+            self._ask_in_background(full, ask, self.index)
+        return None
+
+    @work(thread=True, group="asking")
+    @guarded("asking the catalog")
+    def _ask_in_background(self, full: tuple, ask, index) -> None:
+        try:
+            answer = ask(index)
+        except Exception:
+            self.call_from_thread(self._asking.discard, full)
+            raise
+        self.call_from_thread(self._answered, full, index, answer)
+
+    def _answered(self, full: tuple, index, answer) -> None:
+        self._asking.discard(full)
+        if index is not self.index:
+            return                          # the catalog has changed meanwhile
+        cache = self.__dict__.setdefault("_answers", {})
+        if any(k[0] != id(self.index) for k in cache):
+            cache.clear()
+        cache[full] = answer
+        if not hasattr(self, "_path"):
+            return
+        try:
+            preview = self._preview_list()
+        except NoMatches:
+            return
+        # the lists that wait, if they are still on show: the one one went into, the look
+        for ol in [*self._levels, preview]:
+            if not getattr(ol, "waiting", False):
+                continue
+            if ol is preview and ol.node != self._preview_of:
+                continue
+            title, options = self._entries(ol.node, wait=False)
+            if _waits(options):
+                continue
+            ol.clear_options()
+            ol.add_options(options)
+            ol.border_title = title
+            ol.waiting = False
+            if ol is not preview:
+                ol.highlighted = next((k for k, o in enumerate(options) if not o.disabled), None)
+        if preview.node == self._preview_of:
+            self._arrange()
+
+    def _ask_ahead(self) -> None:
+        """Shortly after the start: the platforms, chips and artists of the collection
+        Browse is in are counted in the background, so that their lists open at once."""
+        if not hasattr(self, "_path") or self.index is None:
+            return
+        c = self._place()["collection"]
+        for kind in ("platform", "chip"):
+            self._view_counts(kind, c, wait=False)
+        self._all_artists(c, wait=False)
 
     def _several(self) -> bool:
         """More than one collection: the first list is All and each of them."""
@@ -137,8 +229,10 @@ class BrowsePart(metaclass=type(App)):
 
     # ---- what a list holds ----
 
-    def _entries(self, path: list[Step]) -> tuple[str, list[Option]]:
-        """The title and the options of the list at the end of a path."""
+    def _entries(self, path: list[Step], wait: bool = True) -> tuple[str, list[Option]]:
+        """The title and the options of the list at the end of a path. With `wait`
+        False, a list whose catalog answer is slow and not yet known is "…" (one
+        Waiting option) and is asked in the background."""
         ctx = self._place(path)
         c = ctx["collection"]
         last = path[-1] if path else ("", "")
@@ -167,7 +261,12 @@ class BrowsePart(metaclass=type(App)):
             return self._format_entries(c)
         if last in (("menu", "platforms"), ("menu", "chips")):
             kind = last[1][:-1]
-            counts = self._view_counts(kind, c)
+            title = f"{MENU[last[1]][0]} · {self._where_name(c)}"
+            if (built := self._built(path)) is not None:
+                return built
+            counts = self._view_counts(kind, c, wait)
+            if counts is None:
+                return title, [Waiting()]
             options = [Option(Text.assemble(name, (f"  {counts[id_]:,}", dim)),
                               id=step_id((kind, id_)))
                        for id_, name in sorted(platforms.KINDS[kind].items(),
@@ -176,7 +275,7 @@ class BrowsePart(metaclass=type(App)):
             if not options:
                 options = [Option(Text("No music here is known to be on any.", style=dim),
                                   disabled=True)]
-            return f"{MENU[last[1]][0]} · {self._where_name(c)}", options
+            return self._keep_built(path, (title, options))
         if last[0] in ("platform", "chip"):
             return self._view_entries(c, last[0], last[1])
         if last[0] == "format":
@@ -191,10 +290,15 @@ class BrowsePart(metaclass=type(App)):
             return " · ".join(x for x in (f"{fmt} ({len(artists):,})",
                                           units.size(size) if size else "") if x), options
         if last == ("menu", "artists"):
-            artists = self.index.all_artists(c)
-            return (f"Artists ({len(artists):,}) · {self._where_name(c)}",
-                    [Option(Text.assemble(a, (f"  {n:,}", dim)), id=step_id(("artist", a)))
-                     for a, n in artists])
+            if (built := self._built(path)) is not None:
+                return built
+            artists = self._all_artists(c, wait)
+            if artists is None:
+                return f"Artists · {self._where_name(c)}", [Waiting()]
+            return self._keep_built(path, (
+                f"Artists ({len(artists):,}) · {self._where_name(c)}",
+                [Option(Text.assemble(a, (f"  {n:,}", dim)), id=step_id(("artist", a)))
+                 for a, n in artists]))
         if last == ("menu", "new"):
             days = self._change_days(c)
             return f"New · {self._where_name(c)} ({len(days)} days)", [
@@ -203,6 +307,20 @@ class BrowsePart(metaclass=type(App)):
                        id=step_id(("day", day)))
                 for day, added, updated in days]
         return "", []
+
+    # The lists that take long to make and show nothing but the catalog's names and numbers
+    # (no kept marks, no theme colours) are kept as made until the catalog changes: the
+    # 26k artists were made again at every visit, 53-68 ms (11 October 2026).
+
+    def _built(self, path: list[Step]) -> tuple[str, list[Option]] | None:
+        kept = self.__dict__.setdefault("_built_lists", {})
+        if any(k[0] != id(self.index) for k in kept):
+            kept.clear()
+        return kept.get((id(self.index), *path))
+
+    def _keep_built(self, path: list[Step], built: tuple[str, list[Option]]):
+        self.__dict__.setdefault("_built_lists", {})[(id(self.index), *path)] = built
+        return built
 
     def _format_label(self, fmt: str, songs: int, collection: str, shown: str) -> Text:
         ok = is_supported(fmt)
@@ -455,8 +573,20 @@ class BrowsePart(metaclass=type(App)):
         step = id_step(event.option_id) if event.option_id else None
         self._sync()
         self._show_note(step)
-        if step is not None:
-            self._later("preview", 0.12, lambda: self._fill_preview(self._path + [step]))
+        # The look on the right is filled at once after a lone key, and waited for only
+        # while keys come fast (a key held): waiting every time showed it 130-145 ms after
+        # the cursor, at once 38 ms, and one frame sent instead of two (11 October 2026).
+        now = time.monotonic()
+        fast = now - self.__dict__.get("_last_move", 0.0) < 0.15
+        self._last_move = now
+        if step is None:
+            return
+        path = self._path + [step]
+        if fast:
+            self._later("preview", 0.12, lambda: self._fill_preview(path))
+        else:
+            self._stop_preview()
+            self._fill_preview(path)
 
     @on(OptionList.OptionSelected, ".level")
     def _level_selected(self, event: OptionList.OptionSelected) -> None:
@@ -468,24 +598,60 @@ class BrowsePart(metaclass=type(App)):
         if path != self._preview_of:
             self._preview_of = list(path)
             if holds_songs(path):
-                self._fill_songs(path)
+                self._fill_songs(path, wait=False)
             else:
                 preview = self._preview_list()
-                title, options = self._entries(path)
+                title, options = self._entries(path, wait=False)
                 preview.clear_options()
                 preview.add_options(options)
                 preview.border_title = title
                 preview.node = list(path)
+                preview.waiting = _waits(options)
         self._arrange()
 
-    def _fill_songs(self, path: list[Step]) -> None:
+    def _fill_songs(self, path: list[Step], wait: bool = True) -> None:
         if path == self._songs_of:
             return
         self._songs_of = list(path)
-        title, songs, albums = self._songs(path)
         table = self.query_one("#browse-songs", SongTable)
+        if not wait and path[-1][0] == "artist" and self._place(path)["fmt"] is None:
+            # an artist's songs in every format: 40 ms to ask, at each artist the cursor
+            # stops on among all 26k (11 October 2026); asked in the background. The
+            # table is emptied only if they take longer than a moment: emptied at once,
+            # two pictures were sent for each move instead of one.
+            path = list(path)
+            self._songs_in_background(path, self.index)
+
+            def blank() -> None:
+                if self._songs_of == path and self.__dict__.get("_songs_shown") != path:
+                    table.set_songs([], self._favs)
+                    table.border_title = f"{path[-1][1]} …"
+            self._later("songs-wait", 0.1, blank)
+            return
+        title, songs, albums = self._songs(path)
         table.set_songs(songs, self._favs, albums=albums)
         table.border_title = title
+        self._songs_shown = list(path)
+
+    @work(thread=True, exclusive=True, group="browse-songs")
+    @guarded("looking up an artist's songs")
+    def _songs_in_background(self, path: list[Step], index) -> None:
+        c = self._place(path)["collection"]
+        songs = [s for s in index.artist_songs(path[-1][1]) if not c or s.collection == c]
+        self.call_from_thread(self._songs_answered, path, index, songs)
+
+    def _songs_answered(self, path: list[Step], index, songs: list) -> None:
+        if index is not self.index or self._songs_of != path:
+            return                          # the cursor has moved on
+        self._songs_shown = path
+        table = self.query_one("#browse-songs", SongTable)
+        table.set_songs(songs, self._favs)
+        table.border_title = " · ".join(x for x in (
+            f"{path[-1][1]} ({len(songs)})", units.size(sum(s.size for s in songs))) if x)
+        if self._path == path:              # gone in meanwhile: the first song
+            if table.row_count:
+                table.move_cursor(row=0)
+            self._show_song_info()
 
     def _stop_preview(self) -> None:
         if (timer := self._debounce.get("preview")) is not None:
@@ -499,6 +665,11 @@ class BrowsePart(metaclass=type(App)):
         self._stop_preview()
         path = self._path + [step]
         if holds_songs(path):
+            if self._songs_of == path and self.__dict__.get("_songs_shown") != path:
+                # its songs are still being looked up: not the last artist's meanwhile
+                table = self.query_one("#browse-songs", SongTable)
+                table.set_songs([], self._favs)
+                table.border_title = f"{path[-1][1]} …"
             self._fill_songs(path)
             self._path = path
             table = self.query_one("#browse-songs", SongTable)
@@ -511,10 +682,11 @@ class BrowsePart(metaclass=type(App)):
         else:
             preview = self._preview_list()
             if self._preview_of != path:
-                title, options = self._entries(path)
+                title, options = self._entries(path, wait=False)
                 preview.clear_options()
                 preview.add_options(options)
                 preview.border_title = title
+                preview.waiting = _waits(options)
             # the look becomes the list one is in, and a new look is made beside it
             preview.remove_class("preview-list", "preview")
             preview.add_class("level")

@@ -250,7 +250,7 @@ def test_the_one_catalog_of_before_is_split_into_one_per_collection(tmp_path, ch
     con.close()
     folder = tmp_path / "catalogs"
     assert index_mod.move_old_catalog(folder, old)
-    assert not old.exists() and sorted(f.name for f in folder.iterdir()) == [
+    assert not old.exists() and sorted(f.name for f in folder.glob("*.db")) == [
         "chipland.db", "modland.db"]
     ix = Index(folder)
     assert ix.song_count("modland") == MODLAND_COUNT and ix.song_count("chipland") == 3

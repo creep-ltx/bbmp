@@ -1,5 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Pick the right replayer for a song."""
+"""Pick the right replayer for a song.
+
+Each song of the big libraries is played by a process of its own (remote.py), which
+imports this package first: so it imports little, and the helper programs' side
+(pipe.py, with the sandbox and the downloads) only when it is asked for. With all of
+it, a replayer's process took 48 ms to start, 37 of them imports; slim, 23 ms
+(11 October 2026).
+"""
 
 from __future__ import annotations
 
@@ -7,7 +14,7 @@ from pathlib import Path
 from typing import Callable
 
 from .base import RATE, Decoder, Details, NeedsDownload, TrackInfo, Unsupported
-from ..collection.modland import SUBFORMAT_DIRS
+from ..companions import SUBFORMAT_DIRS
 from .formats import BACKEND_BY_FORMAT, UNSUPPORTED_FORMATS
 
 # The formats of collections other than Modland's, which the census (of Modland) does
@@ -28,8 +35,6 @@ BACKEND_BY_FORMAT = {**BACKEND_BY_FORMAT, **{
     # ordinary audio files (MP3, Ogg, Opus, FLAC, WAV, AIFF), for collections that have
     # them (Scene.org's music); not the user's own music folder
     "Audio file": "sndfile"}
-from .pipe import HELPERS, OWN, left_out
-from . import sc68_amiga
 
 
 def _openmpt(path: Path, lengths) -> Decoder:
@@ -77,7 +82,7 @@ def _cym(path: Path, lengths) -> Decoder:
 def _polly(path: Path, lengths) -> Decoder:
     from .polly import Polly
     from ..fetch import Fetcher
-    return Polly(path, lengths, OPENERS["sidplayfp"], lambda key: Fetcher().get(key))
+    return Polly(path, lengths, _openers()["sidplayfp"], lambda key: Fetcher().get(key))
 
 
 def _apart(backend: str, local: Callable[[Path, list], Decoder]) -> Callable[[Path, list], Decoder]:
@@ -97,10 +102,28 @@ def _apart(backend: str, local: Callable[[Path, list], Decoder]) -> Callable[[Pa
 LOCAL_OPENERS: dict[str, Callable[[Path, list], Decoder]] = {
     "openmpt": _openmpt, "uade": _uade, "gme": _gme, "sidplayfp": _sid, "sunvox": _sunvox,
     "sndfile": _sndfile}
-OPENERS: dict[str, Callable[[Path, list], Decoder]] = {
-    **{b: _apart(b, f) for b, f in LOCAL_OPENERS.items()},
-    **{b: _pipe(b) for b in HELPERS},
-    "cym": _cym, "polly": _polly}
+
+
+def _openers() -> dict[str, Callable[[Path, list], Decoder]]:
+    """OPENERS: every replayer by its name, made when first asked for."""
+    made = globals().get("OPENERS")
+    if made is None:
+        from .pipe import HELPERS
+        made = globals().setdefault("OPENERS", {
+            **{b: _apart(b, f) for b, f in LOCAL_OPENERS.items()},
+            **{b: _pipe(b) for b in HELPERS},
+            "cym": _cym, "polly": _polly})
+    return made
+
+
+def __getattr__(name: str):
+    """OPENERS, and the helper programs' HELPERS, OWN and left_out, when first asked."""
+    if name == "OPENERS":
+        return _openers()
+    if name in ("HELPERS", "OWN", "left_out"):
+        from . import pipe
+        return getattr(pipe, name)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 # Tried in this order when a format has no known backend, or its backend fails.
 FALLBACK = ("openmpt", "uade", "gme", "sidplayfp", "zxtune", "vgm", "sc68")
@@ -136,6 +159,7 @@ def backend_for(fmt: str) -> str | None:
 def is_supported(fmt: str) -> bool:
     """`fmt` is a song's format as shown in the browser (Song.format). Not one whose
     replayer this package was built without (left_out)."""
+    from .pipe import left_out
     if (first := backend_for(fmt)) and left_out(first):
         return False
     if fmt in BACKEND_BY_FORMAT:
@@ -151,6 +175,9 @@ LOCAL_BACKENDS = {".vgm": "vgm", ".vgz": "vgm"}
 
 def open_song(path: Path, fmt: str, lengths: list[float] = (), local: bool = False) -> Decoder:
     """Open a song file with the backend that plays its format (Song.format)."""
+    from .pipe import OWN, left_out
+    from . import sc68_amiga
+    OPENERS = _openers()
     first = BACKEND_BY_FORMAT.get(fmt) or BACKEND_BY_FORMAT.get(_parent(fmt))
     if local:
         first = LOCAL_BACKENDS.get(path.suffix.lower(), first)

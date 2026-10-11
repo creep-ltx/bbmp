@@ -8,7 +8,15 @@ import json
 import os
 import sys
 import threading
+import time
 from pathlib import Path
+
+try:
+    import fcntl
+    import termios
+    _TIOCOUTQ = getattr(termios, "TIOCOUTQ", None)
+except ImportError:         # no terminal queue to ask
+    _TIOCOUTQ = None
 
 from rich.text import Text
 from textual import on, work
@@ -17,7 +25,8 @@ from textual.binding import Binding
 from textual.css.query import NoMatches
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.timer import Timer
-from textual.widgets import (DataTable, Footer, Input, OptionList, Static,
+from textual.drivers import _writer_thread, linux_driver
+from textual.widgets import (DataTable, Footer, Input, OptionList, Static, Tabs,
                              TabbedContent, TabPane)
 from textual.widgets.option_list import Option
 
@@ -79,6 +88,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
     #artist-side.narrow { width: 32; }
     /* A short one: a smaller Now playing strip and note. */
     Screen.short #now { height: 4; }
+    Screen.short #now > .now-row-3 { display: none; }
     Screen.short #format-note { height: 2; }
     Screen.short #visual { height: 7; }
     #visual { height: 13; display: none; }
@@ -451,6 +461,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             self._mpris = Mpris(self.player, self.settings)
             self._mpris.start()
         self.set_interval(1 / 12, self._tick)
+        self.set_timer(3, self._ask_ahead)          # Platforms, Chips, Artists (browse.py)
         if self._ask and not self.settings.asked_downloads:
             self._offer_downloads()
         if self._ask and command.should_offer(self.settings.asked_command):
@@ -546,6 +557,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             self._open_keeper()
             self._fmt = self._fmt_id = None
             self._fill_formats()
+            self.set_timer(3, self._ask_ahead)
             if ok:
                 self.notify(f"The catalogs are up to date: {self.index.song_count():,} songs.")
             self._relocate()
@@ -710,14 +722,36 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
 
     def _show_history(self) -> None:
         """The songs played, newest first. Asked of the library only when something has
-        been played since it was last shown (or the catalog has changed)."""
+        been played since it was last shown (or the catalog has changed), in the
+        background: the 300 songs were looked up in the catalogs on the screen's thread,
+        310 ms of a frozen screen at the tab (11 October 2026)."""
         t = self.query_one("#hist-songs", SongTable)
         asked = (self.__dict__.get("_plays_started", 0), id(self.index))
         if asked != self.__dict__.get("_history_asked"):
             self._history_asked = asked
-            self._history = self.library.history(self.index)
-        if self._history != t._base or self._favs != t._shown_with[0]:
-            t.set_songs(self._history, self._favs)
+            t.border_title = "…"
+            self._ask_history(asked, self.index)
+            return
+        self._draw_history()
+
+    def _draw_history(self) -> None:
+        t = self.query_one("#hist-songs", SongTable)
+        history = self.__dict__.get("_history", [])
+        if history != t._base or self._favs != t._shown_with[0]:
+            t.set_songs(history, self._favs)
+
+    @work(thread=True, exclusive=True, group="history")
+    @guarded("looking up the songs played")
+    def _ask_history(self, asked: tuple, index) -> None:
+        songs = self.library.history(index)
+        self.call_from_thread(self._history_answered, asked, songs)
+
+    def _history_answered(self, asked: tuple, songs: list) -> None:
+        if asked != self.__dict__.get("_history_asked"):
+            return                  # asked again meanwhile: that answer is the one shown
+        self._history = songs
+        self.query_one("#hist-songs", SongTable).border_title = ""
+        self._draw_history()
 
     def _refresh_queue(self, force: bool = False) -> None:
         songs, pos = self.player.queue()
@@ -813,8 +847,20 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         self._show_stats()
 
     def _show_stats(self) -> None:
-        stats = self.library.stats(since=stats_view.since(self._stats_period))
-        self.query_one("#stats-body", Static).update(stats_view.render(stats, self._stats_period))
+        """Asked of the library in the background (51 ms at each period, 11 October
+        2026); the last asked is shown."""
+        self._stats_asked = asked = (self._stats_period, self.__dict__.get("_stats_asked", (0, 0))[1] + 1)
+        self._ask_stats(asked)
+
+    @work(thread=True, group="stats")
+    @guarded("counting what was played")
+    def _ask_stats(self, asked: tuple) -> None:
+        stats = self.library.stats(since=stats_view.since(asked[0]))
+        self.call_from_thread(self._stats_answered, asked, stats)
+
+    def _stats_answered(self, asked: tuple, stats) -> None:
+        if asked == self._stats_asked:
+            self.query_one("#stats-body", Static).update(stats_view.render(stats, asked[0]))
 
     def _resume(self) -> None:
         try:
@@ -893,6 +939,37 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             self.library.finish_play(self._play_id, seconds)
             self._play_id = None
 
+    def _terminal_behind(self) -> bool:
+        """Has the terminal not yet taken what was drawn before? A slow terminal (macOS's
+        own) takes a visualiser's 100-400 KB a second slower than it comes: Textual queues
+        up to 30 screens for it, and a key's answer waited behind them, seconds at 150 KB/s
+        (measured 11 October 2026). Then this tick's frame is left out. Textual's writer
+        thread is private (8.2): check it on an upgrade."""
+        writer = getattr(self._driver, "_writer_thread", None)
+        queue = getattr(writer, "_queue", None)
+        try:
+            if queue is not None and (queue.qsize() > 0 or getattr(writer, "writing", False)):
+                return True
+            # what the terminal hasn't read yet of what was written (Linux and macOS)
+            if _TIOCOUTQ is not None and writer is not None:
+                waiting = fcntl.ioctl(writer.fileno(), _TIOCOUTQ, b"\0\0\0\0")
+                return int.from_bytes(waiting, sys.byteorder) > 1024
+        except Exception:
+            pass
+        return False
+
+    BEHIND_FOR = 3.0        # seconds a terminal that was behind is spared what it can
+
+    def _blink(self, on: bool) -> None:
+        """The search box's cursor blinks only while the terminal keeps up: each blink
+        sends the box again (2 KB, twice a second)."""
+        try:
+            box = self.query_one("#q", SearchBox)
+        except NoMatches:
+            return
+        if box.cursor_blink != on:
+            box.cursor_blink = on
+
     def _tick(self) -> None:
         try:
             now = self.query_one("#now", NowPlaying)
@@ -900,9 +977,19 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         except NoMatches:   # shutting down, or a modal screen is on top
             return
         st = self.player.status()
-        now.show(st, bool(st.song and st.song.key in self._favs))
-        if vis.mode:
-            vis.show(st)
+        clock = time.monotonic()
+        if self._terminal_behind():
+            self._behind_at = clock
+        else:
+            now.show(st, bool(st.song and st.song.key in self._favs))
+            # A terminal that was behind in the last seconds is sent the visualiser six
+            # times a second, not twelve: half its 100-240 KB/s, that a key's answer
+            # would wait behind (11 October 2026).
+            self._ticks = self.__dict__.get("_ticks", 0) + 1
+            if vis.mode and (clock - self.__dict__.get("_behind_at", -60.0) > self.BEHIND_FOR
+                             or self._ticks % 2 == 0):
+                vis.show(st)
+        self._blink(clock - self.__dict__.get("_behind_at", -60.0) > self.BEHIND_FOR)
         active = self.query_one("#tabs", TabbedContent).active
         if active == "queue":
             self._refresh_queue()
@@ -927,6 +1014,45 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             self.player.shutdown()
         self.fetcher.close()
 
+
+
+class _Writer(_writer_thread.WriterThread):
+    """Textual's writer to the terminal, which also tells when it is still writing: a
+    write to a slow terminal waits until the terminal takes it (App._terminal_behind)."""
+
+    writing = False
+
+    def run(self) -> None:
+        get, qsize = self._queue.get, self._queue.qsize
+        while (text := get()) is not None:
+            self.writing = True
+            self._file.write(text)
+            if qsize() == 0:
+                self._file.flush()
+            self.writing = False
+        self._file.flush()
+
+
+linux_driver.WriterThread = _Writer
+
+
+def _tabs_without_slide():
+    """The tab bar's underline jumps to the tab chosen instead of sliding there: the
+    slide (0.3 s of frames) made a tab switch take ~300 ms to settle and send 20-30% more,
+    without it 46-86 ms (measured 11 October 2026). Only the underline: other animations
+    (scrolling) stay. This wraps a private method of Textual's (8.2); on an upgrade that
+    renames it, the underline slides again and nothing breaks."""
+    slide = getattr(Tabs, "_highlight_active", None)
+    if slide is None or getattr(slide, "_no_slide", False):
+        return
+
+    def jump(self, animate: bool = True) -> None:
+        slide(self, animate=False)
+    jump._no_slide = True
+    Tabs._highlight_active = jump
+
+
+_tabs_without_slide()
 
 def _busy(e: Exception) -> bool:
     """Is it that another update runs (here, or `bbmp update` in a terminal)?"""

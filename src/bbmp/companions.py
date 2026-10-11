@@ -11,6 +11,11 @@ from __future__ import annotations
 
 from typing import Iterable
 
+# Modland's formats whose second folder level is a sub-format or system rather than an
+# artist. Here, where nothing is imported, so that a replayer's process can know it
+# without the collections' downloading code (collection/modland.py uses it too).
+SUBFORMAT_DIRS = {"Video Game Music", "Ad Lib", "Spectrum"}
+
 PREFIXES = ("smpl.", "smp.")
 # by format family: Mark Cooksey's "mcr.x" plays with the samples in "mcs.x"
 FORMAT_PREFIXES = {"Mark Cooksey Old": ("mcs.",)}

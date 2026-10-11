@@ -50,7 +50,8 @@ def test_trim_removes_least_recently_used_first(fetcher):
         f.write_bytes(b"x" * 1000)
         age = {"A/old.mod": 400, "A/mid.mod": 300, "A/new.mod": 100, "B/fav.mod": 500}[name]
         os.utime(f, (now - age, now - age))
-    freed = fetcher.trim(2000, keep={"B/fav.mod"})
+    # 4000 bytes over a limit of 2300: down to 90% of it (2070), the two oldest go
+    freed = fetcher.trim(2300, keep={"B/fav.mod"})
     assert freed == 2000
     assert not fetcher.is_cached("A/old.mod") and not fetcher.is_cached("A/mid.mod")
     assert fetcher.is_cached("A/new.mod") and fetcher.is_cached("B/fav.mod")

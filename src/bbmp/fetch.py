@@ -37,6 +37,10 @@ PARALLEL = 4
 # it is looked through again only after this much more was downloaded, or this long.
 RETRIM_BYTES = 20_000_000
 RETRIM_SECONDS = 600
+# A trim makes room under the limit, down to this part of it: trimmed only to the limit,
+# the next song went over again, and the whole cache was looked through after every
+# new song (14k files: 140 ms of Python, 11 October 2026). Now once per ~10% of it.
+TRIM_TO = 0.9
 
 
 def md5_of(file: Path) -> str:
@@ -216,7 +220,8 @@ class Fetcher:
         return other
 
     def trim(self, limit_bytes: int, keep: set[str] = frozenset()) -> int:
-        """Delete the least recently used files until the cache fits in limit_bytes.
+        """Delete the least recently used files until the cache fits in limit_bytes,
+        with room to spare: down to TRIM_TO of it.
 
         The songs in `keep` (favorites, the queue and their companion files, by key) are
         never deleted, nor what is being downloaded or was used in the last minute.
@@ -232,6 +237,7 @@ class Fetcher:
             self._stuck = None
             if total <= limit_bytes:
                 return 0
+            goal = int(limit_bytes * TRIM_TO)
             keep_files = set()
             for k in keep:
                 try:
@@ -239,18 +245,20 @@ class Fetcher:
                 except FileNotFoundError:
                     pass
             freed, recent = 0, time.time() - RECENT
+            emptied = set()
             for used, size, f in sorted(files):
-                if total - freed <= limit_bytes:
+                if total - freed <= goal:
                     break
                 if f in keep_files or used > recent:
                     continue
                 try:
                     f.unlink()
                     freed += size
+                    emptied.add(f.parent)
                 except OSError:
                     pass
-            # remove folders that are now empty
-            for d in sorted({f.parent for _, _, f in files}, key=lambda p: len(p.parts), reverse=True):
+            # remove the folders that are now empty
+            for d in sorted(emptied, key=lambda p: len(p.parts), reverse=True):
                 try:
                     while d != self.cache_dir and d.exists() and not any(d.iterdir()):
                         d.rmdir()
@@ -266,22 +274,34 @@ class Fetcher:
     def _measured(self, root: Path | None = None) -> list[tuple[float, int, Path]]:
         """(last used, size, path) of each file in the cache (or under root). A file
         that goes while it is looked at (a download replaced, a trim elsewhere) is left
-        out: measuring it closed the player (7 October 2026)."""
+        out: measuring it closed the player (7 October 2026). By os.scandir, whose
+        entries know their size: 3x faster than Path.rglob and a stat each (14k files:
+        105 -> 37 ms, 11 October 2026)."""
         out = []
-        for f in self._files():
-            if root is not None and not f.is_relative_to(root):
-                continue
+        top = str(self.cache_dir)
+        start = str(root) if root is not None else top
+        folders = [start]
+        while folders:
+            folder = folders.pop()
             try:
-                st = f.stat()
-            except FileNotFoundError:
+                with os.scandir(folder) as entries:
+                    for e in entries:
+                        try:
+                            if e.is_dir(follow_symlinks=False):     # as rglob
+                                folders.append(e.path)
+                            elif (e.is_file() and folder != top
+                                  and not e.name.endswith(".part")):
+                                st = e.stat()
+                                out.append((st.st_mtime, st.st_size, Path(e.path)))
+                        except FileNotFoundError:
+                            continue
+            except (FileNotFoundError, NotADirectoryError):
                 continue
-            out.append((st.st_mtime, st.st_size, f))
         return out
 
     def _files(self) -> Iterator[Path]:
-        for f in self.cache_dir.rglob("*"):
-            if f.is_file() and not f.name.endswith(".part") and f.parent != self.cache_dir:
-                yield f
+        for _, _, f in self._measured():
+            yield f
 
     def over_limit(self, limit_bytes: int) -> bool:
         """Cheap check whether trim() has work to do (the first call scans the cache)."""
