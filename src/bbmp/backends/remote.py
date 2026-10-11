@@ -19,13 +19,14 @@ from __future__ import annotations
 
 import json
 import os
+import queue
 import select
 import struct
 import subprocess
 import sys
+import threading
 from pathlib import Path
 
-from .. import downloads, sandbox
 from .base import FRAME_BYTES, Decoder, Details, NeedsDownload, TrackInfo, Unsupported
 
 LOCAL = ("openmpt", "uade", "gme", "sidplayfp", "sunvox")   # the libraries run this way
@@ -64,6 +65,7 @@ class Remote(Decoder):
     """A decoder whose library runs in a sandboxed process."""
 
     def __init__(self, backend: str, path: Path, lengths: list[float]):
+        from .. import downloads, sandbox       # the player's side only (see serve)
         self.backend = backend
         self._levels: list[float] | None = None
         src = Path(__file__).resolve().parents[2]            # where bbmp is
@@ -207,27 +209,62 @@ class Remote(Decoder):
                 pass
 
     def close(self) -> None:
-        if self._proc is None:
+        """Ask the process to end, and go on: waiting for it to exit took 15 ms of the
+        player's thread at every song change and skip (11 October 2026). The reaper
+        thread waits for it, and kills it if it hasn't ended in REAP_WAIT seconds."""
+        proc, self._proc = self._proc, None
+        if proc is None:
             return
         try:
-            if self._proc.poll() is None:
-                self._proc.stdin.write(b'{"op": "close"}\n')
-                self._proc.stdin.flush()
-                self._proc.wait(timeout=2)
-        except (OSError, subprocess.TimeoutExpired, ValueError):
+            if proc.poll() is None:
+                proc.stdin.write(b'{"op": "close"}\n')
+                proc.stdin.flush()
+        except (OSError, ValueError):
             pass
-        self._kill()
-        for f in (self._proc.stdin, self._proc.stdout):
+        for f in (proc.stdin, proc.stdout):
             try:
                 f.close()
             except OSError:
                 pass
-        self._proc = None
+        _reap(proc)
+
+
+REAP_WAIT = 2.0
+_reaped: "queue.SimpleQueue[subprocess.Popen] | None" = None
+_reaper_lock = threading.Lock()
+
+
+def _reap(proc: subprocess.Popen) -> None:
+    """Wait for a closed process in a thread of its own: it is never left a zombie."""
+    global _reaped
+    with _reaper_lock:
+        if _reaped is None:
+            _reaped = queue.SimpleQueue()
+            threading.Thread(target=_reaper, args=(_reaped,), name="remote-reaper",
+                             daemon=True).start()
+    _reaped.put(proc)
+
+
+def _reaper(procs: "queue.SimpleQueue[subprocess.Popen]") -> None:
+    while True:
+        proc = procs.get()
+        try:
+            proc.wait(timeout=REAP_WAIT)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            try:
+                proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                pass
+        except Exception:
+            pass
+        del proc                # its sandbox's temporary folder goes with it (sandbox.popen)
 
 
 def use_remote() -> bool:
     """The libraries run apart when the sandbox works, and not inside the process
     that runs them apart."""
+    from .. import sandbox
     return sandbox.available() and not os.environ.get("BBMP_REMOTE")
 
 

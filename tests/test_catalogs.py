@@ -21,7 +21,7 @@ SONGLENGTHS = (
 
 def files_in(folder):
     """The files in a catalog folder, but for the one that updates hold (catalogs.py)."""
-    return sorted(f.name for f in folder.iterdir() if f.name not in (".updating", "change-days.json"))
+    return sorted(f.name for f in folder.iterdir() if f.name not in (".updating", "change-days.json", "counts.json"))
 
 
 @pytest.fixture

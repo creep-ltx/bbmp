@@ -6,6 +6,7 @@ from __future__ import annotations
 from rich.cells import cell_len
 from rich.text import Text
 from textual.binding import Binding
+from textual.widget import Widget
 from textual.widgets import DataTable, DirectoryTree, Footer, Input, Static, Tabs
 from textual.geometry import Size
 from textual.widgets import OptionList
@@ -66,6 +67,7 @@ class OneLineList(OptionList):
 
     DEFAULT_CSS = "OneLineList { text-wrap: nowrap; text-overflow: ellipsis; }"
     node: list = []          # in Browse: the path of steps whose entries it lists
+    waiting = False          # in Browse: "…" until the catalog's answer comes (browse.Waiting)
     BINDINGS = IN_AND_OUT + PAGES
 
     def _update_lines(self) -> None:
@@ -274,13 +276,49 @@ class SongTable(DataTable):
         return None
 
 
-class NowPlaying(Static):
+def _drawn_key(content):
+    """What a Static shows, as something to compare: a Text by its letters and styles (a
+    renderer may hand back the same Text changed)."""
+    if isinstance(content, Text):
+        return (content.plain, tuple(content.spans), content.style)
+    return content
+
+
+def draw_if_changed(widget: Static, content) -> None:
+    """Update a Static twelve times a second only when what it shows changed: an unchanged
+    visualiser and Now playing were sent to the terminal again and again (85 KB a second
+    with nothing playing, 11 October 2026), which a slow terminal (macOS's) spends its time
+    on while the keys wait."""
+    key = _drawn_key(content)
+    if getattr(widget, "_drawn", None) == key:
+        return
+    widget._drawn = key
+    widget.update(content, layout=False)
+
+
+class NowPlaying(Widget):
     """The strip at the bottom: the song, where it is, how loud. Four lines (three in a
     short terminal): title and artist; the format and the play modes; the time bar; the
-    level meters, the channels and the queue."""
+    level meters, the channels and the queue.
+
+    Each line is a widget of its own, drawn only when it changed: as one, all of the strip
+    was sent to the terminal twelve times a second while a song played, though mostly
+    only the meters change (40 KB/s with no visualiser; split, 19 KB/s; 11 October 2026)."""
 
     # its height is fixed (CSS), so an update needn't lay out the whole screen again:
     # 12 a second did, and took most of a CPU core (1 October 2026)
+    DEFAULT_CSS = """
+    NowPlaying { layout: vertical; }
+    NowPlaying > .now-row { height: 1; width: 1fr; text-wrap: nowrap; text-overflow: ellipsis; }
+    """
+    ROWS = 4
+
+    def compose(self):
+        for i in range(self.ROWS):
+            yield Static(classes=f"now-row now-row-{i}", markup=False)
+
+    def on_mount(self) -> None:
+        self._rows = list(self.query(".now-row").results(Static))
 
     # what is being saved or fetched is set as the subtitle; the strip has only its top
     # line, so it is shown there, on the right
@@ -303,7 +341,7 @@ class NowPlaying(Static):
                      style="dim")
             if st.error:
                 t.append(f"\n{st.error}", style=pal.bad)
-            self.update(t, layout=False)
+            self._draw(t.split("\n"))
             return
         icon = {"playing": "▶", "paused": "❚❚", "loading": "…", "stopped": "■"}[st.state]
         fmt = (st.info.format if st.info and st.info.format else st.song.format)
@@ -368,7 +406,14 @@ class NowPlaying(Static):
         for line in lines:
             line.no_wrap = True
             line.truncate(width, overflow="ellipsis")
-        self.update(Text("\n").join(lines), layout=False)
+        self._draw(lines)
+
+    def _draw(self, lines) -> None:
+        """Each line in its row; a row whose line didn't change isn't drawn again."""
+        rows = self.__dict__.get("_rows") or []
+        lines = list(lines)
+        for i, row in enumerate(rows):
+            draw_if_changed(row, lines[i] if i < len(lines) else Text())
 
 
 def _spread(left: Text, right: Text, width: int) -> Text:
@@ -445,23 +490,27 @@ class Visualizer(Static):
         if rows <= 0 or width <= 0:
             return
         if mode == "spectrum":
-            self.update(self._spectrum.render(st.wave, rows, width), layout=False)
+            draw_if_changed(self, self._spectrum.render(st.wave, rows, width))
         elif mode == "scope":
-            self.update(self._scope.render(st.wave, rows, width), layout=False)
+            draw_if_changed(self, self._scope.render(st.wave, rows, width))
         elif mode == "channels":
-            self.update(self._channels.render(st.channels, st.levels, rows, width), layout=False)
+            draw_if_changed(self, self._channels.render(st.channels, st.levels, rows, width))
         elif mode == "pattern":
-            self.update(visuals.pattern(st.pattern, rows), layout=False)
+            draw_if_changed(self, visuals.pattern(st.pattern, rows))
         elif mode == "bars":
-            self.update(self._bars.render(st.wave, rows, width), layout=False)
+            draw_if_changed(self, self._bars.render(st.wave, rows, width))
         elif mode == "mirror":
-            self.update(self._mirror.render(st.wave, rows, width), layout=False)
+            draw_if_changed(self, self._mirror.render(st.wave, rows, width))
         elif mode == "spectrogram":
-            self.update(self._spectrogram.render(st.wave, rows, width), layout=False)
+            if st.state == "playing":       # it scrolls on each frame: paused, it stands still
+                draw_if_changed(self, self._spectrogram.render(st.wave, rows, width))
         elif mode == "scopes":
-            self.update(self._scopes.render(st.channels, st.pattern, rows, width), layout=False)
+            draw_if_changed(self, self._scopes.render(st.channels, st.pattern, rows, width))
         elif mode == "demo":
-            self.update(self._demo.render(st.wave, _scroll_text(st), rows, width), layout=False)
+            # paused, it stands still: it went on at 95 KB/s (11 October 2026)
+            if st.state == "playing" or getattr(self, "_drawn_mode", None) != "demo":
+                draw_if_changed(self, self._demo.render(st.wave, _scroll_text(st), rows, width))
+        self._drawn_mode = mode
 
 
 def _scroll_text(st: Status) -> str:
@@ -508,7 +557,7 @@ class Note(Static):
                     last.truncate(width - 1)
                 last.append("…")
                 text = Text("\n").join(lines[:height])
-        self.update(text, layout=False)
+        draw_if_changed(self, text)
 
 
 class KeysFooter(Footer):

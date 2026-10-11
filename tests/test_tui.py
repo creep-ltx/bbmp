@@ -65,9 +65,10 @@ async def select_format(pilot, app, fmt):
 
 
 async def browse_ready(pilot, app):
-    """Wait until Browse's columns are in place; the list one is in."""
+    """Wait until Browse's columns are in place, and the list one is in has what it
+    lists (not "…" while the catalog is asked in the background); that list."""
     assert await settle(pilot, lambda: getattr(app, "_placed", False) and app._levels
-                        and app._levels[-1].option_count > 0)
+                        and app._levels[-1].option_count > 0 and not app._levels[-1].waiting)
     return app._levels[-1]
 
 
@@ -385,7 +386,8 @@ def test_artist_album_and_info_pages(catalog, fetcher, tmp_path):
 
             await pilot.press("m")                       # more by the artist of the playing song
             tabs = app.query_one("#tabs")
-            assert tabs.active == "artist" and app._page.title == "Other Guy"
+            assert tabs.active == "artist"               # at once; the page is made meanwhile
+            assert await settle(pilot, lambda: app._page is not None and app._page.title == "Other Guy")
             assert app._page.partners == [("Tester", 1)]
             await pilot.press("w")
             assert opened and "Other+Guy" in opened[0]

@@ -141,6 +141,10 @@ def no_downloads(monkeypatch, tmp_path):
     """Modland's file list is the tests' own, whoever asks for it, and the extras
     folder is an empty one: what is on this computer is not the tests' business."""
     monkeypatch.setattr(modland, "file_list", lambda progress=None: RAW_LIST)
+    # catalogs are built here, where the tests stand in for the servers, not in a
+    # process of their own
+    from bbmp import catalogs
+    monkeypatch.setattr(catalogs, "APART", False)
     # the tests know Modland and HVSC (and Chipland, their own); a test that wants
     # Keygen Music, ASMA, ZX-Art or SNDH, whose listings would ask their sites, registers it itself
     from bbmp import collection as registry

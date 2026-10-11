@@ -87,8 +87,22 @@ class Mpris:
     # ---- life cycle ----
 
     def start(self) -> bool:
+        """Says whether it starts: not without a session bus or PyGObject. Importing
+        PyGObject (34 ms) is done in its own thread, not while the player opens
+        (11 October 2026)."""
         if not os.environ.get("DBUS_SESSION_BUS_ADDRESS"):
             return False
+        import importlib.util
+        try:
+            if importlib.util.find_spec("gi") is None:
+                return False
+        except (ImportError, ValueError):
+            return False
+        self._thread = threading.Thread(target=self._run, name="mpris", daemon=True)
+        self._thread.start()
+        return True
+
+    def _import(self) -> bool:
         try:
             import gi
             gi.require_version("Gio", "2.0")
@@ -96,8 +110,6 @@ class Mpris:
         except (ImportError, ValueError):
             return False
         self._gio, self._glib = Gio, GLib
-        self._thread = threading.Thread(target=self._run, name="mpris", daemon=True)
-        self._thread.start()
         return True
 
     def stop(self) -> None:
@@ -107,6 +119,8 @@ class Mpris:
             self._thread.join(timeout=2)
 
     def _run(self) -> None:
+        if not self._import():
+            return
         Gio, GLib = self._gio, self._glib
         context = self._context = GLib.MainContext.new()
         context.push_thread_default()

@@ -292,3 +292,108 @@ def test_the_meter_takes_no_more_room_after_hours():
     for _ in range(30):
         m.feed(tone)
     assert m._count.nbytes + m._power.nbytes == size and m.loudness() is not None
+
+
+def test_an_unchanged_picture_is_not_sent_to_the_terminal_again():
+    """The visualiser and Now playing are asked twelve times a second; what didn't change
+    isn't drawn again (nothing playing sent 85 KB a second, 11 October 2026)."""
+    from rich.text import Text
+    from bbmp.tui.widgets import draw_if_changed
+
+    class Shown:
+        def __init__(self):
+            self.drawn = []
+
+        def update(self, content, layout=True):
+            self.drawn.append(content)
+
+    w = Shown()
+    text = Text("bars")
+    draw_if_changed(w, text)
+    draw_if_changed(w, Text("bars"))
+    assert len(w.drawn) == 1
+    text.stylize("bold")                     # the same Text, changed: drawn again
+    draw_if_changed(w, text)
+    draw_if_changed(w, "plain")
+    draw_if_changed(w, "plain")
+    assert len(w.drawn) == 3
+
+
+def test_the_writer_says_while_it_writes_to_a_slow_terminal():
+    """The player's writer to the terminal (Textual's, which tells when it is busy) writes
+    everything in order and is not busy once done: it replaces a private class of
+    Textual's, so an upgrade that changes it shows here."""
+    import threading
+    from bbmp.tui.app import _Writer
+    from textual.drivers import linux_driver
+
+    assert linux_driver.WriterThread is _Writer
+    release = threading.Event()
+
+    class Slow:
+        def __init__(self):
+            self.out = []
+
+        def write(self, text):
+            release.wait(5)
+            self.out.append(text)
+
+        def flush(self):
+            pass
+
+        def fileno(self):
+            return 1
+
+    f = Slow()
+    w = _Writer(f)
+    w.start()
+    w.write("one")
+    w.write("two")
+    deadline = time.monotonic() + 5
+    while not w.writing and time.monotonic() < deadline:
+        time.sleep(0.01)
+    assert w.writing                         # held by the terminal
+    release.set()
+    w.stop()
+    assert f.out == ["one", "two"] and not w.writing
+
+
+def test_a_download_found_whole_is_not_looked_through_again(monkeypatch):
+    """The Formats list asks for each format whether its download is there: the Amiga
+    players' 168 files were looked at 60,000 times, 370 ms a list (11 October 2026). A
+    download found whole is remembered until its folder changes: installed, removed, or
+    put there by another bbmp."""
+    import os
+    import shutil
+    from pathlib import Path
+    from bbmp import downloads
+
+    d = downloads.get("msxdrivers")
+    there = downloads.folder(d)
+    assert not downloads.installed(d)
+    there.mkdir(parents=True)
+    for f in d.files:
+        (there / f).write_bytes(b"\xc3")
+    assert downloads.installed(d)
+    looked = []
+    real_is_file = Path.is_file
+    monkeypatch.setattr(Path, "is_file", lambda p: looked.append(p) or real_is_file(p))
+    assert downloads.installed(d) and downloads.installed(d)
+    assert looked == []                                 # remembered
+    downloads.remove(d)
+    assert not downloads.installed(d)                   # forgotten when it is taken away
+    # put in place by another process: a new folder renamed into place, as install() does
+    new = there.with_name(".msxdrivers-new")
+    new.mkdir()
+    for f in d.files[:-1]:
+        (new / f).write_bytes(b"\xc3")
+    new.rename(there)
+    assert not downloads.installed(d)                   # not whole
+    shutil.rmtree(there)
+    new.mkdir()
+    for f in d.files:
+        (new / f).write_bytes(b"\xc3")
+    new.rename(there)
+    assert downloads.installed(d)
+    os.unlink(there / d.files[0])                       # a file taken away by hand
+    assert not downloads.installed(d)

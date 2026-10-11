@@ -25,8 +25,14 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Iterable, Iterator
 
-from . import collection as collections_, index as index_mod, paths
+from . import apart, collection as collections_, index as index_mod, paths
 from .settings import Settings
+
+# The catalogs are built in a process of their own (apart.py), which gives all its
+# memory back when it ends: built in the player's, it peaked at 678 MB and kept 282 MB
+# (7 and 11 October 2026). The tests build them here, where they can stand in for the
+# collections' servers.
+APART = True
 
 DEFAULT = ["modland", "hvsc"]       # what is ticked at the first start
 
@@ -133,7 +139,47 @@ def _prepare(settings: Settings, progress: Progress, folder: Path) -> None:
     missing = [c for c in ids if c not in index_mod._catalogs(folder)]
     if not missing:
         return
-    index_mod.update(progress, only=missing, db_path=folder, chosen=ids)
+    _build(progress, missing, folder, ids, {})
+
+
+def _build(progress: Progress, only: list[str], folder: Path, chosen: list[str],
+           failed: dict[str, str]) -> int:
+    """index.update, in a process of its own where it can be started. Gives the songs
+    in the catalogs; the collections that failed, and why, are put in `failed`."""
+    if APART:
+        try:
+            done = apart.run("bbmp.catalogs:_build_here",
+                             {"only": list(only), "folder": str(folder), "chosen": list(chosen)},
+                             progress)
+            failed.update({str(c): str(why) for c, why in done["failed"].items()})
+            return int(done["songs"])
+        except apart.NotStarted:
+            pass            # built here, then
+    try:
+        return index_mod.update(progress, only=only, db_path=folder, chosen=chosen,
+                                failed=failed)
+    finally:
+        _give_back_memory()
+
+
+def _build_here(progress: Progress, only: list[str], folder: str, chosen: list[str]) -> dict:
+    """What _build does, in the process apart.py starts."""
+    failed: dict[str, str] = {}
+    songs = index_mod.update(progress, only=only, db_path=Path(folder), chosen=chosen,
+                             failed=failed)
+    return {"songs": songs, "failed": failed}
+
+
+def _give_back_memory() -> None:
+    """Hand the memory Python has freed back to the system, where the C library can
+    (glibc; elsewhere nothing happens): after an update built in this process, 282 MB
+    stayed taken (11 October 2026)."""
+    import ctypes
+    import ctypes.util
+    try:
+        ctypes.CDLL(ctypes.util.find_library("c") or "libc.so.6").malloc_trim(0)
+    except (OSError, AttributeError):
+        pass
 
 
 def choose(settings: Settings, ids: list[str], progress: Progress = lambda s: None,
@@ -184,8 +230,7 @@ def update(settings: Settings, progress: Progress = lambda s: None,
         if not wanted:
             return Updated()
         done = Updated()
-        done.songs = index_mod.update(progress, only=wanted, db_path=folder, chosen=ids,
-                                      failed=done.failed)
+        done.songs = _build(progress, wanted, folder, ids, done.failed)
         if not done.failed:
             settings.update(last_update=int(time.time()))
         return done

@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import os
 import random
+from array import array
 import re
 import sqlite3
 import tempfile
@@ -25,6 +26,10 @@ OLD_VERSION = "4"   # the one catalog for every collection there was before, spl
 KEEP_DAYS = 60      # of what the collections changed
 # the kinds of change that are shown, of songs that are there ("deleted" ones are not)
 SHOWN_CHANGES = ("added", "updated", "moved")
+# An index of the songs filed in Modland's "coop-Name" folders (6,566 of its files): an
+# artist's page found them by going through every file, 33 ms; with it 0.3 ms (11
+# October 2026). Catalogs made before it don't have it, and are asked as before.
+COOP_INDEX = "files_coop"
 # how catalogs from before read Modland's moves: a line each, the path the song had
 RAW_MOVES = ("moved", "renamed", "to", "as")
 
@@ -301,6 +306,11 @@ def build(listings: dict[str, Listing], folder: Path | None = None,
             progress(f"{collections_.name(c)}: {e}")
     ix = Index(folder)
     count = ix.song_count()
+    # what the first look at the platforms and chips counts, counted now and kept
+    # beside the catalogs (the artists of each format were, by Index)
+    for c in ix.ids:
+        ix._chip_counts(c)
+    ix._said_formats()
     ix.close()
     progress(f"Catalogs ready: {count:,} songs.")
     return count
@@ -435,6 +445,8 @@ def _fill(c: str, listing: Listing, con: sqlite3.Connection, db_path: Path, when
                 " count(DISTINCT CASE WHEN hidden = 0 THEN artist END), sum(size)"
                 " FROM files GROUP BY format HAVING sum(hidden = 0) > 0")
     con.execute("CREATE INDEX files_artist ON files(artist)")
+    # the songs in Modland's "coop-Name" folders, which artist_songs looks through
+    con.execute(f"CREATE INDEX {COOP_INDEX} ON files(album) WHERE album LIKE 'coop-%'")
     con.execute("CREATE INDEX files_name ON files(name COLLATE NOCASE)")
     con.executemany("INSERT INTO extensions VALUES (?, ?)", _extension_formats(
         con.execute("SELECT name, format FROM files WHERE hidden = 0")).items())
@@ -571,33 +583,70 @@ class Index:
         self.ids = sorted(found, key=lambda c: (order.index(c) if c in order else len(order), c))
         self.ids = self.ids[:11]         # SQLite opens 11 files together at the most
         self._catalog_files = [found[c] for c in self.ids]
-        if self.ids:
-            first = found[self.ids[0]]
-            self.con = sqlite3.connect(read_only(first), uri=True, check_same_thread=False)
-        else:
-            self.con = sqlite3.connect(":memory:", check_same_thread=False)
-        self.schemas = []
-        for k, c in enumerate(self.ids):
-            if k == 0:
-                self.schemas.append("main")
-            else:
-                self.con.execute(f"ATTACH ? AS c{k}", (read_only(found[c]),))
-                self.schemas.append(f"c{k}")
+        self.schemas = ["main" if k == 0 else f"c{k}" for k in range(len(self.ids))]
         # a collection whose host is here is hosted; alone, it stands on its own
         self._hosted = [c for c in self.ids if (col := collections_.get(c)) is not None
                         and col.hosted_by and col.hosted_by in self.ids]
-        self._views()
-        self._lock = threading.Lock()   # the UI and the player thread share the connection
+        self._stamp = self._stamp_now()     # the catalog files as they were opened
+        self._kept_lock = threading.Lock()  # of the counts kept beside the catalogs
+        self._chips: set[str] | None = None
+        self._notes: list[str] | None = None
+        self._coop: set[str] = set()        # the catalogs with COOP_INDEX
+        self._said: set[tuple[str, str]] | None = None     # formats whose songs say (_by_songs)
+        self._radio_choices: dict[tuple, array] = {}     # song ids (_by_id)
+        # how many songs a radio picks from, counted once (catalogs that change are
+        # opened as a new Index, which counts again)
+        self._radio_counts: dict[tuple, int] = {}
+        self.con = self._connect()
+        # The screen, the workers and the player thread ask the catalogs at the same
+        # time. With one connection a song's start waited behind whatever query ran:
+        # a search 94 ms, the platform counts 335 ms, keep's plan of Modland seconds
+        # (11 October 2026). A question takes a connection that is free, and another is
+        # opened, up to CONNECTIONS, when none is: read-only ones run side by side.
+        self._lock = threading.Condition()
+        self._cons = [self.con]             # every connection, and the free ones
+        self._free = [self.con]
+        self._opening = 0
+        self._changed = False               # the catalog files were replaced: no more opened
+        self._closed = False
         self._extensions: dict[str, str] | None = None
+        self._md5_kept: dict[str, bool] = {}       # catalog -> has it checksums (_has_md5)
         # where music is kept on this computer (keep.py), if the player has said
         self.kept_dir: Path | None = None
 
-    def _views(self) -> None:
-        con = self.con
+    CONNECTIONS = 3
+
+    def _stamp_now(self) -> list | None:
+        """(name, time, size) of each catalog file: what the counts kept beside them
+        were counted from."""
+        try:
+            return [[f.name, (st := f.stat()).st_mtime_ns, st.st_size] for f in self._catalog_files]
+        except OSError:
+            return None
+
+    def _connect(self) -> sqlite3.Connection:
+        """A connection to every catalog, with the views that join them."""
+        if self.ids:
+            con = sqlite3.connect(read_only(self._catalog_files[0]), uri=True,
+                                  check_same_thread=False)
+            for k, f in enumerate(self._catalog_files[1:], 1):
+                con.execute(f"ATTACH ? AS c{k}", (read_only(f),))
+        else:
+            con = sqlite3.connect(":memory:", check_same_thread=False)
+        try:
+            self._views(con)
+            con.commit()        # no transaction is left open by the temp tables
+        except BaseException:
+            con.close()
+            raise
+        return con
+
+    def _views(self, con: sqlite3.Connection) -> None:
         if not self.ids:
             con.executescript(SCHEMA.replace("CREATE TABLE ", "CREATE TEMP TABLE ")
                               .replace("CREATE INDEX ", "-- ")
                               .replace("CREATE VIRTUAL TABLE fts", "CREATE VIRTUAL TABLE temp.fts"))
+            self._chips, self._notes, self._coop = set(), [], set()
             return
         s = self.schemas
 
@@ -609,19 +658,17 @@ class Index:
         for table in ("lengths", "changes", "extensions"):
             con.execute(f"CREATE TEMP VIEW {table} AS " + union(f"SELECT * FROM {{s}}.{table}"))
         # songs' chips, from the catalogs that have them (older ones don't)
-        having = [schema for schema in s if con.execute(
-            f"SELECT 1 FROM {schema}.sqlite_master WHERE name = 'chips'").fetchone()]
-        self._chips = set(having)
-        self._notes = [schema for schema in s if con.execute(
-            f"SELECT 1 FROM {schema}.sqlite_master WHERE name = 'notes'").fetchone()]
+        if self._chips is None:
+            self._chips = {schema for schema in s if con.execute(
+                f"SELECT 1 FROM {schema}.sqlite_master WHERE name = 'chips'").fetchone()}
+            self._notes = [schema for schema in s if con.execute(
+                f"SELECT 1 FROM {schema}.sqlite_master WHERE name = 'notes'").fetchone()]
+            self._coop = {schema for schema in s if con.execute(
+                f"SELECT 1 FROM {schema}.sqlite_master WHERE name = ?", (COOP_INDEX,)).fetchone()}
+        having = [schema for schema in s if schema in self._chips]
         con.execute("CREATE TEMP VIEW notes AS " + (" UNION ALL ".join(
             f"SELECT collection, path, text FROM {schema}.notes" for schema in self._notes)
             or "SELECT '' AS collection, '' AS path, '' AS text WHERE 0"))
-        self._said: set[tuple[str, str]] | None = None     # formats whose songs say (_by_songs)
-        self._radio_choices: dict[tuple, list[tuple[str, str]]] = {}
-        # how many songs a radio picks from, counted once (catalogs that change are
-        # opened as a new Index, which counts again)
-        self._radio_counts: dict[tuple, int] = {}
         con.execute("CREATE TEMP VIEW chips AS " + (" UNION ALL ".join(
             f"SELECT collection, path, chip FROM {schema}.chips" for schema in having)
             or "SELECT '' AS collection, '' AS path, '' AS chip WHERE 0"))
@@ -629,19 +676,61 @@ class Index:
         con.execute("CREATE TEMP VIEW collections AS " + union(
             "SELECT id, name, songs, built, id IN (" + hosted + ") AS hosted, bytes, dated"
             " FROM {s}.collections"))
+        own_ids = [c for c in self.ids if c not in self._hosted]
         own = [schema for c, schema in zip(self.ids, s) if c not in self._hosted]
         # an artist that two collections have in a format is one artist of it: they are
-        # counted once, when the catalogs are opened (a few hundredths of a second)
+        # counted once, when the catalogs are new, and kept beside them (it took 630 ms
+        # when the catalogs weren't in memory yet, at the first start after a boot; 11
+        # October 2026)
+        counted = self._kept("format-artists " + ",".join(own_ids), lambda: con.execute(
+            "SELECT format, count(*) FROM ("
+            + " UNION ".join(f"SELECT DISTINCT format, artist FROM {schema}.files"
+                             " WHERE hidden = 0" for schema in own)
+            + ") GROUP BY format").fetchall())
         con.execute("CREATE TEMP TABLE all_artists(format TEXT PRIMARY KEY, artists INTEGER)")
-        con.execute("INSERT INTO all_artists SELECT format, count(*) FROM ("
-                    + " UNION ".join(f"SELECT DISTINCT format, artist FROM {schema}.files"
-                                     " WHERE hidden = 0" for schema in own)
-                    + ") GROUP BY format")
+        con.executemany("INSERT INTO all_artists VALUES (?, ?)", counted)
         con.execute("CREATE TEMP VIEW formats AS " + union(
             "SELECT collection, format, songs, artists, bytes FROM {s}.formats")
             + " UNION ALL SELECT '', f.format, sum(f.songs), a.artists, sum(f.bytes) FROM ("
             + " UNION ALL ".join(f"SELECT * FROM {schema}.formats" for schema in own)
             + ") f JOIN all_artists a ON a.format = f.format GROUP BY f.format")
+
+    def _kept(self, key: str, count: Callable[[], object], file: str = "counts.json",
+              section: str = "counts"):
+        """What `count` gives, kept in a file beside the catalogs and counted again
+        when they change (their names, times and sizes). As JSON: tuples come back
+        as lists."""
+        cache = self.path / file
+        if self._stamp is None or not self.ids:
+            return count()
+        with self._kept_lock:
+            try:
+                kept = json.loads(cache.read_text())
+            except (OSError, ValueError):
+                kept = {}
+            if isinstance(kept, dict) and kept.get("stamp") == self._stamp \
+                    and isinstance(kept.get(section), dict) and key in kept[section]:
+                return kept[section][key]
+        value = count()
+        value = json.loads(json.dumps(value))       # as it comes back from the file
+        with self._kept_lock:
+            if self._stamp_now() != self._stamp:
+                return value        # the catalogs were replaced: these counts are of old ones
+            try:
+                kept = json.loads(cache.read_text())
+            except (OSError, ValueError):
+                kept = {}
+            if not isinstance(kept, dict) or kept.get("stamp") != self._stamp \
+                    or not isinstance(kept.get(section), dict):
+                kept = {"stamp": self._stamp, section: {}}
+            kept[section][key] = value
+            try:
+                tmp = cache.with_name(f"{cache.name}.{os.getpid()}.part")
+                tmp.write_text(json.dumps(kept))
+                os.replace(tmp, cache)
+            except OSError:
+                pass
+        return value
 
     def _only(self, collection: str, prefix: str = "") -> tuple[str, tuple]:
         """The part of a query that keeps to a collection, or to every collection that
@@ -653,14 +742,63 @@ class Index:
         return f" AND {prefix}collection NOT IN ({_marks(self._hosted)})", tuple(self._hosted)
 
     def _all(self, sql: str, args: tuple = ()) -> list[tuple]:
+        con = self._take()
+        try:
+            return con.execute(sql, args).fetchall()
+        finally:
+            self._give(con)
+
+    def _take(self) -> sqlite3.Connection:
+        """A connection no other thread is using: a free one, a new one, or the next
+        to be let go."""
         with self._lock:
-            return self.con.execute(sql, args).fetchall()
+            while True:
+                if self._closed:
+                    return self.con         # closed: asking it raises, as it always did
+                if self._free:
+                    return self._free.pop()
+                if not self._changed and len(self._cons) + self._opening < self.CONNECTIONS:
+                    self._opening += 1
+                    break
+                self._lock.wait()
+        con = None
+        try:
+            # only to the files the first connection has: an update replaces them (and a
+            # new Index is opened then), and this one's answers must agree with its own
+            if self._stamp_now() == self._stamp:
+                con = self._connect()
+                if self._stamp_now() != self._stamp:
+                    con.close()
+                    con = None
+        except sqlite3.Error:
+            con = None
+        with self._lock:
+            self._opening -= 1
+            if con is not None and not self._closed:
+                self._cons.append(con)
+                return con
+            if con is not None:
+                con.close()
+            self._changed = True
+            self._lock.notify_all()
+        return self._take()
+
+    def _give(self, con: sqlite3.Connection) -> None:
+        with self._lock:
+            if con not in self._free:
+                self._free.append(con)
+            self._lock.notify_all()
 
     def close(self) -> None:
         """Let go of the catalog files (an update has put new ones in their place).
-        The Index can't be asked anything after it; closing it again does nothing."""
+        The Index can't be asked anything after it; closing it again does nothing.
+        Waits for the questions being answered."""
         with self._lock:
-            self.con.close()
+            self._closed = True
+            while len(self._free) < len(self._cons) or self._opening:
+                self._lock.wait()
+            for con in self._cons:
+                con.close()
 
     def _songs(self, sql: str, args: tuple, once: bool = False) -> list[Song]:
         """The songs a query finds. With `once`, a file that an earlier row has from
@@ -741,16 +879,34 @@ class Index:
     # ---- platforms and chips (platforms.py): by format, or song by song ----
 
     def _said_formats(self) -> set[tuple[str, str]]:
-        """(collection, format) of the formats whose songs the catalogs have read."""
+        """(collection, format) of the formats whose songs the catalogs have read.
+
+        Here and in view_formats and view_counts the songs' chips are joined to their
+        files from the chips' side, on (collection, path), the files' key: joined on
+        the path alone SQLite went through all of Modland's 516k files. CROSS JOIN keeps
+        it in that order. A platform page: 248 ms -> 2 ms; the counts 375 -> 110 ms
+        (11 October 2026)."""
         if self._said is None:
             said = set()
             for c, schema in zip(self.ids, self.schemas):
                 if schema in self._chips:
-                    said |= {(c, f) for (f,) in self._all(
-                        f"SELECT DISTINCT f.format FROM {schema}.chips s JOIN {schema}.files f"
-                        " ON f.path = s.path")}
+                    said |= {(c, f) for (f,) in self._kept(f"said {c}", lambda: self._all(
+                        f"SELECT DISTINCT f.format FROM {schema}.chips s CROSS JOIN {schema}.files f"
+                        " ON f.collection = s.collection AND f.path = s.path"))}
             self._said = said
         return self._said
+
+    def _chip_counts(self, collection: str) -> list[tuple[str, str, int]]:
+        """(format, chip, songs) of what a collection's songs say they play on. Counted
+        once for the catalogs and kept beside them: 110 ms for them all (11 October
+        2026). What the counts mean (platforms.py) is worked out from them each time."""
+        schema = self._schema(collection)
+        if schema not in self._chips:
+            return []
+        return [tuple(r) for r in self._kept(f"chip-counts {collection}", lambda: self._all(
+            f"SELECT f.format, s.chip, count(*) FROM {schema}.chips s CROSS JOIN {schema}.files f"
+            " ON f.collection = s.collection AND f.path = s.path WHERE f.hidden = 0"
+            " GROUP BY f.format, s.chip"))]
 
     def _by_songs(self, collection: str, fmt: str, kind: str, id_: str) -> bool:
         return (platforms.decided_by_songs(fmt, kind, id_)
@@ -785,8 +941,8 @@ class Index:
         the formats whose songs say it, the songs that do."""
         schema = self._schema(collection)
         said = dict(self._all(
-            f"SELECT f.format, count(*) FROM {schema}.chips s JOIN {schema}.files f"
-            " ON f.path = s.path WHERE s.chip = ? AND f.hidden = 0"
+            f"SELECT f.format, count(*) FROM {schema}.chips s CROSS JOIN {schema}.files f"
+            " ON f.collection = s.collection AND f.path = s.path WHERE s.chip = ? AND f.hidden = 0"
             " GROUP BY f.format", (platforms.value(kind, id_),))) if schema in self._chips else {}
         out = []
         for fmt, songs, _ in self.formats(collection):
@@ -804,11 +960,7 @@ class Index:
             for id_ in platforms.of(fmt, collection)[0 if kind == "platform" else 1]:
                 if not self._by_songs(collection, fmt, kind, id_):
                     out[id_] = out.get(id_, 0) + songs
-        schema = self._schema(collection)
-        for fmt, chip, n in (self._all(
-                f"SELECT f.format, s.chip, count(*) FROM {schema}.chips s JOIN {schema}.files f"
-                " ON f.path = s.path WHERE f.hidden = 0 GROUP BY f.format, s.chip")
-                if schema in self._chips else ()):
+        for fmt, chip, n in self._chip_counts(collection):
             is_platform = chip.startswith("platform:")
             if is_platform != (kind == "platform"):
                 continue
@@ -831,13 +983,20 @@ class Index:
         """(path, checksum, bytes, does it belong to a song) of every file of a
         collection, of one of its formats, of an artist in a format, or of an album or
         game of theirs."""
-        where, args = "collection = ?", [collection]
+        # asked of the collection's own catalog, which has its files only: so read in
+        # the order they are kept, or by the format's index. Through the view of them
+        # all, keep's plan of all of Modland took 660 ms, 240 ms like this, holding a
+        # connection all the while (11 October 2026)
+        schema = self._schema(collection)
+        if schema is None:
+            return []
+        where, args = "1", []
         for column, value in (("format", fmt), ("artist", artist), ("album", album)):
             if value:
                 where += f" AND {column} = ?"
                 args.append(value)
         return [(path, md5 if len(md5) == 32 else "", size, hidden) for path, md5, size, hidden
-                in self._all(f"SELECT path, md5, size, hidden FROM files WHERE {where}"
+                in self._all(f"SELECT path, md5, size, hidden FROM {schema}.files WHERE {where}"
                              " ORDER BY id", tuple(args))]
 
     def file_facts(self, collection: str, paths_: list[str]) -> list[tuple[str, str, int]]:
@@ -870,33 +1029,12 @@ class Index:
         where, args = self._only(collection, "c.")
         # counting takes a quarter of a second on a fast computer, more on a slow one,
         # and the answer changes only with the catalogs: it is kept beside them
-        try:
-            stamp = [[f.name, f.stat().st_mtime_ns, f.stat().st_size] for f in self._catalog_files]
-        except OSError:
-            stamp = None
-        cache = self.path / "change-days.json"
-        try:
-            kept = json.loads(cache.read_text())
-        except (OSError, ValueError):
-            kept = {}
-        if stamp is None or kept.get("stamp") != stamp:
-            kept = {"stamp": stamp, "days": {}}
-        key = collection or "*"
-        rows = kept["days"].get(key)
-        if rows is None:
-            rows = self._all(
-                "SELECT c.day, sum(c.kind = 'added'), sum(c.kind = 'updated'),"
-                " sum(c.kind = 'moved') FROM changes c JOIN files f ON f.collection = c.collection"
-                f" AND f.path = c.path AND f.hidden = 0 WHERE c.kind IN ({_marks(SHOWN_CHANGES)}){where}"
-                " GROUP BY c.day ORDER BY c.day DESC", (*SHOWN_CHANGES, *args))
-            kept["days"][key] = [list(r) for r in rows]
-            try:
-                cache.parent.mkdir(parents=True, exist_ok=True)
-                tmp = cache.with_name(cache.name + ".part")
-                tmp.write_text(json.dumps(kept))
-                os.replace(tmp, cache)
-            except OSError:
-                pass
+        rows = self._kept(collection or "*", lambda: self._all(
+            "SELECT c.day, sum(c.kind = 'added'), sum(c.kind = 'updated'),"
+            " sum(c.kind = 'moved') FROM changes c JOIN files f ON f.collection = c.collection"
+            f" AND f.path = c.path AND f.hidden = 0 WHERE c.kind IN ({_marks(SHOWN_CHANGES)}){where}"
+            " GROUP BY c.day ORDER BY c.day DESC", (*SHOWN_CHANGES, *args)),
+            file="change-days.json", section="days")
         rows = [tuple(r) for r in rows]
         return rows if moved else [row[:3] for row in rows]
 
@@ -1107,12 +1245,13 @@ class Index:
             key = (fmt, artist, collection, view)
             choices = self._radio_choices.get(key)
             if choices is None:
-                choices = self._all(f"SELECT collection, path FROM files WHERE {cond}",
-                                    tuple(args))
+                # by their ids, 8 bytes each: as (collection, path) a platform's 100k
+                # songs took 20 MB (11 October 2026)
+                choices = array("q", (i for (i,) in self._all(
+                    f"SELECT id FROM files WHERE {cond}", tuple(args))))
                 self._radio_choices = {key: choices}        # one radio at a time
             for _ in range(tries if choices else 0):
-                c, path = random.choice(choices)
-                song = self.by_path(path, c)
+                song = self._by_id(random.choice(choices))
                 if song and (playable is None or playable(song)):
                     return song
             return None
@@ -1133,6 +1272,16 @@ class Index:
 
     # ---- one song ----
 
+    def _by_id(self, id_: int) -> Song | None:
+        """A song by its id in the merged files view (its id in its catalog * 64 + the
+        catalog's number), asked of its own catalog by its key."""
+        rowid, k = divmod(id_, 64)
+        if not 0 <= k < len(self.schemas):
+            return None
+        found = self._songs(f"SELECT id * 64 + {k}, path, format, artist, album, name, collection,"
+                            f" size, md5 FROM {self.schemas[k]}.files WHERE id = ?", (rowid,))
+        return found[0] if found else None
+
     def by_path(self, path: str, collection: str = DEFAULT) -> Song | None:
         found = self._songs(f"{self._SONG} WHERE collection = ? AND path = ?", (collection, path))
         return found[0] if found else None
@@ -1152,12 +1301,22 @@ class Index:
             # asked of each other catalog on its own: of them all, it would go through
             # Modland's half a million files for a song of Modland's
             for k, (c, schema) in enumerate(zip(self.ids, self.schemas)):
-                if c != collection and c not in self._hosted:
+                if c != collection and c not in self._hosted and self._has_md5(schema):
                     rows += self._all(
                         f"SELECT id * 64 + {k}, path, format, artist, album, name, collection,"
                         f" size, md5 FROM {schema}.files WHERE md5 = ? AND hidden = 0"
                         " ORDER BY id", (md5,))
         return self._merge(((song, md5) for *song, md5 in rows), once=True)[0]
+
+    def _has_md5(self, schema: str) -> bool:
+        """Does a catalog have checksums at all? ASMA's, ZX-Art's, Keygenmusic's and
+        SNDH's have none, and asking one of them for a checksum went through all its
+        files for nothing: 300 songs of History took 299 ms, 4 ms without (11 October
+        2026). Found once for each catalog that is opened."""
+        if schema not in self._md5_kept:
+            self._md5_kept[schema] = bool(self._all(
+                f"SELECT 1 FROM {schema}.files WHERE length(md5) = 32 LIMIT 1"))
+        return self._md5_kept[schema]
 
     def copies(self, song: Song) -> list[Song]:
         """The same song in the other collections that have it (the ones Song.also
@@ -1281,11 +1440,23 @@ class Index:
     def artist_songs(self, artist: str) -> list[Song]:
         """Everything by an artist, in every format and collection, including what
         they co-wrote."""
-        where, args = self._only("")
-        songs = self._songs(
-            f"{self._SONG} WHERE hidden = 0 AND (artist = ? OR album = ? OR album LIKE ? ESCAPE '\\')"
-            f"{where} ORDER BY id",
-            (artist, f"coop-{artist}", "coop-" + _like(artist) + "/%", *args), once=True)
+        args = (f"coop-{artist}", "coop-" + _like(artist) + "/%")
+        rows = []
+        for c, schema in self._asked(""):
+            k = self.ids.index(c)
+            song = (f"SELECT id * 64 + {k}, path, format, artist, album, name, collection, size,"
+                    f" md5 FROM {schema}.files")
+            if schema in self._coop:
+                # by artist, and among the coop folders' songs (the index has them)
+                rows += self._all(
+                    f"{song} WHERE hidden = 0 AND artist = ? UNION {song} INDEXED BY {COOP_INDEX}"
+                    " WHERE album LIKE 'coop-%' AND hidden = 0"
+                    " AND (album = ? OR album LIKE ? ESCAPE '\\')", (artist, *args))
+            else:
+                rows += self._all(f"{song} WHERE hidden = 0 AND (artist = ? OR album = ?"
+                                  " OR album LIKE ? ESCAPE '\\')", (artist, *args))
+        rows.sort(key=lambda r: r[0])
+        songs = self._merge(((song, md5) for *song, md5 in rows), once=True)
         return sorted(songs, key=lambda s: (s.format.lower(), s.album_name.lower(),
                                                   s.title.lower()))
 

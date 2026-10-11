@@ -22,7 +22,7 @@ def safe_path(path: str) -> bool:
     return bool(path) and not ({"", ".", ".."} & set(parts)) and "\0" not in path
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Entry:
     """One file in a collection."""
     path: str            # where it is in the collection; with the collection's id, its identity

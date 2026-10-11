@@ -199,8 +199,46 @@ def get(id: str) -> Download:
     return next(d for d in DOWNLOADS if d.id == id)
 
 
+# Which downloads were found whole, and the look of their folder then. The Formats list
+# asks for each format whether its download is there, three times: with the Amiga
+# players (168 files, 119 formats) that was 60,000 files looked at, 370 ms each time the
+# list was made, more than half of the time to the first screen (11 October 2026). A
+# download is put in place whole (a new folder renamed into place) and taken away whole,
+# so its folder looks different afterwards, also when another `bbmp` did it; within this
+# process install() and remove() forget it besides. Only "there" is remembered: "not
+# there" costs one look (the first file missing).
+_found: dict[str, tuple] = {}
+
+
+def _looks(where: Path) -> tuple | None:
+    try:
+        st = where.stat()
+    except OSError:
+        return None
+    return (str(where), st.st_ino, st.st_mtime_ns, st.st_ctime_ns)
+
+
 def installed(download: Download) -> bool:
-    return all((folder(download) / f).is_file() for f in download.files)
+    where = folder(download)
+    looks = _looks(where)
+    if looks is None:
+        return False
+    if _found.get(download.id) == looks:
+        return True
+    there = all((where / f).is_file() for f in download.files)
+    if there:
+        _found[download.id] = looks
+    else:
+        _found.pop(download.id, None)
+    return there
+
+
+def forget(download: Download | None = None) -> None:
+    """Look at the files again next time (all downloads with None)."""
+    if download is None:
+        _found.clear()
+    else:
+        _found.pop(download.id, None)
 
 
 def advice(backend: str, said: str = "") -> str:
@@ -402,6 +440,7 @@ _UNPACK: dict[str, Callable[[bytes, Path], None]] = {
 def install(download: Download, progress: Callable[[str], None] = lambda s: None) -> None:
     """Download it and keep what is needed of it. Raises OSError when it can't be
     reached, ValueError when what arrives is not what was expected."""
+    forget(download)
     progress(f"Downloading {download.name}...")
     request = urllib.request.Request(download.url, headers={"User-Agent": "bbmp"})
     with urllib.request.urlopen(request, timeout=60) as r:
@@ -422,11 +461,13 @@ def install(download: Download, progress: Callable[[str], None] = lambda s: None
         tmp.rename(dest)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+        forget(download)
     progress(f"{download.name} is there.")
 
 
 def remove(download: Download) -> None:
     shutil.rmtree(folder(download), ignore_errors=True)
+    forget(download)
 
 
 def env(backend: str) -> dict[str, str]:

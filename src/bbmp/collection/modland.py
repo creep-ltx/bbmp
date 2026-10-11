@@ -19,7 +19,7 @@ import zipfile
 from typing import Iterable
 
 from .. import capped
-from ..companions import BANKS, SHARED_FOLDERS, bank_of, is_companion
+from ..companions import BANKS, SHARED_FOLDERS, SUBFORMAT_DIRS, bank_of, is_companion
 from .base import Collection, Entry, Listing, Progress, Transport, safe_path
 from .transports import Below, FtpTransport, HttpTransport, Mirrors, mirrored
 
@@ -72,8 +72,8 @@ NOT_SONGS = {"MaxTrax/- unknown/mm3-fx.mxtx", "MaxTrax/- unknown/mm3-jaws.mxtx",
              "Infogrames/- unknown/advantage tennis-bruits.dum",
              "Infogrames/Silvain Tintillier/rh-captainbloodfx.dum"}
 
-# Formats whose second folder level is a sub-format or system rather than an artist.
-SUBFORMAT_DIRS = {"Video Game Music", "Ad Lib", "Spectrum"}
+# Formats whose second folder level is a sub-format or system rather than an artist:
+# SUBFORMAT_DIRS, in companions.py.
 
 
 def parse_path(path: str) -> tuple[str, str, str, str, bool]:
