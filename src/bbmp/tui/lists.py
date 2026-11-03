@@ -11,7 +11,7 @@ from textual.app import App
 from textual.widgets import OptionList, TabbedContent
 from textual.widgets.option_list import Option
 
-from .. import collection as collections_, playlists, theme
+from .. import collection as collections_, hippo, playlists, theme
 
 from .dialogs import Ask, Confirm, Pick
 from .guard import guarded
@@ -38,7 +38,9 @@ class ListsPart(metaclass=type(App)):
             if c.has_lists and any(c.id == have for have, _ in self._collections):
                 ol.add_option(Option(Text(f"+ Import one of {c.name}'s lists",
                                           style=theme.current.primary), id=f"import:{c.id}"))
-        ol.add_option(Option(Text("+ Import a playlist file (.m3u)", style=theme.current.primary), id="file"))
+        ol.add_option(Option(Text("+ Import one of HippoPlayer's shared lists",
+                                  style=theme.current.primary), id="hippo"))
+        ol.add_option(Option(Text("+ Import a playlist file (.m3u, HippoPlayer)", style=theme.current.primary), id="file"))
         ol.highlighted = current
 
     def _show_list(self) -> None:
@@ -70,8 +72,11 @@ class ListsPart(metaclass=type(App)):
         elif key.startswith("import:"):
             self.notify(f"Asking {collections_.name(key[7:])} for its lists...")
             self._load_lists(key[7:])
+        elif key == "hippo":
+            self.notify("Asking hippoplayer.se for its shared lists...")
+            self._load_hippo()
         elif key == "file":
-            self.push_screen(Ask("The playlist file to import (.m3u or .m3u8)",
+            self.push_screen(Ask("The playlist file to import (.m3u, .m3u8 or a HippoPlayer list)",
                                  str(self._music_dir()) + "/", replace=False), self._import_file)
         else:
             self.query_one("#fav-songs").focus()
@@ -168,6 +173,8 @@ class ListsPart(metaclass=type(App)):
             if self._list is None:
                 self.library.toggle_favorite(song.key)
                 self._favs = self.library.favorite_keys()
+                if self.settings.share_likes:
+                    self._send_like(song, False)
             else:
                 self.library.remove_from_playlist(self._list, song.key)
             row = table.cursor_row
@@ -223,6 +230,48 @@ class ListsPart(metaclass=type(App)):
         note = f"Imported {name}: {len(found)} songs"
         if missing:
             note += f" ({missing} are no longer on {source.name} under a name that can be matched)"
+
+        def done() -> None:
+            self._list = pid
+            self._refresh_lists()
+            self.notify(note)
+        self.call_from_thread(done)
+
+    @work(thread=True, exclusive=True, group="lists")
+    @guarded("reading HippoPlayer's shared lists")
+    def _load_hippo(self) -> None:
+        try:
+            found = hippo.shared_lists()
+        except (OSError, ValueError) as e:
+            self.call_from_thread(self.notify, f"Can't read hippoplayer.se's lists: {e}",
+                                  severity="error")
+            return
+        if not found:
+            self.call_from_thread(self.notify, "hippoplayer.se has no shared lists yet.")
+            return
+        labels = dict(found)
+        self.call_from_thread(self.push_screen, Pick("HippoPlayer's shared lists", found),
+                              lambda ref: self._import_hippo(ref, hippo.title_of(labels[ref]))
+                              if ref else None)
+
+    @work(thread=True, group="lists")
+    @guarded("importing the list")
+    def _import_hippo(self, filename: str, title: str) -> None:
+        try:
+            keys = hippo.read_shared(filename)
+        except (OSError, ValueError) as e:
+            self.call_from_thread(self.notify, f"Import failed: {e}", severity="error")
+            return
+        found, missing = playlists.resolve(keys, self.index)
+        if not found:
+            self.call_from_thread(self.notify,
+                                  f"None of the songs in {title} could be found here.",
+                                  severity="warning")
+            return
+        pid = self.library.create_playlist(title, found)
+        note = f"Imported {self.library.playlist_name(pid)}: {len(found)} songs"
+        if missing:
+            note += f" ({missing} could not be found)"
 
         def done() -> None:
             self._list = pid

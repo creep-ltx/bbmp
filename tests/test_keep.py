@@ -772,3 +772,12 @@ def test_by_day_the_page_says_when_saving_begins(catalog, fetcher, tmp_path):
             assert await settle(pilot, lambda: "2 files not there yet" in shown()), shown()
             assert "Waiting for the night: saving starts at 00:00" in shown()
     run(go())
+
+
+def test_modlands_unknown_folder_rename_is_followed(tmp_path, mod_bytes):
+    # Modland renamed "- unknown" to "_unknown" in late October 2026: the songs still
+    # have no artist, and a favourite saved under the old name finds its song
+    songs = ["Protracker/_unknown/duet.mod", "Protracker/Tester/beep.mod"]
+    index = catalog_of(tmp_path, songs, {p: mod_bytes + p.encode() for p in songs})
+    assert index.by_path("Protracker/_unknown/duet.mod").artist == "- unknown"
+    assert index.relocate("Protracker/- unknown/duet.mod").path == "Protracker/_unknown/duet.mod"

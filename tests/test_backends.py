@@ -52,44 +52,44 @@ REAL = [
     ("YM/Jochen Hippel/amiga demo - end screen.ym", "ym"),
     ("SNDH/Mad_Max/Demos/SID/Demo_Music_8.sndh", "sndh"),
     ("SC68/David Whittaker/knightmare.sc68", "sc68"),
-    ("Ad Lib/Loudness Sound System/- unknown/dig it - tune0.lds", "adplug"),
-    ("PMD/- unknown/Ash/sakaba.m", "pmdc"),
+    ("Ad Lib/Loudness Sound System/_unknown/dig it - tune0.lds", "adplug"),
+    ("PMD/_unknown/Ash/sakaba.m", "pmdc"),
     ("FM sound driver (FMP)/Arena/Genocide 2/STAGE 6 BOSS.OVI", "fmp"),
     ("MGSDRV/nyui/Ys 2 - Termination.MGS", "kss"),
     ("Euphony/Piyo Piyo/Jimbow a/JIMBOW_A.eup", "eup"),
     ("Organya/Oasis/isan-2.org", "organya"),
     ("Piston Collage/Door/the apple field.ptcop", "pxtone"),
     ("Deflemask/DevEd/keep_the_balance_title.dmf", "furnace"),
-    ("Capcom Q-Sound Format/- unknown/Warriors Of Fate/wof73.miniqsf", "qsf"),
+    ("Capcom Q-Sound Format/_unknown/Warriors Of Fate/wof73.miniqsf", "qsf"),
     ("Super Nintendo Sound Format/Motoi Sakuraba/Tales Of Phantasia/music-0025.minisnsf", "snsf"),
-    ("Quartet ST/- unknown/Acid1.4v", "uade"),
+    ("Quartet ST/_unknown/Acid1.4v", "uade"),
     ("TFMX/Chris Huelsbeck/mdat.turrican intro", "uade"),
     ("HVSC/MUSICIANS/H/Hubbard_Rob/Commando.sid", "sidplayfp"),
     ("Nintendo SPC/Greg Turner/Big Sky Trooper/09 - space battle.spc", "gme"),
     ("Video Game Music/Sega Megadrive/Shaka/Curse/11 stage 5 boss.vgz", "gme"),
-    ("Coconizer/- unknown/I Am Who.coco", "xmp"),
-    ("Archimedes Tracker/- unknown/Altair.musx", "xmp"),
+    ("Coconizer/_unknown/I Am Who.coco", "xmp"),
+    ("Archimedes Tracker/_unknown/Altair.musx", "xmp"),
     ("Ixalance/Crystal Score/world of noise.ixs", "ixalance"),
     ("Klystrack/Bod/apoptosis.kt", "klystrack"),
-    ("Musicline Editor/- unknown/rush.ml", "musicline"),
-    ("FAC SoundTracker/- unknown/Toccate/Toccate.MUS", "fac"),
-    ("SoundSmith/- unknown/Breathless", "soundsmith"),
+    ("Musicline Editor/_unknown/rush.ml", "musicline"),
+    ("FAC SoundTracker/_unknown/Toccate/Toccate.MUS", "fac"),
+    ("SoundSmith/_unknown/Breathless", "soundsmith"),
     ("SGC/Yoko Wada/Aladdin/Aladdin.sgc", "sgc"),
-    ("WonderSwan/- unknown/tetris.wsr", "wsr"),
-    ("SPU/- unknown/Jinguji Saburu - Tomoshibi Ga Kienumani/09-rosy waltz.spu", "spu"),
+    ("WonderSwan/_unknown/tetris.wsr", "wsr"),
+    ("SPU/_unknown/Jinguji Saburu - Tomoshibi Ga Kienumani/09-rosy waltz.spu", "spu"),
     ("GoatTracker 2/Cadaver/covert ops in 2d (funktempo).sng", "goattracker"),
     ("Zoundmonitor/AJ/hittheroad.sng", "zoundmonitor"),
     ("MaxTrax/David A. Bean/darkseed (12).mxtx", "maxtrax"),
-    ("PokeyNoise/- unknown/pn.tetris", "uade"),
-    ("SCC-Musixx/- unknown/RUSSIA [50Hz].SNG", "sccmusixx"),
-    ("NerdTracker 2/- unknown/mq-bt.ned", "ned"),
-    ("Beepola/- unknown/music studio demo.bbsong", "beepola"),
+    ("PokeyNoise/_unknown/pn.tetris", "uade"),
+    ("SCC-Musixx/_unknown/RUSSIA [50Hz].SNG", "sccmusixx"),
+    ("NerdTracker 2/_unknown/mq-bt.ned", "ned"),
+    ("Beepola/_unknown/music studio demo.bbsong", "beepola"),
     ("Beepola/Joffa Smifff/cobra - round start.bbsong", "beepola"),
-    ("AY STRC/- unknown/mega mix 1.strc", "strc"),
+    ("AY STRC/_unknown/mega mix 1.strc", "strc"),
     ("Monotone/Trixter/understa.mon", "monotone"),
     ("Digitrekker/Horst Beham/demorave.dtm", "digitrekker"),
     ("Starkos/Fenyxkell/spectrum castle.sks", "sks"),
-    ("Spectrum/Flash Tracker/- unknown/pet 5.fls", "fls"),
+    ("Spectrum/Flash Tracker/_unknown/pet 5.fls", "fls"),
 ]
 
 
@@ -151,14 +151,14 @@ def test_real_formats(modland, path, backend, monkeypatch):
 def test_a_song_brings_the_files_it_needs(modland):
     """The catalog knows which files go with a song of the newer formats."""
     ix = modland.index
-    if ix.by_path("SoundSmith/- unknown/Breathless") is None:
+    if ix.by_path("SoundSmith/_unknown/Breathless") is None:
         pytest.skip("not in this catalog")
-    assert ix.companions("SoundSmith/- unknown/Breathless") == [
-        "modland:SoundSmith/- unknown/Breathless.W"]
-    assert ix.by_path("SoundSmith/- unknown/Breathless.W") not in ix.songs("SoundSmith", "- unknown")
+    assert ix.companions("SoundSmith/_unknown/Breathless") == [
+        "modland:SoundSmith/_unknown/Breathless.W"]
+    assert ix.by_path("SoundSmith/_unknown/Breathless.W") not in ix.songs("SoundSmith", "- unknown")
     lists = ix.companions("SGC/Yoko Wada/Aladdin/Aladdin.sgc")
     assert lists and all(k.endswith(".m3u") for k in lists)
-    kits = ix.companions("FAC SoundTracker/- unknown/Toccate/Toccate.MUS")
+    kits = ix.companions("FAC SoundTracker/_unknown/Toccate/Toccate.MUS")
     assert kits and all(k.lower().endswith((".sm1", ".sm2")) for k in kits)
 
 
@@ -178,7 +178,7 @@ def test_pmd_gets_its_drums_from_the_rhythm_rom(modland, tmp_path):
     (extras.folder() / "ym2608_adpcm_rom.bin").symlink_to(paths.RHYTHM_ROM)
     env = extras.env("pmdc", chip)
     assert env.get("BBMP_YM2608_ROM")
-    song = "PMD/- unknown/Brandish 3/br3-1-27.m"
+    song = "PMD/_unknown/Brandish 3/br3-1-27.m"
     if modland.index.by_path(song) is None:
         pytest.skip("not in this catalog")
     local = modland.get(song, modland.index.companions(song))

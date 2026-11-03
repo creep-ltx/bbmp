@@ -8,14 +8,14 @@ The census tries a sample of each format's songs (40 at the most): Modland's whe
 
 | | Formats | Songs |
 |---|---|---|
-| Verified against the original | 31 | 94,221 |
-| Plays, no fault known | 348 | 422,413 |
-| Plays with faults or gaps | 37 | 22,356 |
+| Verified against the original | 31 | 94,225 |
+| Plays, no fault known | 348 | 422,505 |
+| Plays with faults or gaps | 37 | 22,358 |
 | Switched off | 0 | 0 |
 | Doesn't play | 22 | 531 |
-| **All** | **438** | **539,521** |
+| **All** | **438** | **539,619** |
 
-Counting every format by the share of its tried songs that play, about **99.6%** of the 539,521 songs play.
+Counting every format by the share of its tried songs that play, about **99.6%** of the 539,619 songs play.
 
 ## Verified against the original
 
@@ -24,7 +24,7 @@ The replayer's output, or what it writes to the sound chip, was compared with th
 | Format | Songs | Play | Replayer | Notes |
 |---|---|---|---|---|
 | HVSC | 61,157 | 40 of 40 tried | sidplayfp | A tune is its own original player (the composer's 6502 code), so the C64 emulation was checked: every change libsidplayfp's C64 makes to the SID, against VICE's, the reference C64 emulator, running the same tune (tools/verify/sid.py): 956 of 996 random tunes the same, change for change, in order, and in time within 7 cycles at the median (30 s each, 2 October 2026). Of the rest: 21 are RSID programs playing samples through the volume register, whose timing is to the cycle, and part from VICE after a while; 7 read the SID's oscillator 3 for random numbers, which is the chip emulation's own (reSIDfp is not VICE's reSID); 12 differ otherwise. Tunes for two or three SIDs were not compared. HVSC's own three groups, tried from a copy of HVSC: Musicians, Games and Demos 40 of 40 each. |
-| Spectrum - Pro Tracker 3 | 17,439 | 40 of 40 tried | zxtune | Every write to the AY chip, frame by frame, against Vortex Tracker II's own Z80 player (S.V. Bulba) on an emulated Z80, for all 7,376 of Modland's songs: 7,218 of the 7,297 compared the same in every frame (tools/verify). Of the rest: 88 have a channel that plays before it chooses a sample, which Pro Tracker 3 leaves undefined (played with sample 1, as Vortex Tracker's editor does); 16 start a sample or ornament past its end, where the original plays whatever bytes follow for a frame; 11 files are cut short on Modland; 52 differ, mostly in a few frames of a slide. Two faults of ZXTune were found and mended: a note and its ornament, and the channels' envelope offsets, are added in a byte, as in the original. Turbo Sound songs (two chips, 61) were not compared. |
+| Spectrum - Pro Tracker 3 | 17,443 | 40 of 40 tried | zxtune | Every write to the AY chip, frame by frame, against Vortex Tracker II's own Z80 player (S.V. Bulba) on an emulated Z80, for all 7,376 of Modland's songs: 7,218 of the 7,297 compared the same in every frame (tools/verify). Of the rest: 88 have a channel that plays before it chooses a sample, which Pro Tracker 3 leaves undefined (played with sample 1, as Vortex Tracker's editor does); 16 start a sample or ornament past its end, where the original plays whatever bytes follow for a frame; 11 files are cut short on Modland; 52 differ, mostly in a few frames of a slide. Two faults of ZXTune were found and mended: a note and its ornament, and the channels' envelope offsets, are added in a byte, as in the original. Turbo Sound songs (two chips, 61) were not compared. |
 | Spectrum - Pro Tracker 2 | 13,440 | 40 of 40 tried | zxtune | Every write to the AY chip, frame by frame, against Pro Tracker 2.101's own Z80 player (GDC, from a magazine's listing of it) on an emulated Z80, for all 6,243 of Modland's songs: 5,966 the same in every frame (tools/verify). Four faults of ZXTune were found and mended: the volume table is rounded, a pattern plays to its end however long, a 00 in a row is a noise command, and a note past the 96 notes' table plays what the original player's memory has there (the start of its volume table). Of the rest: 195 differ in a few frames where such a note is involved, 42 have a channel that plays before it chooses a sample (undefined in the original), 4 play as S.V. Bulba's player, which mends faults of the original, 1 file is cut short; 35 differ. The original plays a song's first row after its delay less a frame; the player plays it at once. |
 | Musicline Editor | 817 | 815 of 817 | musicline | Every write to the sound chip matches the original Amiga routine, in 59 songs with 4 channels. The waves its synthesizer effects make, and songs with 8 channels, were compared by sound only. One file is cut short, one is silent. |
 | FAC SoundTracker | 644 | 644 of 644 | fac | Written for this player in a clean room, from a description of the format only; the same chip writes as before in all 644 songs, and the same sound sample for sample (those writes match FAC's own routine in 60 songs on both chips). Open: 50 or 60 Hz, which the files don't say; played at 60. Six songs name a drum kit that is missing and play without drums. |
@@ -61,18 +61,18 @@ Every song that was tried plays, and nothing is known to be wrong. Most of these
 
 | Format | Songs | Play | Replayer | Notes |
 |---|---|---|---|---|
-| Protracker | 81,701 | 40 of 40 tried | openmpt |  |
-| Fasttracker 2 | 47,371 | 40 of 40 tried | openmpt |  |
+| Protracker | 81,762 | 40 of 40 tried | openmpt |  |
+| Fasttracker 2 | 47,381 | 40 of 40 tried | openmpt |  |
 | Nintendo SPC | 36,903 | 40 of 40 tried | gme |  |
 | Nintendo DS Sound Format | 30,095 | 40 of 40 tried | zxtune |  |
-| Impulsetracker | 25,779 | 40 of 40 tried | openmpt |  |
+| Impulsetracker | 25,782 | 40 of 40 tried | openmpt |  |
 | Gameboy Sound Format | 23,072 | 40 of 40 tried | zxtune |  |
 | Playstation Sound Format | 16,057 | 100 of 100 tried | zxtune | Played by Highly Experimental, which runs the PlayStation 2's BIOS: hebios.bin in the extras folder, made from a dump of your own console's BIOS (bbmp extras). The player doesn't carry it; without it no song plays. With it 100 of 100 tried play (8 October 2026). |
 | FM sound driver (FMP) | 11,527 | 40 of 40 tried | fmp |  |
 | SNDH | 11,381 | 40 of 40 tried | sndh |  |
-| Screamtracker 3 | 11,267 | 40 of 40 tried | openmpt |  |
+| Screamtracker 3 | 11,269 | 40 of 40 tried | openmpt |  |
 | Video Game Music - Sega Megadrive | 10,961 | 40 of 40 tried | gme |  |
-| Slight Atari Player | 9,565 | 39 of 40 tried | zxtune | One file Modland and ASMA have is a broken rip. One whose last block is a few bytes short is played from a mended copy. |
+| Slight Atari Player | 9,567 | 39 of 40 tried | zxtune | One file Modland and ASMA have is a broken rip. One whose last block is a few bytes short is played from a mended copy. |
 | Playstation 2 Sound Format | 6,911 | 40 of 40 tried | zxtune | Played by Highly Experimental, which runs the PlayStation 2's BIOS: hebios.bin in the extras folder, made from a dump of your own console's BIOS (bbmp extras). The player doesn't carry it; without it no song plays. With it 40 of 40 tried play (8 October 2026). |
 | Spectrum - ST Song Compiler | 6,378 | 40 of 40 tried | zxtune |  |
 | S98 | 5,111 | 40 of 40 tried | vgm |  |
@@ -86,9 +86,9 @@ Every song that was tried plays, and nothing is known to be wrong. Most of these
 | OctaMED MMD1 | 2,728 | 40 of 40 tried | openmpt |  |
 | Spectrum - Sound Tracker Pro | 2,459 | 40 of 40 tried | zxtune |  |
 | Video Game Music - Sega Master System | 2,102 | 40 of 40 tried | gme |  |
-| Fasttracker | 2,036 | 40 of 40 tried | openmpt |  |
+| Fasttracker | 2,038 | 40 of 40 tried | openmpt |  |
 | MoonBlaster | 1,999 | 40 of 40 tried | kss |  |
-| Soundtracker | 1,936 | 40 of 40 tried | openmpt |  |
+| Soundtracker | 1,945 | 40 of 40 tried | openmpt |  |
 | Deflemask | 1,813 | 79 of 100 tried | furnace | Furnace. About one in five of Modland's files was once sent as text, which damaged it (every CR LF made LF, and every CR CR changed too). Furnace plays most of them anyway, perhaps with a wrong note or a click where the damage is; 21 of 100 tried it can't. Mending them was tried: 1 of 46 came back whole. |
 | FamiTracker | 1,784 | 40 of 40 tried | furnace |  |
 | Piston Collage | 1,783 | 39 of 40 tried | pxtone |  |
@@ -118,9 +118,9 @@ Every song that was tried plays, and nothing is known to be wrong. Most of these
 | Oktalyzer | 449 | 40 of 40 tried | openmpt |  |
 | SGC | 386 | 384 of 386 | sgc | Against Game Music Emu's SGC player in 746 songs: 84% alike, 14% roughly, 1% not. Two ColecoVision songs need the ColecoVision BIOS, which the player doesn't have. Songs without a track list have the game's sound effects among their subsongs, and their length is a guess that is wrong for about 1 in 10. |
 | OPLLDRV | 373 | 40 of 40 tried | kss |  |
+| X-Tracker | 370 | 40 of 40 tried | openmpt |  |
 | TFMX | 368 | 40 of 40 tried | uade |  |
 | V2 | 367 | 40 of 40 tried | zxtune |  |
-| X-Tracker | 366 | 40 of 40 tried | openmpt |  |
 | SoundFX | 358 | 40 of 40 tried | openmpt |  |
 | Organya | 338 | 40 of 40 tried | organya |  |
 | Ad Lib - Raw OPL Capture | 316 | 40 of 40 tried | adplug |  |
@@ -132,7 +132,7 @@ Every song that was tried plays, and nothing is known to be wrong. Most of these
 | TFM Music Maker | 266 | 40 of 40 tried | furnace |  |
 | Megadrive GYM | 265 | 40 of 40 tried | gme |  |
 | Ad Lib - Visual Composer | 247 | 40 of 40 tried | adplug |  |
-| SoundSmith | 243 | 243 of 243 | soundsmith | Written for this player in a clean room, from a description of the formats only; the same chip writes as before in every song (243 of 243), and the same sound sample for sample; tempo and notes against MTPng, another player. Never compared with an Apple IIGS or an emulator of one. 33 songs use instruments their wave bank lacks; those notes are silent, as on the IIGS. |
+| SoundSmith | 242 | 243 of 243 | soundsmith | Written for this player in a clean room, from a description of the formats only; the same chip writes as before in every song (243 of 243), and the same sound sample for sample; tempo and notes against MTPng, another player. Never compared with an Apple IIGS or an emulator of one. 33 songs use instruments their wave bank lacks; those notes are silent, as on the IIGS. |
 | Ad Lib - HSC AdLib Composer | 236 | 40 of 40 tried | adplug |  |
 | Screamtracker 2 | 234 | 40 of 40 tried | openmpt |  |
 | BP SoundMon 2 | 214 | 40 of 40 tried | uade |  |
@@ -432,7 +432,7 @@ Something is known to be wrong or missing, or some of the songs don't play.
 | Mad Tracker 2 | 106 | 39 of 40 tried | openmpt | One song (accidental ray of sun, piano mix) needs the commercial VST plug-in The Grand. 1 of 40 tried is silent. |
 | Archimedes Tracker | 99 | 97 of 99 | xmp | Libxmp. Two songs are silent. |
 | Hippel COSO | 92 | 39 of 40 tried | uade | One song (cryptoburners - pack5) is silent; not looked into. 1 of 40 tried is silent. |
-| OpenMPT MPTM | 68 | 39 of 40 tried | openmpt | One song (synthetic journey) needs the Synth1 VST plug-in. 1 of 40 tried is silent. |
+| OpenMPT MPTM | 70 | 39 of 40 tried | openmpt | One song (synthetic journey) needs the Synth1 VST plug-in. 1 of 40 tried is silent. |
 | Spectrum - Snapshot | 65 | 18 of 65 | zxtune | Tapes, disks, and music that is a program of its own need an emulated Spectrum, which the player doesn't have; a snapshot is a whole Spectrum's memory, tape or disk. ZXTune finds the tracker song in 18 of the 31 snapshots (.sna); tapes, disks, and music that is a program of its own need an emulated Spectrum, which the player doesn't have. |
 | Hippel | 63 | 38 of 40 tried | uade | Two songs (prince, astaroth) have a version of the replay code UADE's player refuses; forced, it plays garbage. 2 of 40 tried can't be played (no replayer could play this file (uade: UADE doesn…t open prince.hip; gme: Wrong file type for this emulator; ; no replayer could play this file (uade: UADE doesn…t open astaroth.hip; gme: Wrong file type for this emulator). |
 | FredMon | 59 | 36 of 40 tried | uade | Four files (voodoo, voodoo-2, both fuzzball) have a version of the replay code UADE doesn't know. 4 of 40 tried can't be played (no replayer could play this file (uade: UADE doesn…t open voodoo-n.fred; gme: Wrong file type for this emulato; no replayer could play this file (uade: UADE doesn…t open fuzzball-title.fred; gme: Wrong file type for this e). |

@@ -38,6 +38,7 @@ class Settings:
     asked_command: bool = False       # in a Flatpak: the bbmp command was offered once
     level: bool = True                # play every song at the same loudness
     demo_effects: bool = False        # v cycles through the demo effects too
+    share_likes: bool = False         # f also likes the song where HippoPlayer's likes are
     keys: dict = field(default_factory=dict)   # other keys, by the bindings' ids
     collections: list | None = None   # the ones the user has; None: not chosen yet
     update_every: str = "week"        # day | week | 2weeks | month | never (catalogs.EVERY)

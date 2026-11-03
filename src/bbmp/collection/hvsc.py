@@ -18,6 +18,7 @@ it was come by.
 from __future__ import annotations
 
 import time
+import urllib.parse
 import urllib.request
 from dataclasses import replace
 from pathlib import Path
@@ -92,8 +93,14 @@ class Hvsc(Collection):
 
     def path_in(self, url: str) -> str | None:
         where = url.find(DOWNLOAD)
-        if "hvsc" not in url.lower() or where < 0:
+        if "hvsc" not in url.lower():
             return None
+        if where < 0:
+            # hvsc.csdb.dk (HippoPlayer's lists link there) has HVSC's paths at its top
+            parts = urllib.parse.urlsplit(url)
+            if parts.hostname != "hvsc.csdb.dk" or parts.path.count("/") < 2:
+                return None
+            return urllib.parse.unquote(parts.path.lstrip("/"))
         return url[where + len(DOWNLOAD):]
 
 

@@ -38,6 +38,7 @@ CONFIG_DIR = _xdg("XDG_CONFIG_HOME", ".config")
 CATALOG_DIR = DATA_DIR / "catalogs"   # a catalog for each collection, made from its file list
 INDEX_DB = DATA_DIR / "index.db"      # the one catalog there was before: split when met
 USER_DB = DATA_DIR / "user.db"        # favorites, playlists and plays, never rebuilt
+LIKES_TOKEN = DATA_DIR / "likes-token"  # this computer's voter for shared likes
 SESSION = DATA_DIR / "session.json"   # the queue and position, for resuming
 SETTINGS = CONFIG_DIR / "settings.json"
 FILES_DIR = CACHE_DIR / "files"       # downloaded songs: <collection>/<the path it has there>

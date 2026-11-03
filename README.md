@@ -134,7 +134,7 @@ file calls the key (see below).
 | → / ← | on a song marked ▸, which more than one collection has: one row for each collection, to play that one's copy; ← hides them, and among Browse's songs goes back (`open_copies`, `close_copies`) |
 | a | add the selected song to the end of the queue; on an artist, all their songs (`enqueue`) |
 | N | play it next: right after the song that plays (`play_next`) |
-| f | favorite on/off (`favorite`) |
+| f | favorite on/off; with "Share likes with HippoPlayer" on, it likes the song for everyone to see too (`favorite`) |
 | ! | this sounds wrong: notes the song that plays, where in it and which replayer, with a word or two, in a list to send (`sounds_wrong`; see below) |
 | l | add the song to a playlist (`add_to_playlist`) |
 | L | save the queue as a playlist (`queue_to_playlist`) |
@@ -170,7 +170,8 @@ and `J`) move the selected song up and down in it.
 "Import a playlist file" reads an `.m3u` or `.m3u8` file from this computer. Its lines
 can be links to Modland or one of its mirrors, Modland paths
 (`Protracker/Jester/elysium.mod`), or files on this computer (relative to where the
-list is). Enter on such a file in the Files tab does
+list is). It reads HippoPlayer's lists too (the Amiga player's `.prg` files): their links to
+Modland and HVSC are found, songs named by a path on an Amiga are not. Enter on such a file in the Files tab does
 the same, and so does the command line:
 
 ```sh
@@ -185,6 +186,11 @@ favourites, music disks, and the competition entries of demo parties such as Ass
 that has moved is found again only when there is no doubt: exactly one file with the
 same name, by the same artist, or a song that had no artist then and has one now. The
 rest are left out, and the import says how many.
+
+"Import one of HippoPlayer's shared lists" shows the playlists people share on
+[hippoplayer.se](https://hippoplayer.se), the site of the Amiga player HippoPlayer, with
+who made each one; Enter brings one in as a playlist of yours, with the songs that
+can be found here.
 
 Songs in playlists are never removed from the cache, like favorites.
 
@@ -351,6 +357,7 @@ moment it changes, including the volume and the visualiser you last used.
 | Shuffle the queue | on, off |
 | Same loudness for all songs | on, off |
 | Reopen where I left off | the queue, song and position come back paused on the next start |
+| Share likes with HippoPlayer | off at first. On, `f` also likes the song where HippoPlayer, DEViLBOX and other players share their likes, and the song that plays shows how many like it. A like belongs to the song itself, so the same module from any archive counts as one. What is sent: the song's fingerprint, its file name, and a random number made once for this computer (no name, no account) |
 | Browse and search | every collection, or only one (shown when you have more than one) |
 | Visualizer | one of the nine visualisers (see `v`), or off |
 | Demo effects with v | `v` shows the demo effects too (off at first) |
@@ -811,6 +818,7 @@ turns the sandbox off for looking into a replayer.
 | Exported songs | `~/Music/ByteBandit Music Player/Exports/` |
 | The queue and position to resume | `~/.local/share/bbmp/session.json` |
 | Settings | `~/.config/bbmp/settings.json` |
+| The random number that stands for this computer in shared likes (made when sharing is first used) | `~/.local/share/bbmp/likes-token` |
 | The cache: songs that were played (a folder per collection, laid out as on its server). It is the player's own business, with a size limit | `~/.cache/bbmp/files/<collection>/` |
 | Kept music, laid out the same, and the database of what is kept (`kept.db`) | `~/Music/ByteBandit Music Player/`, or the folder set in Settings, or `BBMP_KEPT` |
 | Log (stderr from the replayers) | `~/.cache/bbmp/bbmp.log` |

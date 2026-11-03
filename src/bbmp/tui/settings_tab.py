@@ -125,6 +125,7 @@ class SettingsPart(metaclass=type(App)):
             ("shuffle", "Shuffle the queue", "on" if s.shuffle else "off"),
             ("level", "Same loudness for all songs", "on" if s.level else "off"),
             ("resume", "Reopen where I left off", "yes" if s.resume else "no"),
+            ("share_likes", "Share likes with HippoPlayer", "on" if s.share_likes else "off"),
             *([("collection", "Browse and search", self._collection_name() or "every collection")]
               if len(self._collections) > 1 else []),
             ("", "Collections", None),
@@ -250,6 +251,14 @@ class SettingsPart(metaclass=type(App)):
                         else "Songs play as loud as they are from the next song on.")
         elif key == "resume":
             s.update(resume=not s.resume)
+        elif key == "share_likes":
+            s.update(share_likes=not s.share_likes)
+            self.notify("f likes a song for everyone to see too: likes from HippoPlayer, "
+                        "DEViLBOX and other players count together, and the song that "
+                        "plays shows its likes. Only the song is sent, with a random "
+                        "number for this computer, no name." if s.share_likes
+                        else "Likes stay on this computer.")
+            self._likes_on()
         elif key == "visualizer":
             self.action_visual()
         elif key == "demo_effects":

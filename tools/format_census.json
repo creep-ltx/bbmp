@@ -808,7 +808,7 @@
    {
     "backend": "adplug",
     "note": "opens and gives no sound",
-    "song": "Ad Lib/Martin Fernandez/- unknown/Prophecy - Viking Child/loader.adlib",
+    "song": "Ad Lib/Martin Fernandez/_unknown/Prophecy - Viking Child/loader.adlib",
     "state": "failed"
    }
   ],
@@ -2577,434 +2577,434 @@
     "backend": "zxtune",
     "by": "hand",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-07.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-07.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "hand",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-07.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-07.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "hand",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-00.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-00.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/F355 Challenge - Passione Rossa (Naomi)/f355-003-00-00-00.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/F355 Challenge - Passione Rossa (Naomi)/f355-003-00-00-00.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Power Stone (Naomi)/pstone-001-00-00-30.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Power Stone (Naomi)/pstone-001-00-00-30.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Power Stone (Naomi)/pstone-001-00-00-39.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Power Stone (Naomi)/pstone-001-00-00-39.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-01.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Sega Marine Fishing (Naomi)/smarinef-001-00-00-01.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-01.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-01.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-02.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Sega Marine Fishing (Naomi)/smarinef-004-00-00-02.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spawn - In The Demon's Hand (Naomi)/spawn-00-25.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spawn - In The Demon's Hand (Naomi)/spawn-00-25.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-02.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-02.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-03.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-03.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-04.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-04.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-05.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-05.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-06.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-06.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-07.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-07.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-08.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-08.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-09.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-09.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-10.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-10.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-11.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-11.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-12.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-12.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-13.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-13.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-14.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-14.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-15.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-15.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-16.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-16.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-17.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-17.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-18.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-18.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-19.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Spikers Battle (Naomi)/spikers battle-000-01-03-19.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Major League (Naomi)/super major league-007-03-01-13.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Major League (Naomi)/super major league-007-03-01-13.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Major League (Naomi)/super major league-007-03-01-14.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Major League (Naomi)/super major league-007-03-01-14.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-00.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-00.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-01.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-01.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-02.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-02.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-03.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-03.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-04.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-04.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-05.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-05.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-06.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Super Shanghai 2005 (Naomi)/super-shanghai-2005-001-01-06.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-01.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-01.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-02.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-02.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-03.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-03.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-04.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-04.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-05.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-05.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-06.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-06.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-08.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-08.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-09.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-09.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-10.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-10.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-11.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-11.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-12.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-12.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-13.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-13.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-14.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-14.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-15.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-15.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-16.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-16.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-17.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-17.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-18.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-18.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-19.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-19.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-20.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-20.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-21.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-21.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-22.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-22.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-23.dsf",
+    "song": "Dreamcast Sound Format/_unknown/Usagui - Yamashiro Mahjong-hen (Naomi)/bgm-23.dsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Virtua NBA (Naomi)/virnba-03-00-25.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Virtua NBA (Naomi)/virnba-03-00-25.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Virtua NBA (Naomi)/virnba-03-00-33.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Virtua NBA (Naomi)/virnba-03-00-33.minidsf",
     "state": "silent"
    },
    {
     "backend": "zxtune",
     "by": "find_silent",
     "note": "an empty track of the rip: no music (two emulators agree)",
-    "song": "Dreamcast Sound Format/- unknown/Virtua Striker 3 (Naomi 2)/vs3-001-1c-00-12.minidsf",
+    "song": "Dreamcast Sound Format/_unknown/Virtua Striker 3 (Naomi 2)/vs3-001-1c-00-12.minidsf",
     "state": "silent"
    }
   ],
@@ -3389,7 +3389,7 @@
    {
     "backend": "",
     "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open voodoo-2.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
-    "song": "FredMon/- unknown/voodoo-2.fred",
+    "song": "FredMon/_unknown/voodoo-2.fred",
     "state": "failed"
    },
    {
@@ -3407,7 +3407,7 @@
    {
     "backend": "",
     "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open voodoo.fred; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
-    "song": "FredMon/- unknown/voodoo.fred",
+    "song": "FredMon/_unknown/voodoo.fred",
     "state": "failed"
    }
   ],
@@ -4291,7 +4291,7 @@
    {
     "backend": "kss",
     "note": "crossings 0.46, clipped 0%",
-    "song": "KSS/- unknown/ultraman.kss",
+    "song": "KSS/_unknown/ultraman.kss",
     "state": "noise"
    }
   ],
@@ -4418,7 +4418,7 @@
    {
     "backend": "mdx",
     "note": "",
-    "song": "MDX/- unknown/Metal Sight/metal05.mdx",
+    "song": "MDX/_unknown/Metal Sight/metal05.mdx",
     "state": "silent"
    }
   ],
@@ -4948,7 +4948,7 @@
    {
     "backend": "",
     "note": "no replayer could play this file (uade: UADE doesn't recognise this file; openmpt: libopenmpt can't open best of guitars.sdata; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; zxtune: no such track; vgm: not a VGM or S98 file; sc68: sc68 can't load this file)",
-    "song": "MusicMaker V8 Old/- unknown/best of guitars.sdata",
+    "song": "MusicMaker V8 Old/_unknown/best of guitars.sdata",
     "state": "failed"
    }
   ],
@@ -6133,7 +6133,7 @@
    {
     "backend": "",
     "note": "not an SPU log: entry 24 makes no sense",
-    "song": "SPU/- unknown/Raiden DX/raidendxnr-01.spu",
+    "song": "SPU/_unknown/Raiden DX/raidendxnr-01.spu",
     "state": "failed"
    }
   ],
@@ -6209,7 +6209,7 @@
    {
     "backend": "",
     "note": "no replayer could play this file (zxtune: no such track; openmpt: libopenmpt can't open tetris.sng; uade: UADE doesn't recognise this file; gme: Wrong file type for this emulator; sidplayfp: not a SID tune libsidplayfp can load; sc68: sc68 can't load this file)",
-    "song": "Sam Coupe SNG/- unknown/tetris.sng",
+    "song": "Sam Coupe SNG/_unknown/tetris.sng",
     "state": "failed"
    },
    {
@@ -6262,7 +6262,7 @@
    {
     "backend": "zxtune",
     "note": "",
-    "song": "Saturn Sound Format/- unknown/Irem Arcade Classics/tyfsnd-00-27.minissf",
+    "song": "Saturn Sound Format/_unknown/Irem Arcade Classics/tyfsnd-00-27.minissf",
     "state": "silent"
    }
   ],
@@ -6495,7 +6495,7 @@
    {
     "backend": "uade",
     "note": "",
-    "song": "Sonic Arranger/- unknown/sonic-intro-1.sa",
+    "song": "Sonic Arranger/_unknown/sonic-intro-1.sa",
     "state": "silent"
    }
   ],
@@ -7903,7 +7903,7 @@
    {
     "backend": "zxtune",
     "note": "",
-    "song": "Ultra64 Sound Format/- unknown/The World Is Not Enough/sparse0a.miniusf",
+    "song": "Ultra64 Sound Format/_unknown/The World Is Not Enough/sparse0a.miniusf",
     "state": "silent"
    }
   ],

@@ -52,7 +52,7 @@ MONO = "MesloLGS Nerd Font Mono, DejaVu Sans Mono, monospace"
 SONGS = {
     "elysium": "Protracker/Jester/elysium.mod",
     "onward": "Fasttracker 2/Jugi/onward.xm",
-    "dracula": "MDX/- unknown/Akumajou Dracula (X68)/dra11.mdx",
+    "dracula": "MDX/_unknown/Akumajou Dracula (X68)/dra11.mdx",
     "wings": "SNDH/Mad_Max/Games/Wings_Of_Death.sndh",
     "megaman": "Nintendo Sound Format/C. Manami/mega man 2.nsf",
     "vectrex": "Video Game Music/Vectrex/Lenny Carlson/Clean Sweep/title screen.vgz",

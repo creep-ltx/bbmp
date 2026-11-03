@@ -57,7 +57,7 @@ HVSC_SONGLENGTHS_URL = "https://hvsc.c64.org/download/C64Music/DOCUMENTS/Songlen
 # Files that hold instruments for the songs next to them and no song of their own, and
 # games' banks of sound effects (2 October 2026: their channels play no tune, or no
 # replayer takes them as a song).
-NOT_SONGS = {"MaxTrax/- unknown/mm3-fx.mxtx", "MaxTrax/- unknown/mm3-jaws.mxtx",
+NOT_SONGS = {"MaxTrax/_unknown/mm3-fx.mxtx", "MaxTrax/_unknown/mm3-jaws.mxtx",
              "MaxTrax/Frank Klepacki/kyrandia introinst.mxtx",
              *(f"David Whittaker/David Whittaker/{n}.dw" for n in (
                  "anarchy sfx", "blood money sfx", "leviathan-sfx", "spellbound sfx",
@@ -69,7 +69,7 @@ NOT_SONGS = {"MaxTrax/- unknown/mm3-fx.mxtx", "MaxTrax/- unknown/mm3-jaws.mxtx",
              "Infogrames/Lauren Elliott/shufflepuck-ringard.dum",
              "Infogrames/Charles Callet/drakkhen (resid).dum",
              "Infogrames/Charles Callet/metal masters (bruits).dum",
-             "Infogrames/- unknown/advantage tennis-bruits.dum",
+             "Infogrames/_unknown/advantage tennis-bruits.dum",
              "Infogrames/Silvain Tintillier/rh-captainbloodfx.dum"}
 
 # Formats whose second folder level is a sub-format or system rather than an artist:
@@ -100,6 +100,10 @@ def parse_path(path: str) -> tuple[str, str, str, str, bool]:
     else:
         artist = parts[1] if len(parts) >= 3 else "- unknown"
         album = "/".join(parts[2:-1])
+    # Modland's folder for no known artist was "- unknown" until late October 2026 and is
+    # "_unknown" since; the player still calls it "- unknown", which it shows as no artist
+    if artist == "_unknown":
+        artist = "- unknown"
     return fmt, artist, album, name, hidden
 
 
