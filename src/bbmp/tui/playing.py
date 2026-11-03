@@ -7,15 +7,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from rich.text import Text
-from textual import on
+from textual import on, work
 from textual.app import App
 from textual.widgets import DirectoryTree, TabbedContent
 
-from .. import archives, platforms, playlists, theme, wrong
+from .. import archives, collection as collections_, likes, paths, platforms, playlists, theme, wrong
 from ..backends import is_supported
 from ..index import Song
 
 from .dialogs import Ask
+from .guard import guarded
 from .widgets import NEW, REPEAT_LABELS, SongTable, Visualizer
 
 
@@ -158,12 +159,55 @@ class PlayingPart(metaclass=type(App)):
         self._favs = self.library.favorite_keys()
         self._lists_changed()
         self.notify(("♥ Added " if on_ else "Removed ") + song.title)
+        if self.settings.share_likes:
+            self._send_like(song, on_)
         # the mark goes on the row only when the row is that song: with an empty list
         # (a search that found nothing) the song is the one playing, and there is no
         # row to mark (that closed the player, 7 October 2026)
         if (table := self._focused_table()) and table.selected() is song:
             table.update_cell_at((table.cursor_row, 0),
                                  Text("♥" if on_ else "", style=f"bold {theme.current.bad}"))
+
+    # ---- likes shared with HippoPlayer and other players (likes.py) ----
+
+    def _likes_on(self) -> None:
+        """Sharing likes was turned on or off: the song that plays shows its likes, or not."""
+        self._likes.clear()
+        st = self.player.status() if self.player else None
+        if self.settings.share_likes and st and st.song:
+            self._look_up_likes(st.song)
+
+    def _like_key(self, song: Song, fetch: bool) -> str:
+        """The song's key for likes, from its file (downloaded first if `fetch`)."""
+        path = self.fetcher.clone().get(song.key) if fetch else self.fetcher.local_path(song.key)
+        return likes.file_key(archives.file_of(str(path)))
+
+    @work(thread=True, exclusive=True, group="likes")
+    @guarded("reading the song's likes")
+    def _look_up_likes(self, song: Song) -> None:
+        import time
+        for _ in range(120):            # the song's file comes as it starts to play
+            if self.fetcher.is_cached(song.key) or collections_.split(song.key)[0] == collections_.LOCAL:
+                break
+            time.sleep(0.5)
+        try:
+            found = likes.count(self._like_key(song, fetch=False), likes.token(paths.LIKES_TOKEN))
+        except (OSError, ValueError, likes.LikeError, archives.ArchiveError):
+            return                      # no likes shown; the song plays on
+        self._likes[song.key] = found
+
+    @work(thread=True, group="like-votes")
+    @guarded("sharing the like")
+    def _send_like(self, song: Song, like: bool) -> None:
+        try:
+            key = self._like_key(song, fetch=True)
+            name = collections_.split(song.key)[1].rsplit("/", 1)[-1]
+            self._likes[song.key] = likes.vote(key, likes.token(paths.LIKES_TOKEN), like, name)
+        except likes.LikeError as e:
+            self.call_from_thread(self.notify, f"The like wasn't shared: {e}", severity="warning")
+        except (OSError, ValueError, archives.ArchiveError) as e:
+            self.call_from_thread(self.notify, f"The like wasn't shared: no file for "
+                                  f"{song.title} ({e})", severity="warning")
 
     def action_sounds_wrong(self) -> None:
         """Note the song that plays as sounding wrong, with where in it, and a word or two."""

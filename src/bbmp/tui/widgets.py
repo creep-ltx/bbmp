@@ -330,7 +330,7 @@ class NowPlaying(Widget):
     def border_subtitle(self, value) -> None:
         self.border_title = value
 
-    def show(self, st: Status, favorite: bool) -> None:
+    def show(self, st: Status, favorite: bool, likes: tuple[int, bool] | None = None) -> None:
         width = max(20, self.content_size.width or self.size.width - 4)
         rows = self.content_size.height or 4
         pal = theme.current
@@ -354,6 +354,8 @@ class NowPlaying(Widget):
         title.append(st.song.artist, style=pal.primary)
         if favorite:
             title.append("  ♥", style=f"bold {pal.bad}")
+        if likes is not None:
+            title.append(f"  {likes[0]:,} like{'' if likes[0] == 1 else 's'}", style="dim")
 
         modes = []
         if st.info and st.info.subsongs > 1:

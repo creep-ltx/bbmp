@@ -189,6 +189,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         self._collection = ""                            # the one on show; "" is all of them
         self._debounce: dict[str, Timer] = {}
         self._last_song: str | None = None
+        self._likes: dict[str, tuple[int, bool]] = {}     # shared likes, by song key: (count, mine)
         self._last_queue: tuple[int, int] = (-1, -1)
         self._fmt: str | None = None
         self._fmt_id: str | None = None                  # the format's option: in a view, with its collection
@@ -980,7 +981,8 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         if self._terminal_behind():
             self._behind_at = clock
         else:
-            now.show(st, bool(st.song and st.song.key in self._favs))
+            now.show(st, bool(st.song and st.song.key in self._favs),
+                     self._likes.get(st.song.key) if st.song and self.settings.share_likes else None)
             # A terminal that was behind in the last seconds is sent the visualiser six
             # times a second, not twelve: half its 100-240 KB/s, that a key's answer
             # would wait behind (11 October 2026).
@@ -997,6 +999,8 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         key = st.song.key if st.song else None
         if key != self._last_song:
             self._last_song = key
+            if st.song and self.settings.share_likes and key not in self._likes:
+                self._look_up_likes(st.song)
             self.sub_title = f"{st.song.artist} - {st.song.title}" if st.song else f"v{__version__}"
 
     def on_unmount(self) -> None:

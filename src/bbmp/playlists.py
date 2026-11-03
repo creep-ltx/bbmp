@@ -1,8 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Reading .m3u playlists.
+"""Reading .m3u playlists, and HippoPlayer's.
 
 A list names songs by links into a collection, by their keys, or as files on this
 computer. Importing one means finding each of those songs in the catalog.
+
+HippoPlayer (the Amiga player) keeps its lists, its "module programs", as text: a
+first line "HiPPrg", an empty line, then one song a line, a path on the Amiga or a
+link. A line can end in "#name=..." or "#song=N" (the subsong), and one that starts
+with "÷" or "¢" is a divider, a heading in the list. Its shared playlists are such
+files, of links into Modland and other archives.
 """
 
 from __future__ import annotations
@@ -53,11 +59,51 @@ def parse_m3u(text: str, base: Path | None = None) -> list[str]:
     return out
 
 
-PLAYLIST_SUFFIXES = (".m3u", ".m3u8")
+HIPPO_HEADER = "HiPPrg"
+HIPPO_DIVIDERS = ("\u00f7", "\u00a2")      # the same in the Amiga's Latin-1 and in UTF-8
+
+
+def is_hippo_list(text: str) -> bool:
+    return text.lstrip("\ufeff").startswith(HIPPO_HEADER)
+
+
+def parse_hippo(text: str) -> list[str]:
+    """The keys of the songs a HippoPlayer list names.
+
+    A line nothing here has (a path on an Amiga, a link to Aminet) is kept as it is,
+    so that it counts as not found.
+    """
+    out = []
+    for line in text.lstrip("\ufeff").splitlines()[1:]:
+        line = line.strip()
+        if not line or line.startswith(HIPPO_DIVIDERS):
+            continue
+        line = line.split("#name=", 1)[0].split("#song=", 1)[0]
+        out.extend(("://" in line and parse_m3u(line)) or [line])
+    return out
+
+
+PLAYLIST_SUFFIXES = (".m3u", ".m3u8", ".prg")
 
 
 def is_playlist_file(path: Path) -> bool:
-    return path.suffix.lower() in PLAYLIST_SUFFIXES
+    if path.suffix.lower() in PLAYLIST_SUFFIXES:
+        return True
+    if path.suffix:
+        return False
+    try:        # HippoPlayer's lists often have no ending to their name
+        with open(path, "rb") as f:
+            return f.read(len(HIPPO_HEADER)) == HIPPO_HEADER.encode()
+    except OSError:
+        return False
+
+
+def decode(raw: bytes) -> str:
+    """A list's text: UTF-8, or else the 8-bit encoding older lists (and Amigas) use."""
+    try:
+        return raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        return raw.decode("cp1252", "replace")
 
 
 def read_playlist_file(path: Path) -> list[str]:
@@ -65,11 +111,9 @@ def read_playlist_file(path: Path) -> list[str]:
 
     Paths in the file that aren't absolute are taken from the file's own folder.
     """
-    raw = Path(path).expanduser().read_bytes()
-    try:
-        text = raw.decode("utf-8-sig")
-    except UnicodeDecodeError:      # older playlists are in the local 8-bit encoding
-        text = raw.decode("cp1252", "replace")
+    text = decode(Path(path).expanduser().read_bytes())
+    if is_hippo_list(text):
+        return parse_hippo(text)
     return parse_m3u(text, base=Path(path).expanduser().resolve().parent)
 
 

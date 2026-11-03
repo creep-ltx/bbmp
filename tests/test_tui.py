@@ -1193,6 +1193,41 @@ async def _play_a_song(pilot, app):
     assert await settle(pilot, lambda: app.player.status().state == "playing")
 
 
+def test_import_a_hippoplayer_shared_list(catalog, fetcher, tmp_path, monkeypatch):
+    from bbmp import hippo
+    monkeypatch.setattr(hippo, "shared_lists", lambda: [
+        ("down.prg", "Gone  by nobody"), ("synths.prg", "Synth Classics  by someone  (Chiptune)")])
+    lists_read = {"synths.prg": ["modland:Protracker/Tester/beep.mod", "Work:Mods/mod.amiga"]}
+
+    def read_shared(name):
+        if name not in lists_read:
+            raise OSError("HTTP Error 404: Not Found")
+        return lists_read[name]
+    monkeypatch.setattr(hippo, "read_shared", read_shared)
+
+    async def go():
+        lib = Library(tmp_path / "user.db")
+        app = make_app(catalog, fetcher, tmp_path, library=lib)
+        async with app.run_test(size=(130, 44)) as pilot:
+            await pilot.press("4")
+            lists = app.query_one("#lists")
+            lists.focus()
+            lists.highlighted = next(i for i in range(lists.option_count)
+                                     if lists.get_option_at_index(i).id == "hippo")
+            await pilot.press("enter")
+            assert await settle(pilot, lambda: app.screen.query("#pick"))
+            await pilot.press("enter")                    # "Gone": the site says no
+            await pilot.pause(0.3)
+            assert app.is_running and not lib.playlists()
+            await pilot.press("enter")
+            assert await settle(pilot, lambda: app.screen.query("#pick"))
+            await pilot.press("down", "enter")            # Synth Classics
+            assert await settle(pilot, lambda: lib.playlist_id("Synth Classics") is not None)
+            table = app.query_one("#fav-songs")
+            assert await settle(pilot, lambda: [s.title for s in table.songs] == ["beep"])
+    run(go())
+
+
 def test_favorite_on_an_empty_list_marks_the_playing_song(catalog, fetcher, tmp_path):
     """f in a search that found nothing (or an empty Favorites list) takes the song that
     plays; it closed the player, there being no row to mark (7 October 2026)."""
@@ -1219,6 +1254,49 @@ def test_favorite_on_an_empty_list_marks_the_playing_song(catalog, fetcher, tmp_
             await pilot.press("4", "right", "f")    # Favorites, into an empty list
             await pilot.pause(0.3)
             assert app.is_running
+    run(go())
+
+
+def test_shared_likes(catalog, fetcher, tmp_path, monkeypatch):
+    """With "Share likes" on, the song that plays shows its likes and f likes it; off,
+    nothing is asked or sent."""
+    from bbmp import likes, paths
+    monkeypatch.setattr(paths, "LIKES_TOKEN", tmp_path / "likes-token")
+    asked, votes = [], []
+
+    def count(key, voter=None, timeout=10):
+        asked.append(key)
+        return 41, False
+
+    def vote(key, voter, like, name="", timeout=10):
+        votes.append((key, like, name))
+        return (42, True) if like else (41, False)
+    monkeypatch.setattr(likes, "count", count)
+    monkeypatch.setattr(likes, "vote", vote)
+
+    async def go():
+        lib = Library(tmp_path / "user.db")
+        settings = Settings(resume=False)
+        app = make_app(catalog, fetcher, tmp_path, library=lib, settings=settings)
+        async with app.run_test(size=(130, 40)) as pilot:
+            await _play_a_song(pilot, app)
+            await pilot.pause(0.5)
+            assert not asked                            # off: nothing asked
+            row = app.query_one("#now").query(".now-row-0").first()
+            settings.update(share_likes=True)
+            app._likes_on()
+            assert await settle(pilot, lambda: "41 likes" in str(row.render()))
+            playing = app.player.status().song
+            assert asked == [likes.file_key(fetcher.local_path(playing.key))]
+            await pilot.press("f")
+            assert await settle(pilot, lambda: "42 likes" in str(row.render()))
+            assert votes == [(asked[0], True, playing.key.rsplit("/", 1)[-1])]
+            await pilot.press("f")
+            assert await settle(pilot, lambda: "41 likes" in str(row.render()))
+            assert votes[-1][1] is False
+            settings.update(share_likes=False)
+            await pilot.pause(0.3)
+            assert "likes" not in str(row.render())
     run(go())
 
 

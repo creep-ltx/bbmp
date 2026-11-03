@@ -492,6 +492,76 @@ def test_import_a_playlist_file(catalog, tmp_path, mod_bytes):
         playlists.import_file(music / "no-such-file.m3u", catalog, lib)
 
 
+def test_hippoplayer_lists_are_read(catalog, tmp_path):
+    from bbmp import playlists
+    lst = tmp_path / "Jogeirs synth list"            # Hippo's lists often have no ending
+    lst.write_bytes(("HiPPrg\n\n"
+                     "\xf7Synth classics\n"                                 # a divider
+                     "http://ftp.modland.com/pub/modules/Protracker/Tester/beep.mod#song=2\n"
+                     "http://ftp.modland.com/pub/modules/Protracker/Tester/beep%20two.mod"
+                     "#name=Beep 2\r\n"
+                     "Work:Mods/mod.caf\xe9\n"                                # an Amiga's own disk
+                     "http://de.aminet.net/aminet/mods/xyz/song.mod\n").encode("latin-1"))
+    assert playlists.is_playlist_file(lst)
+    assert not playlists.is_playlist_file(tmp_path / "missing")
+    keys = playlists.read_playlist_file(lst)
+    assert keys[:2] == ["modland:Protracker/Tester/beep.mod", "modland:Protracker/Tester/beep two.mod"]
+    found, missing = playlists.resolve(keys, catalog)
+    assert (len(found), missing) == (2, 2)
+    utf8 = tmp_path / "list.prg"
+    utf8.write_text("HiPPrg\n\n\u00a2Hidden heading\n"
+                    "http://ftp.modland.com/pub/modules/Protracker/Tester/beep.mod\n")
+    assert playlists.read_playlist_file(utf8) == ["modland:Protracker/Tester/beep.mod"]
+
+
+def test_hippoplayer_shared_lists_are_read(catalog, monkeypatch):
+    import http.server
+    import json
+    import threading
+    from bbmp import collection as collections_, hippo, playlists
+    lists = [{"filename": "synths.prg", "title": "Synth Classics", "author": "someone",
+              "genre": "Chiptune", "url": "https://hippoplayer.se/playlist/synths.prg"},
+             {"filename": "../x", "title": "bad"}, "junk",
+             {"filename": "a list.prg", "title": "", "author": "", "genre": ""}]
+    files = {"/api/v1/playlists/synths.prg": ("HiPPrg\n\n\xf7Heading\n"
+              "http://ftp.modland.com/pub/modules/Protracker/Tester/beep.mod#name=Beep\n"
+              "http://hvsc.csdb.dk/MUSICIANS/H/Hubbard_Rob/Commando.sid\n").encode("latin-1"),
+             "/api/v1/playlists/a%20list.prg": b"XPKF....",
+             "/api/v1/playlists": json.dumps(lists).encode()}
+
+    class Site(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = files.get(self.path)
+            self.send_response(200 if body else 404)
+            self.end_headers()
+            self.wfile.write(body or b"")
+
+        def log_message(self, *args):
+            pass
+    server = http.server.HTTPServer(("127.0.0.1", 0), Site)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        monkeypatch.setattr(hippo, "API", f"http://127.0.0.1:{server.server_port}/api/v1/playlists")
+        found = hippo.shared_lists()
+        assert found == [("a list.prg", "A List.prg"),
+                         ("synths.prg", "Synth Classics  by someone  (Chiptune)")]
+        assert hippo.title_of(found[1][1]) == "Synth Classics"
+        keys = hippo.read_shared("synths.prg")
+        assert keys == ["modland:Protracker/Tester/beep.mod",
+                        collections_.key("hvsc", "MUSICIANS/H/Hubbard_Rob/Commando.sid")]
+        found, missing = playlists.resolve(keys, catalog)
+        assert (len(found), missing) == (2, 0)
+        with pytest.raises(ValueError, match="XPK"):
+            hippo.read_shared("a list.prg")
+        with pytest.raises(OSError):
+            hippo.read_shared("gone.prg")
+        files["/api/v1/playlists"] = b"<html>down for maintenance</html>"
+        with pytest.raises(ValueError):
+            hippo.shared_lists()
+    finally:
+        server.shutdown()
+
+
 def test_playlist_files_from_other_players_are_read(tmp_path, mod_bytes):
     from bbmp import playlists
     music = tmp_path / "music"
@@ -1914,3 +1984,48 @@ def test_organyas_sound_bank_is_downloaded_whole_and_named_to_the_helper(tmp_pat
     finally:
         server.shutdown()
         server.server_close()
+
+
+def test_shared_likes_keys_and_answers(tmp_path, monkeypatch):
+    import http.server
+    import threading
+    from bbmp import likes
+    # xxHash's own test values, and the key uade's song database gives
+    assert [likes.xxh32(b) for b in (b"", b"a", b"abc")] == [0x02CC5D05, 0x550D7456, 0x32D153FF]
+    assert likes.xxh32(b"Nobody inspects the spammish repetition") == 0xE2293B2F
+    big = bytes(range(256)) * 1100                 # past the 256 KB the hash covers
+    assert likes.song_key(big) == f"{likes.xxh32(big[:262144]):08x}{len(big) & 0xFFFF:04x}"
+    assert likes.song_key(big) != likes.song_key(big + b"\0")       # the size counts
+    token = likes.token(tmp_path / "t" / "likes-token")
+    assert len(token) == 32 and likes.token(tmp_path / "t" / "likes-token") == token
+    (tmp_path / "t" / "likes-token").write_text("broken")
+    assert likes.token(tmp_path / "t" / "likes-token") != token
+
+    answers = {"votes": (200, b"123 0"), "vote": (200, b"124 5")}
+    seen = []
+
+    class Server(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            seen.append(self.path)
+            code, body = answers[self.path.split("?")[0].rsplit("/", 1)[-1]]
+            self.send_response(code)
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *args):
+            pass
+    server = http.server.HTTPServer(("127.0.0.1", 0), Server)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        monkeypatch.setattr(likes, "API", f"http://127.0.0.1:{server.server_port}/api/hip")
+        assert likes.count("a5cbd2fd4dbe", token) == (123, False)
+        assert likes.vote("a5cbd2fd4dbe", token, True, "mod.x y") == (124, True)
+        assert "r=5" in seen[-1] and "n=mod.x+y" in seen[-1] and f"k={token}" in seen[-1]
+        answers["vote"] = (429, b"ERR rate")
+        with pytest.raises(likes.LikeError, match="later"):
+            likes.vote("a5cbd2fd4dbe", token, False)
+        answers["votes"] = (200, b"<html>")
+        with pytest.raises(likes.LikeError):
+            likes.count("a5cbd2fd4dbe")
+    finally:
+        server.shutdown()

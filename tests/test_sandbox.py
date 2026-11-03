@@ -384,8 +384,8 @@ REAL = [
     ("AHX/Pink/inside.ahx", "uade", True),
     ("TFMX/Chris Huelsbeck/mdat.turrican flight", "uade", True),        # smpl.* beside it
     ("YM/Jochen Hippel/scout.ym", "ym", True),
-    ("MoonBlaster (edit mode)/- unknown/FST-PRO/MIERDA.MBM", "kss", True),  # its MBK
-    ("SCC-Musixx/- unknown/RUSSIA [50Hz].SNG", "sccmusixx", True),
+    ("MoonBlaster (edit mode)/_unknown/FST-PRO/MIERDA.MBM", "kss", True),  # its MBK
+    ("SCC-Musixx/_unknown/RUSSIA [50Hz].SNG", "sccmusixx", True),
     ("Cybertracker C64/Aki Latvamaki/instruktion.ct", "cybertracker", False),
     ("Onyx Music File/Tonza/tal.omf", "onyx", False),
     ("Psycle/Alk/waveshaper.psy", "psycle", True),
