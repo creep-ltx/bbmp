@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-14            # Apple Silicon
+    runs-on: macos-15            # Apple Silicon (macos-14 was retired by GitHub, November 2026)
     timeout-minutes: 90
     env:
       JOBS: 4
