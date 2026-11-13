@@ -1742,6 +1742,49 @@ def test_the_pattern_and_channels_go_with_the_sound_read_ahead(catalog, fetcher,
         assert abs(shown - elapsed) <= 1.5, (elapsed, row)
 
 
+def test_the_pattern_shows_the_row_that_is_heard_not_the_one_read(catalog, fetcher,
+                                                                    monkeypatch, tmp_path):
+    # What the replayer says as the sound is read is the output's latency ahead of
+    # what is heard: the pattern ran 0.4 s ahead of the music (13 November 2026).
+    class Rows(LoudDecoder):
+        """A new row every 0.1 s of what has been read."""
+        def __init__(self):
+            super().__init__(0.3)
+            self.frames = 0
+
+        def read(self, frames):
+            pcm = super().read(frames)
+            self.frames += len(pcm) // 4
+            return pcm
+
+        def position(self):
+            return 0, self.frames * 10 // RATE
+
+        def pattern_rows(self, pattern):
+            return [f"row {r}" for r in range(200)]
+
+    class Late(NullOutput):
+        """A sound device that plays what it is given 0.4 s later."""
+        def latency(self):
+            return 0.4
+
+    monkeypatch.setattr("bbmp.player.open_song",
+                        lambda path, fmt, lengths=(), local=False: Rows())
+    p = Player(catalog, fetcher, Late(realtime=True), settings=Settings(level=False))
+    p.want_pattern(True)
+    p.play_list(catalog.songs("Protracker", "Tester")[:1])
+    seen, end = [], time.time() + 3
+    while time.time() < end:
+        st = p.status()
+        if st.pattern and st.state == "playing" and st.elapsed > 0.5:
+            seen.append((st.elapsed, st.pattern[0]))
+        time.sleep(0.01)
+    p.shutdown()
+    assert len(seen) > 50
+    for elapsed, row in seen:
+        assert abs(row - elapsed * 10) <= 1.0, (elapsed, row)     # within a row (0.1 s)
+
+
 def test_every_replayer_says_what_it_is():
     from bbmp import replayer_facts
     from bbmp.backends import BACKEND_BY_FORMAT, OPENERS
@@ -1879,6 +1922,14 @@ class _Tracker(FakeDecoder):
         return (0, ["C-4 01 ...."] * rows)
 
 
+class _Scoped(_Tracker):
+    """One that gives each channel's own sound too, as libopenmpt's does."""
+    can_waves = True
+
+    def channel_waves(self):
+        return [bytes(1024), bytes(1024)]
+
+
 def _shows_while_playing(catalog, fetcher, monkeypatch, decoder):
     monkeypatch.setattr("bbmp.player.open_song", lambda *a, **k: decoder())
     p = Player(catalog, fetcher, NullOutput(realtime=True), settings=Settings(level=False))
@@ -1902,7 +1953,9 @@ def test_a_song_shows_only_the_visualisers_it_has_data_for(catalog, fetcher, mon
     sound = set(visuals.FROM_SOUND)
     assert plain == sound
     full = _shows_while_playing(catalog, fetcher, monkeypatch, lambda: _Tracker(subsongs=1))
-    assert full == sound | {"channels", "scopes", "pattern"}
+    assert full == sound | {"channels", "pattern"}      # no scopes: no channel's own sound
+    scoped = _shows_while_playing(catalog, fetcher, monkeypatch, lambda: _Scoped(subsongs=1))
+    assert scoped == sound | {"channels", "pattern", "scopes"}
 
 
 def test_the_visualiser_skips_what_the_song_lacks_and_keeps_the_choice():

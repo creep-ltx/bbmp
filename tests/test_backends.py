@@ -37,6 +37,47 @@ def test_openmpt_plays_generated_mod(tmp_path, mod_bytes):
         d.close()
 
 
+def test_openmpt_gives_each_channels_own_sound(tmp_path, mod_bytes):
+    """The channel scopes' sound: one copy of the song per channel, the others muted.
+    The copies' sounds add up to the song's, from the start, after a seek, and when
+    asked for halfway (they catch up first)."""
+    import numpy as np
+    from bbmp.backends.base import WAVE_RATE, WAVE_SPAN
+    f = tmp_path / "beep.mod"
+    f.write_bytes(mod_bytes)
+    d = open_song(f, "Protracker", local=True)
+
+    def in_step(reads):
+        step, waited, near = RATE // WAVE_RATE, 0, []
+        for _ in range(reads):
+            pcm = np.frombuffer(d.read(2400), "<i2").astype(float)
+            waves = d.channel_waves()
+            if waves is None:
+                waited += 1
+                continue
+            assert len(waves) == 4 and all(len(w) == WAVE_SPAN * 2 for w in waves)
+            song = ((pcm[0::2] + pcm[1::2]) / 2)[-WAVE_SPAN * step::step]
+            parts = sum(np.frombuffer(w, "<i2").astype(float) for w in waves)
+            if np.abs(song).max() > 100:
+                near.append(np.corrcoef(song, parts)[0, 1])
+        assert near and min(near) > 0.99, near
+        return waited
+    try:
+        assert d.can_waves and d.channel_waves() is None
+        d.want_waves(True)
+        assert in_step(20) == 0
+        d.seek(1.0)
+        assert in_step(20) == 0
+        d.want_waves(False)
+        d.read(2400)
+        assert d.channel_waves() is None
+        d.read(RATE)
+        d.want_waves(True)              # halfway: caught up, then in step
+        in_step(40)
+    finally:
+        d.close()
+
+
 def test_garbage_is_unsupported(tmp_path):
     f = tmp_path / "junk.bin"
     f.write_bytes(os.urandom(3000))

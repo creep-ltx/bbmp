@@ -163,6 +163,13 @@ def test_the_big_libraries_play_in_a_sandboxed_process(tmp_path, mod_bytes, shut
         assert d.channel_levels() is not None and len(d.channel_levels()) == 4
         row, lines = d.pattern_view(5)
         assert lines and d.details().facts
+        pattern, row = d.position()
+        assert d.pattern_rows(pattern)[row] == lines[2]      # the same row, both ways
+        assert d.can_waves and d.channel_waves() is None     # each channel's sound: asked for
+        d.want_waves(True)
+        d.read(4800)
+        waves = d.channel_waves()
+        assert len(waves) == 4 and all(len(w) == 1024 for w in waves)
         assert d.seek(1.0)
     finally:
         d.close()

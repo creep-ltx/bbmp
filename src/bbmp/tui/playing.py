@@ -239,6 +239,7 @@ class PlayingPart(metaclass=type(App)):
         vis = self.query_one("#visual", Visualizer)
         mode = vis.cycle()
         self.player.want_pattern(vis.wants_pattern)
+        self.player.want_waves(vis.wants_waves)
         self.settings.update(visualizer=mode)
 
     def action_cycle_repeat(self) -> None:
