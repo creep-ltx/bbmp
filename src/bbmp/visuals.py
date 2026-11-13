@@ -25,14 +25,16 @@ MODES = ("spectrum", "bars", "mirror", "spectrogram", "scope", "scopes", "channe
          "pattern", "demo")
 TITLES = {"spectrum": "Spectrum", "bars": "Gradient spectrum", "mirror": "Mirrored spectrum",
           "spectrogram": "Spectrogram", "scope": "Oscilloscope",
-          "scopes": "Channel scopes (approximate)", "channels": "Channels",
+          "scopes": "Channel scopes", "channels": "Channels",
           "pattern": "Pattern", "demo": "Demo"}
 # drawn from the sound itself, so every song has them
 FROM_SOUND = ("spectrum", "bars", "mirror", "spectrogram", "scope", "demo")
 # need the replayer's channel levels
-FROM_CHANNELS = ("channels", "scopes")
-# need the replayer's pattern (the scopes take their notes from it when it is there)
-WANTS_PATTERN = ("pattern", "scopes")
+FROM_CHANNELS = ("channels",)
+# need the replayer's pattern
+WANTS_PATTERN = ("pattern",)
+# need each channel's own sound from the replayer (Decoder.channel_waves)
+WANTS_WAVES = ("scopes",)
 
 
 def _heat(frac: float) -> str:
@@ -190,14 +192,17 @@ class Channels:
 
 
 def pattern(pattern: tuple[int, list[str]] | None, rows: int) -> Text:
+    """The pattern around the row that is heard, that row in the middle."""
     if not pattern:
         return Text("No pattern data for this format (tracker modules only).", style="dim")
     cur, lines = pattern
     t = Text(no_wrap=True, overflow="crop")
-    for i, line in enumerate(lines[:rows]):
+    top = cur - rows // 2
+    for i in range(top, top + rows):
+        line = lines[i] if 0 <= i < len(lines) else ""
         style = "reverse bold" if i == cur else "dim" if abs(i - cur) > 2 else ""
         t.append(line, style=style)
-        if i < len(lines) - 1:
+        if i < top + rows - 1:
             t.append("\n")
     return t
 
@@ -378,32 +383,6 @@ class Spectrogram:
 
 # --- channel scopes -----------------------------------------------------------------------
 
-_NOTES = {"C-": 0, "C#": 1, "D-": 2, "D#": 3, "E-": 4, "F-": 5, "F#": 6, "G-": 7, "G#": 8,
-          "A-": 9, "A#": 10, "B-": 11}
-
-
-def _row_notes(pattern: tuple[int, list[str]] | None) -> list[tuple[int | None, int | None]]:
-    """(note number, instrument) for each channel in the pattern's current row, None where
-    the row starts no note there. The cells are libopenmpt's: "C-5 01 v64 A0F"."""
-    if not pattern:
-        return []
-    cur, lines = pattern
-    if not 0 <= cur < len(lines) or "│" not in lines[cur]:
-        return []
-    out = []
-    for cell in lines[cur].split("│")[1:]:
-        note = inst = None
-        name, octave = cell[:2], cell[2:3]
-        if name in _NOTES and octave.isdigit():
-            note = _NOTES[name] + 12 * int(octave)
-        try:
-            inst = int(cell[4:6])
-        except ValueError:
-            pass
-        out.append((note, inst))
-    return out
-
-
 def _layout(n: int, rows: int, width: int) -> tuple[int, int]:
     """Columns and rows of a grid for n scopes, each about four times as wide as high."""
     best, best_score = (n, 1), None
@@ -421,60 +400,43 @@ def _layout(n: int, rows: int, width: int) -> tuple[int, int]:
     return best
 
 
-class ChannelScopes:
-    """One small oscilloscope per channel, like a tracker's quadrascope, in a grid.
+SCOPE_FLOOR = 2048          # the scopes' scale is never finer: silence stays flat
 
-    The replayers give each channel's loudness but not its sound, so the trace is made up:
-    its height is the channel's loudness, its pitch the last note the pattern played in it
-    and its shape chosen by the instrument number (sine, square, saw, triangle). An
-    approximation, and the title says so."""
+
+class ChannelScopes:
+    """One small oscilloscope per channel, like a tracker's quadrascope, in a grid: each
+    channel's own sound, from the replayer (Status.waves: a copy of the song for each
+    channel, the others muted). Each trace starts where the sound rises through zero,
+    so that a held note stands still. All share one scale, set by the loudest channel
+    of the last seconds: their loudness is told truly, and a song of many channels
+    (each mixed quieter) still fills its scopes."""
 
     def __init__(self):
-        self._bars: list[float] = []
-        self._notes: list[int] = []
-        self._insts: list[int] = []
+        self._scale = float(SCOPE_FLOOR)
 
-    def render(self, channels: list[float], pattern, rows: int, width: int,
-               now: float | None = None) -> Text:
-        n = min(len(channels), 32)
-        if not n:
-            return Text("No channel levels for this format (tracker modules only).",
+    def render(self, waves: list[bytes] | None, channels: list[float], rows: int,
+               width: int) -> Text:
+        if not waves:
+            return Text("Getting each channel's sound…" if channels else
+                        "No channel sound for this format (tracker modules only).",
                         style="dim")
-        if len(self._bars) != n:
-            self._bars = [0.0] * n
-            self._notes = [48 + 7 * (c % 3) for c in range(n)]
-            self._insts = list(range(n))
-        self._bars = [max(min(1.0, v * 1.3), b * 0.8) for v, b in zip(channels, self._bars)]
-        for c, (note, inst) in enumerate(_row_notes(pattern)[:n]):
-            if note is not None:
-                self._notes[c] = note
-            if inst is not None:
-                self._insts[c] = inst
-        phase = ((time.monotonic() if now is None else now) * 3.0) % (2 * math.pi)
-
+        n = min(len(waves), 32)
         cols, grid_rows = _layout(n, rows, width)
         w = max(1, (width - (cols - 1)) // cols)
         h = max(1, rows // grid_rows)
         shown = min(n, cols * grid_rows)
         dots_w, dots_h = w * 2, h * 4
         grid = np.zeros((rows * 4, width * 2), dtype=bool)
-        x = np.linspace(0, 1, dots_w, endpoint=False)
         lines = np.arange(dots_h)[:, None]
+        traces = [_trace(waves[c], dots_w) for c in range(shown)]
+        peak = max((float(np.abs(t).max()) for t in traces), default=0.0)
+        self._scale = max(SCOPE_FLOOR, peak, self._scale * 0.97)     # falls in ~2 s
+        loud = []
         for c in range(shown):
             gr, gc = divmod(c, cols)
-            # 1 to 6 cycles across the scope, twice as many for every octave up
-            cycles = min(6.0, max(1.0, 2.0 * 2 ** ((self._notes[c] - 48) / 12)))
-            ph = 2 * math.pi * cycles * x + phase * (1 + c % 3)
-            shape = self._insts[c] % 4
-            if shape == 0:
-                y = np.sin(ph)
-            elif shape == 1:
-                y = np.sign(np.sin(ph)) * 0.8
-            elif shape == 2:
-                y = (ph / math.pi) % 2 - 1
-            else:
-                y = 2 * np.abs((ph / math.pi) % 2 - 1) - 1
-            ys = ((1 - (y * self._bars[c] * 0.95 + 1) / 2) * (dots_h - 1)).astype(int)
+            y = np.clip(traces[c] / self._scale, -1.0, 1.0)
+            loud.append(float(np.abs(y).max()))
+            ys = ((1 - (y * 0.95 + 1) / 2) * (dots_h - 1)).astype(int)
             before = np.concatenate((ys[:1], ys[:-1]))
             lo, hi = np.minimum(ys, before), np.maximum(ys, before)
             top, left = gr * h * 4, gc * (w + 1) * 2
@@ -487,7 +449,7 @@ class ChannelScopes:
         for c in range(shown):
             gr, gc = divmod(c, cols)
             r0, c0 = gr * h, gc * (w + 1)
-            styles.append(Style(color=_heat(0.15 + 0.85 * self._bars[c])))
+            styles.append(Style(color=_heat(0.15 + 0.85 * loud[c])))
             style_of[r0:r0 + h, c0:c0 + w] = len(styles) - 1
             tag = str(c + 1)
             if len(tag) < w:
@@ -495,6 +457,19 @@ class ChannelScopes:
                 chars[r0, c0:c0 + len(tag)] = list(tag)
                 style_of[r0, c0:c0 + len(tag)] = len(styles) - 1
         return _grid_text(chars, style_of, styles)
+
+
+def _trace(wave: bytes, dots: int) -> np.ndarray:
+    """A channel's sound as `dots` samples: half of what there is, from the first place
+    it rises through zero (or from the start: silence, noise)."""
+    s = np.frombuffer(wave[:len(wave) // 2 * 2], dtype="<i2").astype(np.float32)
+    if len(s) < 4:
+        return np.zeros(dots, dtype=np.float32)
+    span = len(s) // 2
+    rising = np.flatnonzero((s[:span - 1] < 0) & (s[1:span] >= 0))
+    start = int(rising[0]) + 1 if len(rising) else 0
+    part = s[start:start + span]
+    return part[np.arange(dots) * len(part) // dots]
 
 
 # --- demo effects -------------------------------------------------------------------------

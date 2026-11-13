@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import time
+
 from rich.text import Text
 from textual import on, work
 from textual.app import App
@@ -214,8 +216,14 @@ class SettingsPart(metaclass=type(App)):
 
     @work(thread=True, exclusive=True, group="cache-size")
     @guarded("measuring the cache")
-    def _settings_note(self) -> None:
-        size = self.fetcher.cache_size() / 1e6
+    def _settings_note(self, fresh: bool = False) -> None:
+        # measured at most once a minute (or `fresh`, after the cache changed): each
+        # visit to Settings walked the whole cache (14k files, 45 ms of a core taken
+        # from the screen; 13 November 2026)
+        measured_at, size = self.__dict__.get("_cache_measured", (-1e9, 0.0))
+        if fresh or time.monotonic() - measured_at > 60:
+            size = self.fetcher.cache_size() / 1e6
+            self._cache_measured = (time.monotonic(), size)
         text = (f"Cache: {size:,.0f} MB in {paths.FILES_DIR}\n"
                 f"Settings save as soon as you change them ({paths.SETTINGS}).\n"
                 f"The Files tab shows {self._music_dir()} (music_dir in that file).\n"
@@ -323,14 +331,14 @@ class SettingsPart(metaclass=type(App)):
         freed = self.fetcher.trim(self.settings.cache_limit_mb * 1_000_000, keep)
         if freed:
             self.call_from_thread(self.notify, f"Removed {freed / 1e6:,.0f} MB of old songs from the cache")
-        self.call_from_thread(self._settings_note)
+        self.call_from_thread(self._settings_note, True)
 
     @work(thread=True, exclusive=True, group="cache-trim")
     @guarded("clearing the cache")
     def _clear_cache(self) -> None:
         freed = self.fetcher.trim(1, self._protected())
         self.call_from_thread(self.notify, f"Cleared {freed / 1e6:,.0f} MB (kept favorites and the queue)")
-        self.call_from_thread(self._settings_note)
+        self.call_from_thread(self._settings_note, True)
 
     def _protected(self) -> set[str]:
         songs, _ = self.player.queue()

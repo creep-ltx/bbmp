@@ -18,7 +18,7 @@ from rich.text import Text
 from textual import on, work
 from textual.app import App
 from textual.css.query import NoMatches
-from textual.widgets import DataTable, Input, OptionList, Static, TabbedContent, Tabs
+from textual.widgets import Input, OptionList, Static, TabbedContent, Tabs
 from textual.widgets.option_list import Option
 
 from .. import collection as collections_, formats_info, index as index_mod, platforms, theme, units
@@ -373,7 +373,23 @@ class BrowsePart(metaclass=type(App)):
 
     def _songs(self, path: list[Step]) -> tuple[str, list, dict | None]:
         """The title, songs and (for days) what is shown in place of the album, of an
-        entry that holds songs."""
+        entry that holds songs. The last few are kept, for the catalog they came from: a
+        big artist's songs took 145 ms to ask for on the desktop (~0.4 s on a slow
+        machine), each time the cursor came back onto it (13 November 2026)."""
+        memo = self.__dict__.setdefault("_songs_memo", {})
+        at = (id(self.index), tuple(map(tuple, path)))
+        if at in memo:
+            found = memo.pop(at)
+            if found[0] is self.index:
+                memo[at] = found
+                return found[1]
+        answer = self._ask_songs(path)
+        memo[at] = (self.index, answer)
+        while len(memo) > 8:
+            del memo[next(iter(memo))]
+        return answer
+
+    def _ask_songs(self, path: list[Step]) -> tuple[str, list, dict | None]:
         ctx = self._place(path)
         c = ctx["collection"]
         kind, value = path[-1]
@@ -526,7 +542,12 @@ class BrowsePart(metaclass=type(App)):
             ol.set_class(i == current - 1, "parent")
             ol.set_class(i == current, "current")
             ol.can_focus = i == current
-        table = self.query_one("#browse-songs", SongTable)
+        try:
+            table = self.query_one("#browse-songs", SongTable)
+        except NoMatches:
+            # a list's highlight handled as the screen goes (the app closing): a test
+            # failed on it now and then (13 November 2026)
+            return
         step = self._highlighted_step()
         songs_ahead = step is not None and holds_songs(self._path + [step])
         table.set_class(in_songs, "current")
@@ -723,8 +744,8 @@ class BrowsePart(metaclass=type(App)):
         self._show_note(self._highlighted_step())
         self._keep_path()
 
-    @on(DataTable.RowHighlighted, "#browse-songs")
-    def _browse_row(self, event: DataTable.RowHighlighted) -> None:
+    @on(SongTable.RowHighlighted, "#browse-songs")
+    def _browse_row(self, event: SongTable.RowHighlighted) -> None:
         if holds_songs(getattr(self, "_path", [])):
             self._later("song-info", 0.1, self._show_song_info)
 

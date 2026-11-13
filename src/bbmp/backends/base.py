@@ -13,6 +13,10 @@ from .. import paths as _paths
 
 RATE = 48000          # every backend renders at this rate, 16-bit signed stereo
 FRAME_BYTES = 4
+# each channel's own sound for the channel scopes (Decoder.channel_waves): the newest
+# WAVE_SPAN samples of each read, every second sample of RATE (21 ms), mono 16-bit
+WAVE_RATE = RATE // 2
+WAVE_SPAN = 512
 
 
 class Unsupported(Exception):
@@ -95,6 +99,25 @@ class Decoder:
 
     def pattern_view(self, rows: int) -> tuple[int, list[str]] | None:
         """(current row index in the list, formatted pattern lines) for tracker formats."""
+        return None
+
+    def position(self) -> tuple[int, int] | None:
+        """(pattern, row) the replayer has reached, for tracker formats: cheap, asked
+        after every read. Its rows come from pattern_rows."""
+        return None
+
+    def pattern_rows(self, pattern: int) -> list[str] | None:
+        """Every row of a pattern, formatted as pattern_view's lines."""
+        return None
+
+    can_waves = False       # can it give each channel's own sound (want_waves)?
+
+    def want_waves(self, on: bool) -> None:
+        """From the next read on, keep each channel's own sound (channel_waves), or stop."""
+
+    def channel_waves(self) -> list[bytes] | None:
+        """Each channel's own sound at the end of the last read: WAVE_SPAN samples
+        (fewer after a shorter read) of mono 16-bit at WAVE_RATE."""
         return None
 
     def close(self) -> None:

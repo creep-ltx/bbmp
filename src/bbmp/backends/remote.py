@@ -27,7 +27,7 @@ import sys
 import threading
 from pathlib import Path
 
-from .base import FRAME_BYTES, Decoder, Details, NeedsDownload, TrackInfo, Unsupported
+from .base import FRAME_BYTES, WAVE_SPAN, Decoder, Details, NeedsDownload, TrackInfo, Unsupported
 
 LOCAL = ("openmpt", "uade", "gme", "sidplayfp", "sunvox")   # the libraries run this way
 WAIT = 15.0          # seconds to wait for opening or seeking before the process is taken for hung
@@ -89,6 +89,10 @@ class Remote(Decoder):
             raise (NeedsDownload if head.get("needs_download") is True else Unsupported)(why)
         self.info = _info(head.get("info") or {})
         self.backend = _text(head.get("backend"), 40) or backend
+        self.can_waves = head.get("waves") is True
+        self._pos: tuple[int, int] | None = None
+        self._waves: list[bytes] | None = None
+        self._rows: dict[int, list[str] | None] = {}
 
     def _answer(self, wait: float) -> tuple[dict, bytes]:
         """The process's answer. Anything but a proper one is an OSError, and the
@@ -148,6 +152,15 @@ class Remote(Decoder):
         levels = head.get("levels")
         self._levels = ([min(1.0, max(0.0, float(x))) for x in levels[:64]
                          if isinstance(x, (int, float))] if isinstance(levels, list) else None)
+        pos = head.get("pos")
+        self._pos = ((_int(pos[0], 0), _int(pos[1], 0))
+                     if isinstance(pos, list) and len(pos) == 2 else None)
+        # each channel's own sound after the song's: n waves of `size` bytes
+        n, size = _int(head.get("waves"), 0), _int(head.get("wave_bytes"), 0)
+        self._waves = None
+        if 0 < n <= 64 and 0 < size <= WAVE_SPAN * 2 and n * size <= len(pcm):
+            tail, pcm = pcm[len(pcm) - n * size:], pcm[:len(pcm) - n * size]
+            self._waves = [tail[i * size:(i + 1) * size] for i in range(n)]
         pcm = pcm[:frames * FRAME_BYTES]
         return pcm[:len(pcm) // FRAME_BYTES * FRAME_BYTES]
 
@@ -173,6 +186,31 @@ class Remote(Decoder):
 
     def channel_levels(self) -> list[float] | None:
         return self._levels
+
+    def position(self) -> tuple[int, int] | None:
+        return self._pos
+
+    def pattern_rows(self, pattern: int) -> list[str] | None:
+        if pattern not in self._rows:
+            try:
+                head, _ = self._ask(WAIT_READ, op="rows", pattern=int(pattern))
+            except (OSError, Unsupported):
+                return None
+            rows = head.get("rows")
+            self._rows[pattern] = ([_text(line, 400) for line in rows[:1024]]
+                                   if isinstance(rows, list) else None)
+        return self._rows[pattern]
+
+    def want_waves(self, on: bool) -> None:
+        if self.can_waves:
+            try:
+                self._ask(op="waves", on=bool(on))
+            except (OSError, Unsupported):
+                pass
+            self._waves = None
+
+    def channel_waves(self) -> list[bytes] | None:
+        return self._waves
 
     def pattern_view(self, rows: int) -> tuple[int, list[str]] | None:
         try:
@@ -298,7 +336,8 @@ def serve(backend: str, path: str, lengths: list[float]) -> int:
         _send(out, {"ok": False, "error": str(e), "needs_download": isinstance(e, NeedsDownload)})
         return 1
     sent = _info_dict(decoder.info)
-    _send(out, {"ok": True, "backend": decoder.backend, "info": sent})
+    _send(out, {"ok": True, "backend": decoder.backend, "info": sent,
+                "waves": decoder.can_waves})
     for line in sys.stdin.buffer:
         try:
             cmd = json.loads(line)
@@ -308,6 +347,11 @@ def serve(backend: str, path: str, lengths: list[float]) -> int:
             if op == "read":
                 body = decoder.read(int(cmd["frames"]))
                 head["levels"] = decoder.channel_levels()
+                head["pos"] = decoder.position()
+                waves = decoder.channel_waves()
+                if waves and len({len(w) for w in waves}) == 1 and waves[0]:
+                    head["waves"], head["wave_bytes"] = len(waves), len(waves[0])
+                    body += b"".join(waves)
                 if decoder.never_ends:
                     head["never_ends"] = True
             elif op == "subsong":
@@ -316,6 +360,10 @@ def serve(backend: str, path: str, lengths: list[float]) -> int:
                 head["done"] = decoder.seek(float(cmd["seconds"]))
             elif op == "forever":
                 head["done"] = decoder.loop_forever(bool(cmd["on"]))
+            elif op == "rows":
+                head["rows"] = decoder.pattern_rows(int(cmd["pattern"]))
+            elif op == "waves":
+                decoder.want_waves(bool(cmd["on"]))
             elif op == "pattern":
                 view = decoder.pattern_view(int(cmd["rows"]))
                 head["view"] = list(view) if view else None

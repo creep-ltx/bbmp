@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import queue
 import random
+from collections import deque
 import threading
 import time
 from dataclasses import dataclass, field
@@ -47,7 +48,7 @@ KEPT_FRAMES = WAVE_FRAMES + RATE // 2   # and half a second more: the output's l
 # pattern need the replayer to say them, and are added as it does
 ALWAYS_SHOWN = visuals.FROM_SOUND
 
-_IDLE = dict(elapsed=0.0, levels=(0.0, 0.0), channels=[], pattern=None, wave=b"",
+_IDLE = dict(elapsed=0.0, levels=(0.0, 0.0), channels=[], pattern=None, waves=None, wave=b"",
              shows=frozenset(ALWAYS_SHOWN))
 
 
@@ -64,7 +65,9 @@ class Status:
     level_db: float = 0.0             # by how much it is played louder (or softer) for that
     levels: tuple[float, float] = (0.0, 0.0)
     channels: list[float] = field(default_factory=list)
+    # (the row heard, the pattern's rows), as the sound that is heard was played
     pattern: tuple[int, list[str]] | None = None
+    waves: list[bytes] | None = None  # each channel's own sound then (Decoder.channel_waves)
     wave: bytes = b""                 # the most recent audio (int16 stereo), for visualisers
     shows: frozenset = frozenset(ALWAYS_SHOWN)   # the visualisers the song that plays has data for
     queue_pos: int = -1
@@ -146,13 +149,13 @@ class Player:
         self._leveller: loudness.Leveller | None = None
         self._level_of: tuple[str, int] | None = None     # the song and subsong it is for
         self._ahead = b""                   # sound that was read ahead and is played first
-        # what the channel bars and the pattern showed as it was read: (where in it that
-        # was, channel levels, pattern), and how far into it the song is
-        self._marks: list[tuple[int, list | None, tuple | None]] = []
+        # what the channel bars, the pattern and the scopes showed as it was read: (where
+        # in it that was, a mark: _mark), and how far into it the song is
+        self._marks: list[tuple[int, tuple]] = []
         self._shows: set[str] = set(ALWAYS_SHOWN)    # what the song has: Status.shows
         self._probed = False                         # its replayer asked for a pattern once
         self._ahead_at = 0
-        self._shown: tuple[int, list | None, tuple | None] | None = None
+        self._shown: tuple[int, tuple] | None = None
         self._cmds: queue.Queue = queue.Queue()
         self._lock = threading.Lock()
         self._status = Status()
@@ -163,8 +166,10 @@ class Player:
         self._paused = False
         self._frames = 0                    # frames of the subsong read from its replayer
         self._played = 0                    # and given to the output (silence held back)
-        self._silence = ending.Silence(RATE, FRAME_BYTES)
+        self._silence = _MarkedSilence(RATE, FRAME_BYTES)
         self._want_pattern = False
+        self._want_waves = False
+        self._waves_asked: tuple[int, bool] = (0, False)   # of which decoder, and on or off
         self._recent = b""
         self._song: Song | None = None      # the song the listened time belongs to
         self._listened = 0                  # frames played of the current song, all subsongs
@@ -275,6 +280,11 @@ class Player:
 
     def want_pattern(self, on: bool) -> None:
         self._want_pattern = on
+
+    def want_waves(self, on: bool) -> None:
+        """Each channel's own sound for the channel scopes (Status.waves), or not: the
+        replayer plays a copy of the song for each channel while it is wanted."""
+        self._want_waves = on
 
     def prefetch(self, song: Song | None) -> None:
         """Download a song (and its companion files) into the cache in the background,
@@ -717,13 +727,14 @@ class Player:
         except Exception:       # what keeps them is a convenience, and never stops a song
             return None
 
-    @staticmethod
-    def _read_ahead(decoder: Decoder) -> tuple[bytes, list]:
-        """The song's beginning, for measuring, and what the channel bars and the pattern
-        view showed as it was read: the decoder is that far on when the song starts, so
-        those are shown with the sound, not what the decoder says then."""
+    def _read_ahead(self, decoder: Decoder) -> tuple[bytes, list]:
+        """The song's beginning, for measuring, and what the channel bars, the pattern
+        and the scopes showed as it was read: the decoder is that far on when the song
+        starts, so those are shown with the sound, not what the decoder says then."""
         want, got, marks, at = int(loudness.PREVIEW * RATE) * FRAME_BYTES, [], [], 0
-        pattern = True
+        waves = self._want_waves and decoder.can_waves
+        if waves:
+            decoder.want_waves(True)        # before the first read: in step from the start
         while want > 0:
             pcm = decoder.read(min(CHUNK * 2, want // FRAME_BYTES))
             if not pcm:
@@ -731,9 +742,7 @@ class Player:
             got.append(pcm)
             want -= len(pcm)
             at += len(pcm)
-            view = decoder.pattern_view(11) if pattern else None
-            pattern = view is not None          # a replayer without one is not asked again
-            marks.append((at, decoder.channel_levels(), view))
+            marks.append((at, _mark(decoder, True, waves)))
         return b"".join(got), marks
 
     def _level_begin(self, ready: _Ready | None = None) -> None:
@@ -745,9 +754,11 @@ class Player:
         self._marks = ready.marks if self._ahead else []
         self._ahead_at, self._shown = 0, None
         self._shows, self._probed = set(ALWAYS_SHOWN), False
-        for _, channels, view in self._marks:
+        for _, (channels, view, _) in self._marks:
             self._shows |= set(visuals.FROM_CHANNELS) if channels else set()
             self._shows |= {"pattern"} if view is not None else set()
+        if self._decoder is not None and self._decoder.can_waves:
+            self._shows |= set(visuals.WANTS_WAVES)
         self._set(shows=frozenset(self._shows))
         song = self._song or (self._queue[self._pos] if 0 <= self._pos < len(self._queue) else None)
         if not self.settings.level or self._decoder is None or song is None:
@@ -1013,14 +1024,32 @@ class Player:
             self._heard = True
             if self.trouble is not None and self._song is not None:
                 self.trouble.played(self._song.key)
-        pieces = self._silence.take(pcm, silent)
+        pieces = self._silence.take(pcm, silent, self._mark_of_read(d))
         if pieces is None:                  # silent for SILENT_END: the song is over
             self._track_ended()
             return
-        for piece in pieces:
-            self._play(piece, d, stop)
+        for piece, mark in pieces:
+            self._play(piece, d, stop, mark)
 
-    def _play(self, pcm: bytes, d: Decoder, stop: float) -> None:
+    def _mark_of_read(self, d: Decoder) -> tuple:
+        """What the channel bars, the pattern and the scopes show with the sound just
+        read: what was noted as it was read ahead, or what the replayer says now."""
+        if self._shown is not None:
+            return self._shown[1]
+        waves = self._want_waves and d.can_waves
+        if self._waves_asked != (id(d), waves):
+            self._waves_asked = (id(d), waves)
+            d.want_waves(waves)
+        if d.position() is None and self._want_pattern:
+            # a replayer with only a view of the pattern: asked for at most ten times a
+            # second, not for every 50 ms read
+            if self._played - self._pattern_at >= RATE // 10:
+                self._pattern_at, self._pattern = self._played, d.pattern_view(11)
+            channels, _, waves_now = _mark(d, False, waves)
+            return channels, self._pattern, waves_now
+        return _mark(d, self._want_pattern, waves)
+
+    def _play(self, pcm: bytes, d: Decoder, stop: float, mark: tuple = ([], None, None)) -> None:
         """Give a piece of the song to the output: at the volume, the loudness evened
         out, faded where the player stops the song."""
         gain = self._status.volume / 100 * ending.fade(self._played / RATE, stop)
@@ -1036,25 +1065,29 @@ class Player:
         self._played += len(pcm) // FRAME_BYTES
         self._listened += len(pcm) // FRAME_BYTES
         levels = (_peak(samples[0::2]), _peak(samples[1::2]))
-        mark = self._shown or (self._marks[0] if self._marks else None)
-        if mark is not None:            # the sound read ahead: what was shown with it
-            channels, pattern = mark[1] or [], mark[2] if self._want_pattern else None
-        else:
-            channels = d.channel_levels() or []
-            pattern = None
-            if self._want_pattern:
-                # the screen shows it about twelve times a second: asked for at most
-                # ten times a second, not for every 50 ms written
-                if self._played - self._pattern_at >= RATE // 10:
-                    self._pattern_at, self._pattern = self._played, d.pattern_view(11)
-                pattern = self._pattern
+        out = self._out()
+        # The bars, the pattern and the scopes as the sound that is heard now was read:
+        # what the replayer says when it is read is the output's latency (up to 0.4 s)
+        # ahead of what is heard, and the pattern ran that far ahead of the music
+        # (13 November 2026). The sound is the end of the piece each mark is with.
+        timeline = self._silence.timeline
+        timeline.append((self._played, mark))
+        heard_at = self._played - int(out.latency() * RATE)
+        while len(timeline) > 1 and timeline[0][0] < heard_at:
+            timeline.popleft()
+        channels, pattern, waves = timeline[0][1]
+        channels = channels or []
         shows = set(self._shows)
         if channels:
             shows.update(visuals.FROM_CHANNELS)
-        if pattern is not None or (not self._probed and d.pattern_view(1) is not None):
+        if mark[1] is not None or d.position() is not None or (
+                not self._probed and d.pattern_view(1) is not None):
             shows.add("pattern")
+        if d.can_waves:
+            shows.update(visuals.WANTS_WAVES)
         self._probed = True
-        out = self._out()
+        if not self._want_pattern:
+            pattern = None
         # what is heard now is the output's latency behind what was written: the
         # spectrum and scope show that, not the newest sound (up to 0.2 s ahead)
         self._recent = (self._recent + out_pcm)[-KEPT_FRAMES * FRAME_BYTES:]
@@ -1064,13 +1097,55 @@ class Player:
             self._shows = shows
             self._set(shows=frozenset(shows))
         self._set(elapsed=max(0.0, self._played / RATE - out.latency()), levels=levels,
-                  channels=channels, pattern=pattern, wave=heard[-WAVE_FRAMES * FRAME_BYTES:])
+                  channels=channels, pattern=pattern, waves=waves if self._want_waves else None,
+                  wave=heard[-WAVE_FRAMES * FRAME_BYTES:])
         out.write(out_pcm)
         if self._started is not None:
             self._after_start()         # the first sound is on its way: now the rest
 
 
 _QUIT = object()        # tells the prefetch thread to end
+
+
+def _mark(d: Decoder, pattern: bool, waves: bool) -> tuple:
+    """What the channel bars, the pattern and the scopes show with the sound the
+    decoder has just given: (channel levels, (row, the pattern's rows) or None, each
+    channel's own sound or None)."""
+    view = None
+    if pattern:
+        pos = d.position()
+        if pos is not None:
+            rows = d.pattern_rows(pos[0])
+            view = (pos[1], rows) if rows else None
+        else:
+            view = d.pattern_view(11)
+    return d.channel_levels() or [], view, d.channel_waves() if waves else None
+
+
+class _MarkedSilence(ending.Silence):
+    """ending.Silence, each piece with its mark (_mark), held and let go with it; and
+    the marks of what has been played and may not yet be heard, by where the piece
+    ends (Player._play). Cleared with it: wherever the song is put somewhere else."""
+
+    def __init__(self, rate: int, frame_bytes: int):
+        super().__init__(rate, frame_bytes)
+        self._held_marks: list[tuple] = []
+        self.timeline: deque[tuple[int, tuple]] = deque()
+
+    def take(self, pcm: bytes, silent: bool, mark: tuple = ([], None, None)):
+        marks = [*self._held_marks, mark]
+        pieces = super().take(pcm, silent)          # may clear()
+        if pieces is None:
+            return None
+        if not pieces:
+            self._held_marks = marks
+            return []
+        return list(zip(pieces, marks))
+
+    def clear(self) -> None:
+        super().clear()
+        self._held_marks = []
+        self.timeline = deque()
 
 
 def _peak(a) -> float:

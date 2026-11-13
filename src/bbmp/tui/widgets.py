@@ -3,14 +3,22 @@
 
 from __future__ import annotations
 
+from itertools import repeat
+
 from rich.cells import cell_len
+from rich.padding import Padding
+from rich.segment import Segment
+from rich.style import Style
+from textual.renderables.styled import Styled
 from rich.text import Text
+from textual import events
 from textual.binding import Binding
+from textual.geometry import Region, Size, Spacing
+from textual.message import Message
+from textual.scroll_view import ScrollView
+from textual.strip import Strip
 from textual.widget import Widget
-from textual.widgets import DataTable, DirectoryTree, Footer, Input, Static, Tabs
-from textual.geometry import Size
-from textual.widgets import OptionList
-from textual.widgets.data_table import ColumnKey
+from textual.widgets import DirectoryTree, Footer, Input, OptionList, Static, Tabs
 
 from .. import collection as collections_, theme, units, visuals
 from ..backends import is_supported
@@ -77,7 +85,16 @@ class OneLineList(OptionList):
         lines = cache.lines
         start = lines[-1][0] + 1 if lines else 0
         width = self.scrollable_content_region.width - self._get_left_gutter_width()
-        for index, option in enumerate(self.options[start:], start):
+        new = self.options[start:]
+        if not any(option._divider for option in new):
+            # all one line high, as nearly every list is: counted in bulk (26k artists
+            # 32 to ~8 ms, 13 November 2026)
+            ids = range(start, start + len(new))
+            cache.index_to_line.update(zip(ids, range(len(lines), len(lines) + len(new))))
+            cache.heights.update(dict.fromkeys(ids, 1))
+            lines.extend(zip(ids, repeat(0)))
+            new = ()
+        for index, option in enumerate(new, start):
             cache.index_to_line[index] = len(lines)
             height = 1 + option._divider
             cache.heights[index] = height
@@ -89,11 +106,86 @@ class OneLineList(OptionList):
             self._scroll_update(size)
 
 
-class SongTable(DataTable):
-    """A list of songs. Enter plays from the selected row onwards."""
+class SongTable(ScrollView, can_focus=True):
+    """A list of songs. Enter plays from the selected row onwards.
 
-    # → and ← open and close a song's copies, and ← goes back out of Browse's songs
-    BINDINGS = IN_AND_OUT + PAGES
+    Only the rows in sight are made and drawn. Textual's DataTable, which this was,
+    made every row as it was added: 100,000 songs (Modland's unknown artist) took 11 s
+    to show and each cursor move 0.1 s (measured 13 November 2026). It looks as the
+    DataTable did, with its CSS and component classes, and answers the parts of its
+    interface the app uses (cursor_row, row_count, move_cursor, get_row_at,
+    get_cell_at, update_cell_at, RowHighlighted, RowSelected)."""
+
+    BINDINGS = [
+        Binding("enter", "select_cursor", "Select", show=False),
+        Binding("up", "cursor_up", "Cursor up", show=False),
+        Binding("down", "cursor_down", "Cursor down", show=False),
+        Binding("ctrl+home", "scroll_top", "Top", show=False),
+        Binding("ctrl+end", "scroll_bottom", "Bottom", show=False),
+        Binding("home", "scroll_home", "Home", show=False),
+        Binding("end", "scroll_end", "End", show=False),
+        # → and ← open and close a song's copies, and ← goes back out of Browse's songs
+        *IN_AND_OUT, *PAGES,
+    ]
+
+    COMPONENT_CLASSES = {
+        "datatable--cursor", "datatable--hover", "datatable--fixed", "datatable--fixed-cursor",
+        "datatable--header", "datatable--header-cursor", "datatable--header-hover",
+        "datatable--odd-row", "datatable--even-row",
+    }
+
+    # DataTable's own CSS (Textual 8.2), for the same look
+    DEFAULT_CSS = """
+    SongTable {
+        background: $surface;
+        color: $foreground;
+        height: auto;
+        max-height: 100%;
+        &:focus {
+            background-tint: $foreground 5%;
+            & > .datatable--cursor {
+                background: $block-cursor-background;
+                color: $block-cursor-foreground;
+                text-style: $block-cursor-text-style;
+            }
+            & > .datatable--header { background-tint: $foreground 5%; }
+        }
+        &:dark { & > .datatable--even-row { background: $surface-darken-1 40%; } }
+        & > .datatable--header { text-style: bold; background: $panel; color: $foreground; }
+        &:ansi > .datatable--header { background: ansi_bright_blue; color: ansi_default; }
+        & > .datatable--even-row { background: $surface-lighten-1 50%; }
+        & > .datatable--cursor {
+            background: $block-cursor-blurred-background;
+            color: $block-cursor-blurred-foreground;
+            text-style: $block-cursor-blurred-text-style;
+        }
+        & > .datatable--hover { background: $block-hover-background; }
+    }
+    """
+
+    class RowHighlighted(Message):
+        """The cursor came onto a row."""
+
+        def __init__(self, data_table: "SongTable", cursor_row: int) -> None:
+            self.data_table = data_table
+            self.cursor_row = cursor_row
+            super().__init__()
+
+        @property
+        def control(self) -> "SongTable":
+            return self.data_table
+
+    class RowSelected(Message):
+        """Enter (or a click on the row the cursor is on) chose a row."""
+
+        def __init__(self, data_table: "SongTable", cursor_row: int) -> None:
+            self.data_table = data_table
+            self.cursor_row = cursor_row
+            super().__init__()
+
+        @property
+        def control(self) -> "SongTable":
+            return self.data_table
 
     COLUMNS = {"title": "Title", "artist": "Artist", "album": "Album", "format": "Format",
                "size": "Size"}
@@ -105,41 +197,71 @@ class SongTable(DataTable):
     # the same song in the other collections that have it (Song.also), from the catalog
     copies = staticmethod(lambda song: [])
 
+    # The columns are as wide as the longest of what they show in the first MEASURED
+    # rows; a longer one further down widens its column when it comes into sight. A
+    # column doesn't narrow again, so that the columns stay put from one list to the next.
+    MEASURED = 1000
+
     def __init__(self, *, columns: tuple[str, ...] = ("title", "artist", "format"), **kw):
-        super().__init__(cursor_type="row", zebra_stripes=True, **kw)
+        super().__init__(**kw)
         self.songs: list[Song] = []        # as shown: a row that is opened has its copies
         self._depth: list[int] = []        # 0 for a song, 1 for a copy of the one above it
         self._base: list[Song] = []        # as given
         self._open: set[str] = set()       # the keys of the rows opened out
         self._shown_with: tuple = (set(), -1, None)
         self._columns = columns
+        self._widths = {"mark": 1, **{c: len(self.COLUMNS[c]) for c in columns}}
+        self._header = [Text(" ")] + [Text(self.COLUMNS[c], justify="right") if c == "size"
+                                      else Text(self.COLUMNS[c]) for c in columns]
+        self._cursor = 0
+        self._hover = 0
+        self._show_hover = False
+        self._drawn_with: tuple = (set(), -1, None, LONGEST)   # favourites, ▶, albums, title length
+        self._rows: dict[int, tuple] = {}     # a row's cells as strings, made as it is drawn
+        self._set: dict[tuple[int, int], Text] = {}             # cells changed by update_cell_at
+        self._lines: dict[tuple, Strip] = {}
+        self._styles: dict[tuple, tuple[Style, Style]] = {}
+        self._made = 0                     # bumped whenever what a row shows may have changed
+        self._wider = False                # a row in sight widened a column
+        self._pseudo = None
 
-    def on_mount(self) -> None:
-        self.add_column(" ", width=1, key="mark")
-        for c in self._columns:
-            # a width of its own (set at each fill, _draw): DataTable measures no cells then
-            self.add_column(Text(self.COLUMNS[c], justify="right") if c == "size"
-                            else self.COLUMNS[c], key=c, width=len(self.COLUMNS[c]))
+    # ---- the interface of Textual's DataTable that the app uses ----
 
-    # Every column has a width that _draw works out from the strings it shows: Textual's
-    # DataTable would otherwise measure every cell of every new row with Rich on the next
-    # idle (2,000 rows: 34 ms), and the whole column again when a cell gets narrower (the
-    # mark when a favourite is taken away). Rows are one line high, without labels.
+    @property
+    def cursor_row(self) -> int:
+        return self._cursor
 
-    def _fixed(self) -> bool:
-        return not any(c.auto_width for c in self.columns.values())
+    @property
+    def row_count(self) -> int:
+        return len(self.songs)
 
-    def _update_dimensions(self, new_rows) -> None:
-        super()._update_dimensions(() if self._fixed() else new_rows)
+    def move_cursor(self, *, row: int | None = None, column: int | None = None,
+                    animate: bool = False, scroll: bool = True) -> None:
+        if row is not None:
+            self._move(row, scroll=False)
+        if scroll:
+            self._scroll_cursor_into_view(animate)
 
-    def _update_column_widths(self, updated_cells) -> None:
-        if not self._fixed():
-            super()._update_column_widths(updated_cells)
-            return
-        self._require_update_dimensions = True
-        self.hover_coordinate = self.hover_coordinate
-        self._update_count += 1
-        self.refresh(layout=True)
+    def get_row_at(self, row: int) -> list[Text]:
+        if not 0 <= row < len(self.songs):
+            raise IndexError(row)
+        return [self.get_cell_at((row, c)) for c in range(len(self._columns) + 1)]
+
+    def get_cell_at(self, coordinate) -> Text:
+        row, column = coordinate
+        if not 0 <= row < len(self.songs):
+            raise IndexError(row)
+        return self._set.get((row, column)) or self._texts(row)[column]
+
+    def update_cell_at(self, coordinate, value, *, update_width: bool = False) -> None:
+        row, column = coordinate
+        if not 0 <= row < len(self.songs):
+            raise IndexError(row)
+        self._set[(row, column)] = value if isinstance(value, Text) else Text(str(value))
+        self._made += 1
+        self.refresh_row(row)
+
+    # ---- filling ----
 
     def set_songs(self, songs: list[Song], favorites: set[str], current: int = -1,
                   albums: dict[str, str] | None = None) -> None:
@@ -148,15 +270,19 @@ class SongTable(DataTable):
             self._open &= {s.key for s in songs}
         self._base = list(songs)
         self._shown_with = (favorites, current, albums)
-        rows: list[tuple[Song, int]] = []
+        rows: list[Song] = []
+        depth: list[int] = []
         shown = -1              # the row of `current`, which counts the songs as given
         for i, s in enumerate(songs):
             if i == current:
                 shown = len(rows)
-            rows.append((s, 0))
+            rows.append(s)
+            depth.append(0)
             if s.key in self._open:
-                rows += [(c, 1) for c in self.copies(s)]
-        self._draw([s for s, _ in rows], [d for _, d in rows], favorites, shown, albums)
+                copies = self.copies(s)
+                rows += copies
+                depth += [1] * len(copies)
+        self._draw(rows, depth, favorites, shown, albums)
 
     def toggle(self, open_: bool | None = None) -> bool:
         """Open the selected song out to its copies in the other collections, or close
@@ -200,80 +326,282 @@ class SongTable(DataTable):
 
     def _draw(self, songs: list[Song], depth: list[int], favorites: set[str], current: int,
               albums: dict[str, str] | None) -> None:
-        keep = self.cursor_row if self.songs == songs else 0
+        same = self.songs == songs
+        keep = self._cursor if same else 0
         self.songs = songs
         self._depth = depth
-        self.clear()
         longest = LONGEST
         if "size" in self._columns and self.size.width:
             longest = max(16, min(LONGEST, self.size.width - 20))   # the size stays in sight
-        # as Textual's own measuring did: a column grows to what it has shown, and
-        # doesn't shrink back, so that the columns stay put from one list to the next
-        widths = {c: self.columns[ColumnKey(c)].width for c in self._columns}
-        kept = self.kept
-        for i, s in enumerate(songs):
-            key = s.key
-            ok = is_supported(s.format)
-            bad = ok and self.troubled(key)
-            ok = ok and not bad
-            mark = ("▶" if i == current else "♥" if key in favorites
-                    else "!" if bad else "" if not ok else "⤓" if kept(key) else "")
-            mark = mark or ("" if ok else "✗")
-            album = s.album_name + (f" (with {s.partner})" if s.partner else "")
-            where = self.collections.get(s.collection, "") or (
-                collections_.name(s.collection) if depth[i] else "")
-            if where and s.also:
-                where = " + ".join([where, *(collections_.name(c) for c in s.also)])
-            if albums and key in albums:
-                album = albums[key]
-            if where and "format" not in self._columns:
-                # a list without the format column says the collection with the album
-                album = f"{album.strip()} · {where}" if album.strip() else where
-            # a title as long as a line would push what follows it out of sight
-            title = s.title
-            if len(title) > longest:
-                title = title[:longest - 1] + "…"
-            if depth[i]:
-                title = f"  ↳ {title}"          # a copy, in the collection it says
-            elif s.also:
-                title = ("▾ " if key in self._open else "▸ ") + title
-            cells = {"title": title, "artist": s.artist, "album": album.strip(),
-                     "format": s.format + (f" · {where}" if where else ""),
-                     "size": units.size(s.size)}
-            style = {"♥": f"bold {theme.current.bad}", "!": f"bold {theme.current.warn}"}
-            row = []
-            for c in self._columns:
-                text = cells[c]
-                if (n := cell_len(text)) > widths[c]:
-                    widths[c] = n
-                row.append(Text(text, style="" if ok else "dim",
-                                justify="right" if c == "size" else "left"))
-            self.add_row(Text(mark, style=style.get(mark, "")), *row, key=str(i))
-        for c, width in widths.items():
-            self.columns[ColumnKey(c)].width = width
+        self._drawn_with = (favorites, current, albums, longest)
+        self._rows.clear()
+        self._set.clear()
+        self._forget()
+        for i in range(min(len(songs), self.MEASURED)):
+            self._row(i)
+        self._wider = False
+        self._resize()
+        self._cursor = min(keep, len(songs) - 1) if songs else 0
+        if not same:            # a new list starts at its top; the same one stays in view
+            self.scroll_to(0, 0, animate=False, force=True, immediate=True)
+        self.refresh()
         if songs:
-            self.move_cursor(row=min(keep, len(songs) - 1))
+            self.post_message(self.RowHighlighted(self, self._cursor))
+            if keep:
+                self.call_after_refresh(self._scroll_cursor_into_view)
+
+    def _row(self, i: int) -> tuple:
+        """Row i as strings: (mark, whether it plays, the columns' cells). Its columns
+        widen to it."""
+        made = self._rows.get(i)
+        if made is not None:
+            return made
+        favorites, current, albums, longest = self._drawn_with
+        s = self.songs[i]
+        key = s.key
+        ok = is_supported(s.format)
+        bad = ok and self.troubled(key)
+        ok = ok and not bad
+        mark = ("▶" if i == current else "♥" if key in favorites
+                else "!" if bad else "" if not ok else "⤓" if self.kept(key) else "")
+        mark = mark or ("" if ok else "✗")
+        album = s.album_name + (f" (with {s.partner})" if s.partner else "")
+        where = self.collections.get(s.collection, "") or (
+            collections_.name(s.collection) if self._depth[i] else "")
+        if where and s.also:
+            where = " + ".join([where, *(collections_.name(c) for c in s.also)])
+        if albums and key in albums:
+            album = albums[key]
+        if where and "format" not in self._columns:
+            # a list without the format column says the collection with the album
+            album = f"{album.strip()} · {where}" if album.strip() else where
+        # a title as long as a line would push what follows it out of sight
+        title = s.title
+        if len(title) > longest:
+            title = title[:longest - 1] + "…"
+        if self._depth[i]:
+            title = f"  ↳ {title}"          # a copy, in the collection it says
+        elif s.also:
+            title = ("▾ " if key in self._open else "▸ ") + title
+        cells = {"title": title, "artist": s.artist, "album": album.strip(),
+                 "format": s.format + (f" · {where}" if where else ""),
+                 "size": units.size(s.size)}
+        made = (mark, ok, tuple(cells[c] for c in self._columns))
+        widths = self._widths
+        for c, text in zip(self._columns, made[2]):
+            if (n := cell_len(text)) > widths[c]:
+                widths[c] = n
+                self._wider = True
+        if len(self._rows) > 4 * self.MEASURED:
+            self._rows.clear()
+        self._rows[i] = made
+        return made
+
+    def _texts(self, i: int) -> list[Text]:
+        mark, ok, cells = self._row(i)
+        style = {"♥": f"bold {theme.current.bad}", "!": f"bold {theme.current.warn}"}
+        # an empty cell plain, as DataTable drew it (a dim one would dim its padding)
+        return [Text(mark, style=style.get(mark, "")) if mark else Text()] + [
+            Text(text, style="" if ok else "dim", justify="right" if c == "size" else "left")
+            if text else Text() for c, text in zip(self._columns, cells)]
 
     def remark_kept(self) -> None:
         """Files have come to the kept music: the ⤓ marks again, where a row has that
         mark or none (not ▶, ♥, ! or ✗). The list was not drawn again when a saved
-        file landed, and its ⤓ was missing until one went away and back (7 October 2026)."""
-        kept = self.kept
-        for i, s in enumerate(self.songs):
-            try:
-                now = str(self.get_cell_at((i, 0)))
-            except Exception:
-                return          # the rows are being drawn anew
-            if now not in ("", "⤓") or not is_supported(s.format) or self.troubled(s.key):
-                continue
-            want = "⤓" if kept(s.key) else ""
-            if want != now:
-                self.update_cell_at((i, 0), Text(want))
+        file landed, and its ⤓ was missing until one went away and back (7 October 2026).
+        Rows are marked as they are drawn, so the rows made so far are made again."""
+        for at in [at for at, text in self._set.items() if at[1] == 0 and str(text) in ("", "⤓")]:
+            del self._set[at]
+        self._rows.clear()
+        self._forget()
+        self.refresh()
 
     def selected(self) -> Song | None:
         if self.songs and 0 <= self.cursor_row < len(self.songs):
             return self.songs[self.cursor_row]
         return None
+
+    # ---- the cursor, keys and the mouse, as DataTable's with a row cursor ----
+
+    def _move(self, row: int, scroll: bool = True, animate: bool = False) -> None:
+        row = max(0, min(row, len(self.songs) - 1))
+        old, self._cursor = self._cursor, row
+        if old != row:
+            self.refresh_row(old)
+            self.refresh_row(row)
+            if self.songs:
+                self.post_message(self.RowHighlighted(self, row))
+        if scroll:
+            self._scroll_cursor_into_view(animate)
+
+    def _scroll_cursor_into_view(self, animate: bool = False) -> None:
+        if not self.songs:
+            return
+        region = Region(int(self.scroll_x), self._cursor + 1, self._width(), 1)
+        self.scroll_to_region(region, animate=animate, spacing=Spacing(1, 0, 0, 0), force=True)
+
+    def _hover_off(self) -> None:
+        if self._show_hover:
+            self._show_hover = False
+            self.refresh_row(self._hover)
+
+    def _page(self) -> int:
+        return self.scrollable_content_region.height - 1
+
+    def action_page_down(self) -> None:
+        self._hover_off()
+        height = self._page()
+        self.scroll_relative(y=height, animate=False, force=True)
+        self._move(min(self._cursor + height, len(self.songs) - 1), scroll=False)
+
+    def action_page_up(self) -> None:
+        self._hover_off()
+        height = self._page()
+        self.scroll_relative(y=-height, animate=False)
+        self._move(max(self._cursor - height, 0), scroll=False)
+
+    def action_scroll_top(self) -> None:
+        self._hover_off()
+        self._move(0)
+
+    def action_scroll_bottom(self) -> None:
+        self._hover_off()
+        self._move(len(self.songs) - 1)
+
+    def action_scroll_home(self) -> None:
+        self._hover_off()
+        self.scroll_x = 0
+
+    def action_scroll_end(self) -> None:
+        self._hover_off()
+        self.scroll_x = self.max_scroll_x
+
+    def action_cursor_up(self) -> None:
+        self._hover_off()
+        self._move(self._cursor - 1)
+
+    def action_cursor_down(self) -> None:
+        self._hover_off()
+        self._move(self._cursor + 1)
+
+    def action_select_cursor(self) -> None:
+        self._hover_off()
+        if self.songs:
+            self.post_message(self.RowSelected(self, self._cursor))
+
+    def _on_mouse_move(self, event: events.MouseMove) -> None:
+        row = event.style.meta.get("row") if event.style.meta else None
+        if row is None or row < 0:
+            self._hover_off()
+            return
+        if (row, True) != (self._hover, self._show_hover):
+            self.refresh_row(self._hover)
+            self._hover, self._show_hover = row, True
+            self.refresh_row(row)
+
+    def _on_leave(self, _: events.Leave) -> None:
+        self._hover_off()
+
+    async def _on_click(self, event: events.Click) -> None:
+        self._show_hover = True
+        row = event.style.meta.get("row") if event.style.meta else None
+        if row is None or row < 0 or row >= len(self.songs):
+            return
+        again = row == self._cursor
+        self._move(row, scroll=False)
+        if again:
+            self.post_message(self.RowSelected(self, row))
+        self._scroll_cursor_into_view(animate=True)
+        event.stop()
+
+    # ---- drawing ----
+
+    def _width(self) -> int:
+        return sum(w + 2 for w in self._widths.values())
+
+    def _resize(self) -> None:
+        self.virtual_size = Size(self._width(), len(self.songs) + 1)
+
+    def _forget(self) -> None:
+        self._made += 1
+        self._lines.clear()
+
+    def refresh_row(self, row: int) -> None:
+        y = row + 1 - int(self.scroll_y)
+        if 0 <= row < len(self.songs) and 1 <= y < self.size.height:
+            self.refresh(Region(0, y, self.size.width, 1))
+
+    def notify_style_update(self) -> None:
+        super().notify_style_update()
+        self._styles.clear()
+        self._forget()
+        self.refresh()
+
+    def _cell_styles(self, header: bool, hover: bool, cursor: bool) -> tuple[Style, Style]:
+        """The cursor's and the hover's style on a cell, and what goes over the cell's
+        own (the cursor's colour), as DataTable's _get_styles_to_render_cell."""
+        key = (header, hover, cursor)
+        found = self._styles.get(key)
+        if found is None:
+            get = self.get_component_rich_style
+            style = Style()
+            if hover:
+                style += get("datatable--hover")
+                if header:
+                    style += get("datatable--header-hover")
+            if cursor:
+                style += get("datatable--cursor")
+                if header:
+                    style += get("datatable--header-cursor")
+            found = self._styles[key] = (style, Style.from_color(color=style.color))
+        return found
+
+    def render_lines(self, crop: Region) -> list[Strip]:
+        self._pseudo = self.get_pseudo_class_state()
+        lines = super().render_lines(crop)
+        if self._wider:          # a row just drawn widened a column: draw them all again
+            self._wider = False
+            self._forget()
+            self._resize()
+            self.refresh()
+        return lines
+
+    def render_line(self, y: int) -> Strip:
+        width = self.size.width
+        scroll_x, scroll_y = self.scroll_offset
+        base = self.rich_style
+        row = -1 if y == 0 else y - 1 + scroll_y
+        if row >= len(self.songs):
+            return Strip.blank(width, base)
+        cursor = row == self._cursor and row >= 0
+        hover = self._show_hover and row == self._hover and row >= 0
+        key = (row, self._made, cursor, hover, self._pseudo, width, scroll_x, base)
+        line = self._lines.get(key)
+        if line is not None:
+            return line
+        if row == -1:
+            row_style = self.get_component_styles("datatable--header").rich_style
+            cells = self._header
+        else:
+            row_style = self.get_component_styles(
+                "datatable--odd-row" if row % 2 else "datatable--even-row").rich_style
+            cells = [self._set.get((row, c)) or text for c, text in enumerate(self._texts(row))]
+        component, post = self._cell_styles(row == -1, hover, cursor)
+        pre = row_style + Style.from_meta({"row": row}) + component
+        options = self.app.console_options
+        render = self.app.console.render_lines
+        segments: list[Segment] = []
+        for cell, w in zip(cells, self._widths.values()):
+            lines = render(Styled(Padding(cell, (0, 1)), pre_style=pre, post_style=post),
+                           options.update_dimensions(w + 2, 1).update(no_wrap=True))
+            segments += lines[0]
+        segments.append(Segment(" " * max(0, width - self._width()),
+                                row_style + component + Style.from_meta({"row": row})))
+        line = Strip(segments).crop(scroll_x, scroll_x + width).adjust_cell_length(width, base).simplify()
+        if len(self._lines) > 2000:
+            self._lines.clear()
+        self._lines[key] = line
+        return line
 
 
 def _drawn_key(content):
@@ -463,6 +791,12 @@ class Visualizer(Static):
         """Whether the visualiser chosen draws from the pattern (the player then reads it)."""
         return self.mode in visuals.WANTS_PATTERN
 
+    @property
+    def wants_waves(self) -> bool:
+        """Whether it draws each channel's own sound (the replayer then plays a copy of
+        the song for each channel)."""
+        return self.mode in visuals.WANTS_WAVES
+
     def set_mode(self, mode: str | None) -> None:
         self.mode = mode if mode in visuals.MODES else None
         self.set_class(self.mode is not None, "on")
@@ -507,7 +841,7 @@ class Visualizer(Static):
             if st.state == "playing":       # it scrolls on each frame: paused, it stands still
                 draw_if_changed(self, self._spectrogram.render(st.wave, rows, width))
         elif mode == "scopes":
-            draw_if_changed(self, self._scopes.render(st.channels, st.pattern, rows, width))
+            draw_if_changed(self, self._scopes.render(st.waves, st.channels, rows, width))
         elif mode == "demo":
             # paused, it stands still: it went on at 95 KB/s (11 October 2026)
             if st.state == "playing" or getattr(self, "_drawn_mode", None) != "demo":

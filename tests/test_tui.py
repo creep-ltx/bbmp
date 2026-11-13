@@ -431,6 +431,9 @@ def test_export_key(catalog, fetcher, tmp_path):
             out = tmp_path / "exports" / "Tester - beep.wav"
             assert await settle(pilot, lambda: out.exists() and out.stat().st_size > 100000)
             assert app.player.status().state == "playing"     # playback carried on meanwhile
+            # done, not only written: while exporting, the menu's last row is "Stop
+            # exporting", and the queue below was missed (6 runs in 20, 13 November 2026)
+            assert await settle(pilot, lambda: not app._exporting)
 
             await pilot.press("e")                            # the queue, in one folder
             assert await settle(pilot, lambda: len(app.screen.query("#pick")) == 1)
@@ -1601,4 +1604,47 @@ def test_the_files_tree_opens_and_closes_with_the_arrows(catalog, fetcher, tmp_p
             assert await settle(pilot, lambda: ahx.is_expanded)
             await pilot.press("enter")                         # and closes it
             assert await settle(pilot, lambda: not ahx.is_expanded)
+    run(go())
+
+
+def test_a_long_song_list_makes_only_the_rows_in_sight():
+    """The song table makes a row as it is drawn: 100,000 songs took 11 s to show as
+    Textual's DataTable (13 November 2026). It still reads, widens and chooses as before."""
+    from textual.app import App
+    from bbmp.index import Song
+    from bbmp.tui.widgets import SongTable
+
+    n = 30_000
+    songs = [Song(id=i, path=f"Protracker/A/s{i}.mod", format="Protracker", artist="A",
+                  album="", name=f"s{i}.mod") for i in range(n)]
+    songs[n - 1] = Song(id=n, path="Protracker/A/long.mod", format="Protracker", artist="A",
+                        album="", name="a much longer title than the others.mod")
+    chosen = []
+
+    class T(App):
+        def compose(self):
+            yield SongTable(id="t")
+
+        def on_song_table_row_selected(self, event):
+            chosen.append(event.cursor_row)
+
+    async def go():
+        app = T()
+        async with app.run_test(size=(100, 20)) as pilot:
+            table = app.query_one(SongTable)
+            table.focus()
+            table.set_songs(songs, set())
+            await pilot.pause()
+            assert table.row_count == n
+            assert len(table._rows) <= SongTable.MEASURED       # not all 30,000
+            width = table._widths["title"]
+            assert str(table.get_row_at(n - 1)[1]) == "a much longer title than the others"
+            await pilot.press("ctrl+end")
+            await pilot.pause()
+            assert table.cursor_row == n - 1
+            assert table._widths["title"] > width                # widened as it came in sight
+            await pilot.press("up", "enter")
+            await pilot.pause()
+            assert chosen == [n - 2]
+            assert table.selected() is songs[n - 2]
     run(go())

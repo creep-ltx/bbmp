@@ -167,6 +167,22 @@ class Mended(Decoder):
     def pattern_view(self, rows: int) -> tuple[int, list[str]] | None:
         return self._inner.pattern_view(rows)
 
+    def position(self) -> tuple[int, int] | None:
+        return self._inner.position()
+
+    def pattern_rows(self, pattern: int) -> list[str] | None:
+        return self._inner.pattern_rows(pattern)
+
+    @property
+    def can_waves(self) -> bool:
+        return self._inner.can_waves
+
+    def want_waves(self, on: bool) -> None:
+        self._inner.want_waves(on)
+
+    def channel_waves(self) -> list[bytes] | None:
+        return self._inner.channel_waves()
+
     def close(self) -> None:
         self._inner.close()
         if self._tmp is not None:

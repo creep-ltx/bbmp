@@ -26,7 +26,7 @@ from textual.css.query import NoMatches
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.timer import Timer
 from textual.drivers import _writer_thread, linux_driver
-from textual.widgets import (DataTable, Footer, Input, OptionList, Static, Tabs,
+from textual.widgets import (Footer, Input, OptionList, Static, Tabs,
                              TabbedContent, TabPane)
 from textual.widgets.option_list import Option
 
@@ -61,7 +61,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
     CSS = """
     /* Quiet frames: a list is a line with its name on top, in the theme's faint border
        colour; the one with the keys has its line and name in the theme's border colour. */
-    OptionList, DataTable, DirectoryTree, VerticalScroll { scrollbar-size-vertical: 1; }
+    OptionList, SongTable, DirectoryTree, VerticalScroll { scrollbar-size-vertical: 1; }
     .pane { border: none; border-top: solid $border-blurred; border-title-color: $foreground 60%;
             height: 1fr; }
     VerticalScroll.pane, #visual { padding: 0 1; }
@@ -169,6 +169,13 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         self.fetcher = fetcher or Fetcher()
         self.library = library or Library()
         self.settings = settings or Settings.load()
+        # The theme before anything is made: set in on_mount, every widget was styled
+        # with Textual's own theme first, then all of it again with this one (the CSS
+        # read anew too): 0.5 s more of a start on a slow machine (13 November 2026).
+        for t in (theme.BYTEBANDIT, *amiga_themes.THEMES):
+            self.register_theme(t)
+        self.theme = (self.settings.theme if self.settings.theme in self.available_themes
+                      else theme.DEFAULT_THEME)
         self._session_path = session_path
         self._output = output
         self._play_id: int | None = None
@@ -341,10 +348,6 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
     def on_mount(self) -> None:
         if self.settings.keys:
             self._use_keys(self.settings.keys)
-        for t in (theme.BYTEBANDIT, *amiga_themes.THEMES):
-            self.register_theme(t)
-        self.theme = (self.settings.theme if self.settings.theme in self.available_themes
-                      else theme.DEFAULT_THEME)
         theme.use(self.theme_variables)
         self.theme_changed_signal.subscribe(self, self._theme_changed)
         self.query_one("#files-tree").border_title = str(self._music_dir())
@@ -445,6 +448,7 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         vis.demo = self.settings.demo_effects
         vis.set_mode(self.settings.visualizer)
         self.player.want_pattern(vis.wants_pattern)
+        self.player.want_waves(vis.wants_waves)
         self._read_collections()
         self._open_keeper()
         self._fill_formats()
@@ -766,8 +770,8 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
         f = self.focused
         return f if isinstance(f, SongTable) else None
 
-    @on(DataTable.RowHighlighted)
-    def _row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+    @on(SongTable.RowHighlighted)
+    def _row_highlighted(self, event: SongTable.RowHighlighted) -> None:
         """The cursor resting on a song for a moment fetches it, so that it starts at
         once if it is chosen (Player.prefetch)."""
         table = event.data_table
@@ -776,8 +780,8 @@ class ModlandApp(PlayingPart, BrowsePart, ListsPart, ArtistPart, SavingPart, Exp
             song = table.songs[event.cursor_row]
             self._later("prefetch", 0.3, lambda: self.player.prefetch(song))
 
-    @on(DataTable.RowSelected)
-    def _row_selected(self, event: DataTable.RowSelected) -> None:
+    @on(SongTable.RowSelected)
+    def _row_selected(self, event: SongTable.RowSelected) -> None:
         table = event.data_table
         if not isinstance(table, SongTable) or not table.songs:
             return

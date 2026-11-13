@@ -80,7 +80,7 @@ class Silence:
                 return None
             return []
         out = [*self._held, pcm]
-        self.clear()
+        self._held, self._bytes = [], 0
         return out
 
     def clear(self) -> None:
